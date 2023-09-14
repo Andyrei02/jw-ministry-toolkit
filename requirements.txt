@@ -1,0 +1,6 @@
+PyMuPDF
+PyQt5
+requests
+lxml
+beautifulsoup4
+reportlab
