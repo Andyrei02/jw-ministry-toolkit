@@ -187,11 +187,25 @@ QListWidget::item:selected {
 
 
 
+/*= widget workbook widget
+===========================================*/
 
 #generate_workbook_button{
 	background-color: #48578e;
 }
 
 #generate_workbook_button:pressed{
+	background-color: #2f3b64;
+}
+
+#button_parsing_workbook{
+	background-color: #48578e;
+}
+
+#button_parsing_workbook:pressed{
+	background-color: #2f3b64;
+}
+
+#button_parsing_workbook:hover{
 	background-color: #2f3b64;
 }

@@ -18,15 +18,16 @@ from reportlab.lib.units import inch, cm
 from reportlab.pdfbase.pdfmetrics import stringWidth
 
 class Service_Schedule_PDF_Generator:
-	def __init__(self, output_path, congregation, dict_data):
+	def __init__(self, output_path, congregation, data_dict):
 		self.congregation = congregation
+		self.data_dict = data_dict
 		self.inv_canvas = canvas.Canvas(output_path, pagesize=A4, bottomup=0)
 		self.init_pdf()
 
 	def init_pdf(self):
-		pdfmetrics.registerFont(TTFont('CalibriRegular', '/home/andreic/Documents/Congregatie/project/assets/font/Calibri Regular.ttf'))
-		pdfmetrics.registerFont(TTFont('CalibriBold', '/home/andreic/Documents/Congregatie/project/assets/font/Calibri Bold.TTF'))
-		pdfmetrics.registerFont(TTFont('CambriaBold', '/home/andreic/Documents/Congregatie/project/assets/font/Cambria-Bold.ttf'))
+		pdfmetrics.registerFont(TTFont('CalibriRegular', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Calibri Regular.ttf'))
+		pdfmetrics.registerFont(TTFont('CalibriBold', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Calibri Bold.TTF'))
+		pdfmetrics.registerFont(TTFont('CambriaBold', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Cambria-Bold.ttf'))
 
 		self.GRAY = (86/255,86/255,86/255)
 		self.BLACK = (0,0,0)
@@ -63,7 +64,7 @@ class Service_Schedule_PDF_Generator:
 
 		self.inv_canvas.line(self.text_margins[0]-5, self.text_margins[2]+11, self.text_margins[1]+5, self.text_margins[2]+11)
 
-	def draw_content(self, list_section0, list_section1, list_section2, list_section3):
+	def draw_content(self, header_date):
 		current_row = 0
 		row_height = 15
 		section_title_height = 30
@@ -74,20 +75,20 @@ class Service_Schedule_PDF_Generator:
 		start_hour = '18:00'
 
 		
-		section_0_items = [('', '4-10 septembrie | ESTERA 1, 2', 'Președinte:', ''), ('5', 'Cântarea 137', 'Rugăciune', 'Bodiu Ruslan'), ('5', 'Cuvinte introductive:', '', 'Bodiu Ruslan')]
+		# section_0_items = [('', '4-10 septembrie | ESTERA 1, 2', 'Președinte:', ''), ('5', 'Cântarea 137', 'Rugăciune', 'Bodiu Ruslan'), ('5', 'Cuvinte introductive:', '', 'Bodiu Ruslan')]
 		# date  = '4-10 septembrie'
 		# verses = 'ESTERA 1, 2'
 		# chairman = ''
 		# prayer_1 = 'Bodiu Ruslan'
 		# intro_reader = 'Bodiu Ruslan'
 
-		section_1_items = [('10', 'Străduiește-te să fii modest la fel ca Estera', '', 'Bodiu Ruslan'), ('10', 'Să căutăm nestemate spirituale:', '', 'Moldovanu Vasile'), ('4', 'Citirea Bibliei', 'Cursant:', 'Bogdan Șaban')]
+		# section_1_items = [('10', 'Străduiește-te să fii modest la fel ca Estera', '', 'Bodiu Ruslan'), ('10', 'Să căutăm nestemate spirituale:', '', 'Moldovanu Vasile'), ('4', 'Citirea Bibliei', 'Cursant:', 'Bogdan Șaban')]
 		# section_1_title = 'Străduiește-te să fii modest la fel ca Estera'
 		# title_of_1_section_reader = 'Bodiu Ruslan'
 		# spiritual_gems_reader = 'Moldovanu Vasile'
 		# bible_reader = 'Bogdan Șaban'
 
-		section_2_items = [('5', 'Vizita inițială – Material video:', '', ''), ('3', 'Vizita inițială:', '', 'Mardarovici Elena/Cevali Iraida'), ('5', 'Cuvântare: th 14', '', 'Pasăre Vasile')]
+		# section_2_items = [('5', 'Vizita inițială – Material video:', '', ''), ('3', 'Vizita inițială:', '', 'Mardarovici Elena/Cevali Iraida'), ('5', 'Cuvântare: th 14', '', 'Pasăre Vasile')]
 		# section_2_title_1 = 'Vizita inițială – Material video:'
 		# section_2_title_1_coursant = ''
 		# section_2_title_2 = 'Vizita inițială:'
@@ -95,13 +96,19 @@ class Service_Schedule_PDF_Generator:
 		# section_2_title_3 = 'Cuvântare: th 14'
 		# section_2_title_3_coursant = 'Pasăre Vasile'
 
-		section_3_items = [('2', 'Cântarea 106', '', ''), ('5', 'Ce spun alți tineri – Înfățișare:', '', 'Moldovanu Vasile'), ('10', 'Realizări organizatorice:', '', 'Bodiu Ruslan'), ('30', 'Studiul Bibliei în congregație: lff lecția 56', 'Conducător/Cititor', 'Russu Petru/Spoială Leonid'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 101', 'Rugăciune:', 'Moldovanu Vasile')]
+		# section_3_items = [('2', 'Cântarea 106', '', ''), ('5', 'Ce spun alți tineri – Înfățișare:', '', 'Moldovanu Vasile'), ('10', 'Realizări organizatorice:', '', 'Bodiu Ruslan'), ('30', 'Studiul Bibliei în congregație: lff lecția 56', 'Conducător/Cititor', 'Russu Petru/Spoială Leonid'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 101', 'Rugăciune:', 'Moldovanu Vasile')]
 
 		# song_1 = '123'
 		# song_2 = '101'
 		# song_3 = '127'
 
-		# header_content = f'{date} | {verses}'
+		header_dict = self.data_dict[header_date]["header"]
+		intro_dict = self.data_dict[header_date]["intro"]
+		section_1_dict = self.data_dict[header_date]["section_1"]
+		section_2_dict = self.data_dict[header_date]["section_2"]
+		section_3_dict = self.data_dict[header_date]["section_3"]
+
+
 		current_hour = start_hour
 		hour_pos_x = 0
 		subtitle_pos_x = 40
@@ -109,63 +116,95 @@ class Service_Schedule_PDF_Generator:
 		# Header Row 0
 		# ===============================================
 		self.inv_canvas.setFont("CalibriBold", 11)
-		self.inv_canvas.drawString(0, current_row, list_section0[0][1])
+		header_verse = list(header_dict.keys())[0]
+		header_content = f'{header_date} | {header_verse}'
+		self.inv_canvas.drawString(0, current_row, header_content)
 
 		self.inv_canvas.setFont("CalibriBold", 8)
-		x_comment = column_two_comment_x - stringWidth(list_section0[0][2], 'CalibriBold', 8)
+		x_comment = column_two_comment_x - stringWidth(header_dict[header_verse][1], 'CalibriBold', 8)
 		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.drawString(x_comment, current_row, list_section0[0][2])
+		# self.inv_canvas.drawString(x_comment, current_row, list_section0[0][2])
 
 		x_name = column_two_comment_x + 10
 		self.inv_canvas.setFillColorRGB(*self.BLACK)
 		self.inv_canvas.setFont("CalibriBold", 11)
-		self.inv_canvas.drawString(x_name, current_row, list_section0[0][3])
+		self.inv_canvas.drawString(x_name, current_row, header_dict[header_verse][1])
 		current_row += row_height
 
-		#  Header Row 1
+		#  Intro
 		# ===============================================
-		self.inv_canvas.setFont("CalibriBold", 9)
-		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.drawString(0, current_row, current_hour)
+		intro_keys = list(intro_dict.keys())
+		for key in intro_keys:
+			self.inv_canvas.setFont("CalibriBold", 9)
+			self.inv_canvas.setFillColorRGB(*self.GRAY)
+			self.inv_canvas.drawString(0, current_row, current_hour)
 
-		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
+			self.inv_canvas.setFillColorRGB(*self.GRAY)
+			self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
 
-		self.inv_canvas.setFont("CalibriRegular", 11)
-		self.inv_canvas.setFillColorRGB(*self.BLACK)
-		self.inv_canvas.drawString(subtitle_pos_x, current_row, list_section0[1][1])
+			self.inv_canvas.setFont("CalibriRegular", 11)
+			self.inv_canvas.setFillColorRGB(*self.BLACK)
+			self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
-		self.inv_canvas.setFont("CalibriBold", 8)
-		x_comment = column_two_comment_x - stringWidth(list_section0[1][2], 'CalibriBold', 8)
-		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.drawString(x_comment, current_row, list_section0[1][2])
+			self.inv_canvas.setFont("CalibriBold", 8)
+			x_comment = column_two_comment_x - stringWidth(intro_dict[key][1], 'CalibriBold', 8)
+			self.inv_canvas.setFillColorRGB(*self.GRAY)
+			self.inv_canvas.drawString(x_comment, current_row, intro_dict[key][1])
 
-		x_name = column_two_comment_x + 10
-		self.inv_canvas.setFillColorRGB(*self.BLACK)
-		self.inv_canvas.setFont("CalibriBold", 11)
-		self.inv_canvas.drawString(x_name, current_row, list_section0[1][3])
-		current_hour = self.add_minutes_to_time(current_hour, int(list_section0[1][0]))
-		current_row += row_height
+			x_name = column_two_comment_x + 10
+			self.inv_canvas.setFillColorRGB(*self.BLACK)
+			self.inv_canvas.setFont("CalibriBold", 11)
+			self.inv_canvas.drawString(x_name, current_row, intro_dict[key][1])
+			next_hour = int(intro_dict[key][0]) if int(intro_dict[key][0]) != 0 else 5
+			current_hour = self.add_minutes_to_time(current_hour, next_hour)
+			current_row += row_height
+		current_row += section_title_height - row_height
 
-		# Header Row 2
-		# ===============================================
-		self.inv_canvas.setFont("CalibriBold", 9)
-		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.drawString(0, current_row, current_hour)
 
-		self.inv_canvas.setFillColorRGB(*self.GRAY)
-		self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
 
-		self.inv_canvas.setFont("CalibriRegular", 11)
-		self.inv_canvas.setFillColorRGB(*self.BLACK)
-		self.inv_canvas.drawString(subtitle_pos_x, current_row, list_section0[2][1])
+		# self.inv_canvas.setFont("CalibriBold", 9)
+		# self.inv_canvas.setFillColorRGB(*self.GRAY)
+		# self.inv_canvas.drawString(0, current_row, current_hour)
 
-		x_name = column_two_comment_x + 10
-		self.inv_canvas.setFillColorRGB(*self.BLACK)
-		self.inv_canvas.setFont("CalibriBold", 11)
-		self.inv_canvas.drawString(x_name, current_row, list_section0[2][3])
-		current_hour = self.add_minutes_to_time(current_hour, int(list_section0[2][0]))
-		current_row += section_title_height
+		# self.inv_canvas.setFillColorRGB(*self.GRAY)
+		# self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
+
+		# self.inv_canvas.setFont("CalibriRegular", 11)
+		# self.inv_canvas.setFillColorRGB(*self.BLACK)
+
+		# self.inv_canvas.drawString(subtitle_pos_x, current_row, list_section0[1][1])
+
+		# self.inv_canvas.setFont("CalibriBold", 8)
+		# x_comment = column_two_comment_x - stringWidth(list_section0[1][2], 'CalibriBold', 8)
+		# self.inv_canvas.setFillColorRGB(*self.GRAY)
+		# self.inv_canvas.drawString(x_comment, current_row, list_section0[1][2])
+
+		# x_name = column_two_comment_x + 10
+		# self.inv_canvas.setFillColorRGB(*self.BLACK)
+		# self.inv_canvas.setFont("CalibriBold", 11)
+		# self.inv_canvas.drawString(x_name, current_row, list_section0[1][3])
+		# current_hour = self.add_minutes_to_time(current_hour, int(list_section0[1][0]))
+		# current_row += row_height
+
+		# # Header Row 2
+		# # ===============================================
+		# self.inv_canvas.setFont("CalibriBold", 9)
+		# self.inv_canvas.setFillColorRGB(*self.GRAY)
+		# self.inv_canvas.drawString(0, current_row, current_hour)
+
+		# self.inv_canvas.setFillColorRGB(*self.GRAY)
+		# self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
+
+		# self.inv_canvas.setFont("CalibriRegular", 11)
+		# self.inv_canvas.setFillColorRGB(*self.BLACK)
+		# self.inv_canvas.drawString(subtitle_pos_x, current_row, list_section0[2][1])
+
+		# x_name = column_two_comment_x + 10
+		# self.inv_canvas.setFillColorRGB(*self.BLACK)
+		# self.inv_canvas.setFont("CalibriBold", 11)
+		# self.inv_canvas.drawString(x_name, current_row, list_section0[2][3])
+		# current_hour = self.add_minutes_to_time(current_hour, int(list_section0[2][0]))
+		# current_row += section_title_height
 
 
 		# Section 1 Row 0
@@ -242,7 +281,8 @@ class Service_Schedule_PDF_Generator:
 		# current_hour = self.add_minutes_to_time(current_hour, 5)
 		# current_row += section_title_height
 
-		for item in list_section1:
+		section_1_keys = list(section_1_dict.keys())
+		for key in section_1_keys:
 			self.inv_canvas.setFont("CalibriBold", 9)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
 			self.inv_canvas.drawString(0, current_row, current_hour)
@@ -252,18 +292,18 @@ class Service_Schedule_PDF_Generator:
 
 			self.inv_canvas.setFont("CalibriRegular", 11)
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
-			self.inv_canvas.drawString(subtitle_pos_x, current_row, item[1])
+			self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
 			self.inv_canvas.setFont("CalibriBold", 8)
-			x_comment = column_two_comment_x - stringWidth(item[2], 'CalibriBold', 8)
+			x_comment = column_two_comment_x - stringWidth(section_1_dict[key][1], 'CalibriBold', 8)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
-			self.inv_canvas.drawString(x_comment, current_row, item[2])
+			self.inv_canvas.drawString(x_comment, current_row, section_1_dict[key][1])
 
 			x_name = column_two_comment_x + 10
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
 			self.inv_canvas.setFont("CalibriBold", 11)
-			self.inv_canvas.drawString(x_name, current_row, item[3])
-			current_hour = self.add_minutes_to_time(current_hour, int(item[0]))
+			self.inv_canvas.drawString(x_name, current_row, section_1_dict[key][1])
+			current_hour = self.add_minutes_to_time(current_hour, int(section_1_dict[key][0]))
 			current_row += row_height
 		current_row += section_title_height - row_height
 
@@ -332,7 +372,8 @@ class Service_Schedule_PDF_Generator:
 		# current_hour = self.add_minutes_to_time(current_hour, 5)
 		# current_row += section_title_height
 
-		for item in list_section2:
+		section_2_keys = list(section_2_dict.keys())
+		for key in section_2_keys:
 			self.inv_canvas.setFont("CalibriBold", 9)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
 			self.inv_canvas.drawString(0, current_row, current_hour)
@@ -342,18 +383,18 @@ class Service_Schedule_PDF_Generator:
 
 			self.inv_canvas.setFont("CalibriRegular", 11)
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
-			self.inv_canvas.drawString(subtitle_pos_x, current_row, item[1])
+			self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
 			self.inv_canvas.setFont("CalibriBold", 8)
-			x_comment = column_two_comment_x - stringWidth(item[2], 'CalibriBold', 8)
+			x_comment = column_two_comment_x - stringWidth(section_2_dict[key][1], 'CalibriBold', 8)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
-			self.inv_canvas.drawString(x_comment, current_row, item[2])
+			self.inv_canvas.drawString(x_comment, current_row, section_2_dict[key][1])
 
 			x_name = column_two_comment_x + 10
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
 			self.inv_canvas.setFont("CalibriBold", 11)
-			self.inv_canvas.drawString(x_name, current_row, item[3])
-			current_hour = self.add_minutes_to_time(current_hour, int(item[0]))
+			self.inv_canvas.drawString(x_name, current_row, section_2_dict[key][1])
+			current_hour = self.add_minutes_to_time(current_hour, int(section_2_dict[key][0]))
 			current_row += row_height
 		current_row += section_title_height - row_height
 
@@ -367,7 +408,8 @@ class Service_Schedule_PDF_Generator:
 		self.inv_canvas.drawString(0, current_row-4, f'VIAȚA DE CREȘTIN')
 		current_row += row_height
 
-		for item in list_section3:
+		section_3_keys = list(section_3_dict.keys())
+		for key in section_3_keys:
 			self.inv_canvas.setFont("CalibriBold", 9)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
 			self.inv_canvas.drawString(0, current_row, current_hour)
@@ -377,40 +419,74 @@ class Service_Schedule_PDF_Generator:
 
 			self.inv_canvas.setFont("CalibriRegular", 11)
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
-			self.inv_canvas.drawString(subtitle_pos_x, current_row, item[1])
+			self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
 			self.inv_canvas.setFont("CalibriBold", 8)
-			x_comment = column_two_comment_x - stringWidth(item[2], 'CalibriBold', 8)
+			x_comment = column_two_comment_x - stringWidth(section_3_dict[key][1], 'CalibriBold', 8)
 			self.inv_canvas.setFillColorRGB(*self.GRAY)
-			self.inv_canvas.drawString(x_comment, current_row, item[2])
+			self.inv_canvas.drawString(x_comment, current_row, section_3_dict[key][1])
 
 			x_name = column_two_comment_x + 10
 			self.inv_canvas.setFillColorRGB(*self.BLACK)
 			self.inv_canvas.setFont("CalibriBold", 11)
-			self.inv_canvas.drawString(x_name, current_row, item[3])
-			current_hour = self.add_minutes_to_time(current_hour, int(item[0]))
+			self.inv_canvas.drawString(x_name, current_row, section_3_dict[key][1])
+			next_hour = int(section_3_dict[key][0]) if int(section_3_dict[key][0]) != 0 else 5
+			current_hour = self.add_minutes_to_time(current_hour, next_hour)
 			current_row += row_height
 
 	def generate_pdf(self):
-		section_0_items = [('', '4-10 septembrie | ESTERA 1, 2', 'Președinte:', 'Bodiu Ruslan'), ('5', 'Cântarea 137', 'Rugăciune', 'Bodiu Ruslan'), ('5', 'Cuvinte introductive:', '', 'Bodiu Ruslan')]
-		section_1_items = [('10', 'Străduiește-te să fii modest la fel ca Estera', '', 'Bodiu Ruslan'), ('10', 'Să căutăm nestemate spirituale:', '', 'Moldovanu Vasile'), ('4', 'Citirea Bibliei', 'Cursant:', 'Bogdan Șaban')]
-		section_2_items = [('5', 'Vizita inițială – Material video:', '', ''), ('3', 'Vizita inițială:', '', 'Mardarovici Elena/Cevali Iraida'), ('5', 'Cuvântare: th 14', '', 'Pasăre Vasile')]
-		section_3_items = [('2', 'Cântarea 106', '', ''), ('5', 'Ce spun alți tineri – Înfățișare:', '', 'Moldovanu Vasile'), ('10', 'Realizări organizatorice:', '', 'Bodiu Ruslan'), ('30', 'Studiul Bibliei în congregație: lff lecția 56', 'Conducător/Cititor', 'Russu Petru/Spoială Leonid'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 101', 'Rugăciune:', 'Moldovanu Vasile')]
+		# section_0_items = [('', '25 septembrie – 1 octombrie | ESTERA 9, 10', 'Președinte:', 'Russu Petru'), ('5', 'Cântarea 102', 'Rugăciune', 'Moldovanu Vasile'), ('5', 'Cuvinte introductive:', '', 'Russu Petru')]
+		# section_1_items = [('10', '„El și-a folosit autoritatea în mod neegoist”', '', 'Moldovanu Vasile'), ('10', 'Să căutăm nestemate spirituale:', '', 'Russu Petru'), ('4', 'Citirea Bibliei', 'Cursant:', 'Popovici Ruslan')]
+		# section_2_items = [('5', 'Vizita inițială', '', 'Ghidici Larisa/Nogai Aurica'), ('3', 'Vizita ulterioară:', '', 'Cebanu Crina/Tabaran Elena'), ('5', 'Studiu biblic', '', 'Moldovanu Galina/Șaban Tatiana')]
+		# section_3_items = [('2', 'Cântarea 117', '', ''), ('15', '„Păstori care lucrează în folosul poporului lui Iehova”', '', 'Bodiu Ruslan'), ('30', 'Studiul Bibliei în congregație: lff lecția 59', 'Conducător/Cititor', 'Fanea Gheorghe/Moldovanu Vasile'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 55', 'Rugăciune:', 'Bodiu Ruslan')]
 		
-		self.draw_header()
-		self.inv_canvas.translate(self.content_pos[0], self.content_pos[1])
-		self.draw_content(section_0_items, section_1_items, section_2_items, section_3_items)
-		self.inv_canvas.translate(-self.content_pos[0], -self.content_pos[1])
-		self.inv_canvas.translate(self.content_pos[0], A4[1]/2)
+		i = 0
+		for header_date in list(self.data_dict.keys()):
 
-		section_0_items = [('', '18-24 septembrie | ESTERA 6-8', 'Președinte:', 'Fanea Gheorghe'), ('5', 'Cântarea 115', 'Rugăciune', 'Fanea Gheorghe'), ('5', 'Cuvinte introductive:', '', 'Fanea Gheorghe')]
-		section_1_items = [('10', '„O lecție de comunicare eficientă”:', '', 'Fanea Gheorghe'), ('10', 'Să căutăm nestemate spirituale:', '', 'Bodiu Ruslan'), ('4', 'Citirea Bibliei', 'Cursant:', 'Secrieru Eugen')]
-		section_2_items = [('5', 'Vizita inițială:', '', 'Plămădeală Galina/Popovici Ana'), ('3', 'Vizita ulterioară:', '', 'Secrieru Ecaterina/Cucu Stela'), ('5', 'Cuvântare: th 17', '', 'Spoială Leonid')]
-		section_3_items = [('2', 'Cântarea 148', '', ''), ('15', '„Încrede-te în Iehova când ai de-a face cu bullyingul”:', '', 'Russu Petru'), ('30', 'Studiul Bibliei în congregație: lff lecția 58', 'Conducător/Cititor', 'Moldovanu Vasile/Pasăre Vasile'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 124', 'Rugăciune:', 'Russu Petru')]
+			if i == 0:
+				self.draw_header()
+				self.inv_canvas.translate(self.content_pos[0], self.content_pos[1])
+				self.draw_content(header_date)
+				self.inv_canvas.translate(-self.content_pos[0], -self.content_pos[1])
+				i = 1
+			else:
+				self.inv_canvas.translate(self.content_pos[0], A4[1]/2)
+				self.draw_content(header_date)
+				self.inv_canvas.translate(-self.content_pos[0], -A4[1]/2)
+				self.inv_canvas.showPage()
+				i = 0
 
-		self.draw_content(section_0_items, section_1_items, section_2_items, section_3_items)
-		self.inv_canvas.translate(-self.content_pos[0], -A4[1]/2)
-		self.inv_canvas.showPage()
+		# section_0_items = [('', '2-8 octombrie | IOV 1-3', 'Președinte:', 'Moldovanu Vasile'), ('5', 'Cântarea 141', 'Rugăciune', 'Russu Petru'), ('5', 'Cuvinte introductive:', '', 'Moldovanu Vasile')]
+		# section_1_items = [('10', '„Continuă să arăți cât de mult îl iubești pe Iehova”:', '', 'Russu Petru'), ('10', 'Să căutăm nestemate spirituale:', '', 'Moldovanu Vasile'), ('4', 'Citirea Bibliei', 'Cursant:', 'Jîlenco Serghei')]
+		# section_2_items = [('5', 'Vizita inițială:', '', 'Ghețu Tatiana/Tabaran Doina'), ('3', 'Vizita ulterioară:', '', 'Jîlenco Maria/Pasăre Natalia'), ('5', 'Cuvântare: th 18', '', 'Cebotari Valentin')]
+		# section_3_items = [('2', 'Cântarea 21', '', ''), ('10', 'Credeam că fac totul cum trebuie:', '', 'Fanea Gheorghe'), ('5', '„Folosiți pagina principală a site-ului JW.ORG în lucrarea de predicare”:', '', 'Russu Petru'), ('30', 'Studiul Bibliei în congregație: lff lecția 59', 'Conducător/Cititor', 'Bodiu Ruslan'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 129', 'Rugăciune:', 'Plămădeală Ion A')]
+
+		# self.draw_content()
+		# self.inv_canvas.translate(-self.content_pos[0], -A4[1]/2)
+		# self.inv_canvas.showPage()
+
+		# # Next Page
+
+		# section_0_items = [('', '9-15 octombrie | IOV 4, 5', 'Președinte:', 'Bodiu Ruslan'), ('5', 'Cântarea 121', 'Rugăciune', 'Fanea Gheorghe'), ('5', 'Cuvinte introductive:', '', 'Bodiu Ruslan')]
+		# section_1_items = [('10', '„Nu te lăsa influențat de informații false”', '', 'Fanea Gheorghe'), ('10', 'Să căutăm nestemate spirituale:', '', 'Bodiu Ruslan'), ('4', 'Citirea Bibliei', 'Cursant:', 'Savițchi Damian')]
+		# section_2_items = [('5', 'Vizita inițială', '', 'Popovici Eleonora/Maftuleac Stela'), ('3', 'Vizita ulterioară:', '', 'Ciulei Valentina/Popa Natalia'), ('5', 'Studiu biblic', '', 'Elade Rodica/Cenușă Ana')]
+		# section_3_items = [('2', 'Cântarea 78', '', ''), ('15', 'Necesități locale', '', 'Moldovanu Vasile'), ('30', 'Studiul Bibliei în congregație: lff lecția 60', 'Conducător/Cititor', 'Russu Petru/Fanea Gheorghe'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 38', 'Rugăciune:', 'Bodiu Ruslan')]
+		
+		# self.draw_header()
+		# self.inv_canvas.translate(self.content_pos[0], self.content_pos[1])
+		# self.draw_content(section_0_items, section_1_items, section_2_items, section_3_items)
+		# self.inv_canvas.translate(-self.content_pos[0], -self.content_pos[1])
+		# self.inv_canvas.translate(self.content_pos[0], A4[1]/2)
+
+		# section_0_items = [('', '16-22 octombrie | IOV 6, 7', 'Președinte:', 'Fanea Gheorghe'), ('5', 'Cântarea 33', 'Rugăciune', 'Bodiu Ruslan'), ('5', 'Cuvinte introductive:', '', 'Fanea Gheorghe')]
+		# section_1_items = [('10', '„Când simți că viața nu mai are niciun rost”:', '', 'Bodiu Ruslan'), ('10', 'Să căutăm nestemate spirituale:', '', 'Fanea Gheorghe'), ('4', 'Citirea Bibliei', 'Cursant:', 'Spoială Leonid')]
+		# section_2_items = [('5', 'Vizita inițială:', '', 'Savițchi Tatiana/Foleștian Viorica'), ('3', 'Vizita ulterioară:', '', 'Cevali Iraida'), ('5', 'Cuvântare: th 8', '', 'Cenușă Denis')]
+		# section_3_items = [('2', 'Cântarea 144', '', ''), ('10', '„Iehova «îi salvează pe cei cu spiritul zdrobit»”:', '', 'Russu Petru'), ('30', 'Studiul Bibliei în congregație: lff recapitulare – partea a IV-a', 'Conducător/Cititor', 'Moldovanu Vasile'), ('3', 'Cuvinte de încheiere (3 min.)', '', ''), ('0', 'Cântarea 143', 'Rugăciune:', 'Pasăre Vasile')]
+
+		# self.draw_content(section_0_items, section_1_items, section_2_items, section_3_items)
+		# self.inv_canvas.translate(-self.content_pos[0], -A4[1]/2)
+		# self.inv_canvas.showPage()
+
 		self.inv_canvas.save()
 
 
@@ -436,7 +512,6 @@ class Parse_Meeting_WorkBook(QObject):
 
 	def get_site_page(self, url):
 		response = requests.get(url)
-
 		return BeautifulSoup(response.text, "lxml")
 
 	def get_article(self, soup):
@@ -557,13 +632,26 @@ class Parse_Meeting_WorkBook(QObject):
 			soup_article = self.get_article(soup)
 			section_list = self.get_section_list(soup_article)
 
-			header_data_list = self.get_article_header(soup_article)
-			section_1_data = self.get_data_list_section_1(section_list[0])
-			section_2_data = self.get_data_list_section_2(section_list[1])
-			section_3_data = self.get_data_list_section_3(section_list[2])
-			section_4_data = self.get_data_list_section_4(section_list[3])
-			
-			data_dict[header_data_list[0]] = [header_data_list[1:], section_1_data, section_2_data, section_3_data, section_4_data]
+			# Add date in dict:
+			date, header = self.get_article_header(soup_article)
+
+			intro = {}
+			for item in self.get_data_list_section_1(section_list[0]):
+				intro[item[1]] = [item[0]]
+
+			section_1 = {}
+			for item in self.get_data_list_section_2(section_list[1]):
+				section_1[item[1]] = [item[0]]
+
+			section_2 = {}
+			for item in self.get_data_list_section_3(section_list[2]):
+				section_2[item[1]] = [item[0]]
+
+			section_3 = {}
+			for item in self.get_data_list_section_4(section_list[3]):
+				section_3[item[1]] = [item[0]]
+
+			data_dict[date] = {"header": {header: [0]}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
 
 			downloaded_pages += 1
 			downloaded_progress = int((downloaded_pages / total_pages) * 100)
@@ -598,7 +686,7 @@ import fitz
 from pdf_generator import Testimony_Cart_PDF_Generator
 
 
-class PDFGeneratorApp(QMainWindow):
+class MainApp(QMainWindow):
 	def __init__(self):
 		super().__init__()
 		ui_path = os.path.join(os.getcwd(), 'assets', 'ui', 'ui.ui')
@@ -660,16 +748,13 @@ class PDFGeneratorApp(QMainWindow):
 		data_dict = self.data_dict
 		list_tabs = list(data_dict.keys())
 
-		for tab_name in list_tabs:
+		for tab_index in range(len(list_tabs)):
 			tab = QWidget()
 			tab_layout = QVBoxLayout(tab)  # QVBoxLayout to hold the QScrollArea
-
 			scroll_area = QScrollArea()  # Create the QScrollArea
 			scroll_area.setWidgetResizable(True)
-
 			scroll_content_widget = QWidget()
 			scroll_area.setWidget(scroll_content_widget)
-
 			grid_layout_1 = QGridLayout(scroll_content_widget)
 
 
@@ -677,20 +762,32 @@ class PDFGeneratorApp(QMainWindow):
 			# =========================
 			row = 0
 			label_width = 500
-			label = QLabel('Președinte: ')
+
+			# Section Header
+			# =========================
+			label = QLabel('Președinte')
 			label.setWordWrap(True)
 			label.setMaximumWidth(label_width)
 
-			line_edit = QLineEdit()
-
 			grid_layout_1.addWidget(label, row, 0, 1, 1)
-			grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+			grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
 			row += 1
 
-			# Section 0
+			header_dict = data_dict[list_tabs[tab_index]]['header']
+			for item in list(header_dict.keys()):
+				label_item = QLabel(item)
+				label_item.setWordWrap(True)
+				label_item.setMaximumWidth(label_width)
+
+				grid_layout_1.addWidget(label_item, row, 0, 1, 1)
+				grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+				row += 1
+
+			# Section Intro
 			# =========================
-			for item in data_dict[tab_name][1]:
-				label_item = QLabel(item[1])
+			intro_dict = data_dict[list_tabs[tab_index]]['intro']
+			for item in list(intro_dict.keys()):
+				label_item = QLabel(item)
 				label_item.setWordWrap(True)
 				label_item.setMaximumWidth(label_width)
 
@@ -705,8 +802,9 @@ class PDFGeneratorApp(QMainWindow):
 
 			# Section 1
 			# =========================
-			for item in data_dict[tab_name][2]:
-				label_item = QLabel(item[1])
+			section_1_dict = data_dict[list_tabs[tab_index]]['section_1']
+			for item in list(section_1_dict.keys()):
+				label_item = QLabel(item)
 				label_item.setWordWrap(True)
 				label_item.setMaximumWidth(label_width)
 
@@ -721,8 +819,9 @@ class PDFGeneratorApp(QMainWindow):
 
 			# Section 2
 			# =========================
-			for item in data_dict[tab_name][3]:
-				label_item = QLabel(item[1])
+			section_2_dict = data_dict[list_tabs[tab_index]]['section_2']
+			for item in list(section_2_dict.keys()):
+				label_item = QLabel(item)
 				label_item.setWordWrap(True)
 				label_item.setMaximumWidth(label_width)
 
@@ -737,8 +836,9 @@ class PDFGeneratorApp(QMainWindow):
 
 			# Section 3
 			# =========================
-			for item in data_dict[tab_name][4]:
-				label_item = QLabel(item[1])
+			section_3_dict = data_dict[list_tabs[tab_index]]['section_3']
+			for item in list(section_3_dict.keys()):
+				label_item = QLabel(item)
 				label_item.setWordWrap(True)
 				label_item.setMaximumWidth(label_width)
 
@@ -753,7 +853,7 @@ class PDFGeneratorApp(QMainWindow):
 			tab.setLayout(tab_layout)
 
 			# Add the tab to the tab widget
-			self.tabWidget.addTab(tab, tab_name)
+			self.tabWidget.addTab(tab, list_tabs[tab_index])
 
 
 	def set_cart_widget(self):
@@ -801,8 +901,6 @@ class PDFGeneratorApp(QMainWindow):
 		self.update_preview()
 
 	def generate_workbook_pdf(self):
-		dict_data = self.data_dict
-		#dict_data = {'6-12 noiembrie': [['IOV 13, 14'], [[0, 'Cântarea 151'], [1, 'Cuvinte introductive']], [[10, '„ Dacă omul moare, poate el trăi din nou? ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[5, 'Vizita inițială – Material video:'], [3, 'Vizita inițială:'], [5, 'Studiu biblic:']], [[0, 'Cântarea 127'], [15, '„ Să punem ceva deoparte ”:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 76 și rugăciune']]], '13-19 noiembrie': [['IOV 15-17'], [[0, 'Cântarea 90'], [1, 'Cuvinte introductive']], [[10, '„ Să nu-l imităm pe Elifaz când vrem să le aducem consolare altora ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[5, 'Vizita ulterioară – Material video:'], [3, 'Vizita ulterioară:'], [5, 'Studiu biblic:']], [[0, 'Cântarea 96'], [15, 'Necesități locale:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 118 și rugăciune']]], '20-26 noiembrie': [['IOV 18, 19'], [[0, 'Cântarea 44'], [1, 'Cuvinte introductive']], [[10, '„ Să nu le întoarcem niciodată spatele fraților noștri creștini ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[3, 'Vizita inițială:'], [4, 'Vizita ulterioară:'], [5, 'Cuvântare:']], [[0, 'Cântarea 90'], [5, 'Cum poți să devii prietenul lui Iehova – Ajută-i pe alții:'], [10, '„ O măsură luată pentru încurajarea celor ce slujesc la Betel ”:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 63 și rugăciune']]], '27 noiembrie – 3 decembrie': [['IOV 20, 21'], [[0, 'Cântarea 38'], [1, 'Cuvinte introductive']], [[10, '„ Dreptatea unui om nu se reflectă în starea lui materială ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[2, 'Vizita inițială:'], [5, 'Vizita ulterioară:'], [5, 'Cuvântare:']], [[0, 'Cântarea 136'], [15, '„ Să fim mulțumiți cu ce avem ”:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 103 și rugăciune']]], '4-10 decembrie': [['IOV 22-24'], [[0, 'Cântarea 49'], [1, 'Cuvinte introductive']], [[10, '„ Poate omul să-i fie de folos lui Dumnezeu? ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[3, 'Vizita inițială:'], [4, 'Vizita ulterioară:'], [5, 'Cuvântare:']], [[0, 'Cântarea 134'], [10, '„ Părinți, ajutați-vă copiii să-l bucure pe Dumnezeu ”:'], [5, 'Necesități locale:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 25 și rugăciune']]], '11-17 decembrie': [['IOV 25-27'], [[0, 'Cântarea 34'], [1, 'Cuvinte introductive']], [[10, '„ A fi integri nu înseamnă a fi perfecți ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[2, 'Vizita inițială:'], [5, 'Vizita ulterioară:'], [5, 'Studiu biblic:']], [[0, 'Cântarea 45'], [5, '„ Integritatea și gândurile noastre ”:'], [10, 'Realizări organizatorice:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 57 și rugăciune']]], '18-24 decembrie': [['IOV 28,\xa029'], [[0, 'Cântarea 39'], [1, 'Cuvinte introductive']], [[10, '„ Ai o reputație ca a lui Iov? ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[3, 'Vizita inițială:'], [4, 'Vizita ulterioară:'], [5, 'Studiu biblic:']], [[0, 'Cântarea 121'], [15, '„ Cum contribui eu la buna reputație a organizației noastre ”:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 50 și rugăciune']]], '25-31 decembrie': [['IOV 30,\xa031'], [[0, 'Cântarea 28'], [1, 'Cuvinte introductive']], [[10, '„ Cum și-a păstrat Iov castitatea ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[4, 'Vizita inițială:'], [3, 'Vizita ulterioară:'], [5, 'Cuvântare:']], [[0, 'Cântarea 36'], [7, '„ De ce este dăunătoare pornografia ”:'], [8, 'Necesități locale:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 74 și rugăciune']]]} #self.data_dict
 		for tab_index in range(self.tabWidget.count()):
 			# list_data = []
 			tab_title = self.tabWidget.tabText(tab_index)
@@ -819,26 +917,43 @@ class PDFGeneratorApp(QMainWindow):
 			line_edit_list = tab_widget.findChildren(QLineEdit)
 			line_edit_list = [line_edit.text() for line_edit in line_edit_list]
 
+			date_list = list(self.data_dict.keys())
+			# for date_index in range(len(date_list)):
+			header_dict = self.data_dict[date_list[tab_index]]["header"]
+			intro_dict = self.data_dict[date_list[tab_index]]["intro"]
+			section_1_dict = self.data_dict[date_list[tab_index]]["section_1"]
+			section_2_dict = self.data_dict[date_list[tab_index]]["section_2"]
+			section_3_dict = self.data_dict[date_list[tab_index]]["section_3"]
+			
+			header_dict[list(header_dict.keys())[0]].append(line_edit_list[label_list.index("Președinte")])
+			
+			for section_key in list(intro_dict.keys()):
+				intro_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+			
+			for section_key in list(section_1_dict.keys()):
+				section_1_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+			
+			for section_key in list(section_2_dict.keys()):
+				section_2_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+			
+			for section_key in list(section_3_dict.keys()):
+				section_3_dict[section_key].append(line_edit_list[label_list.index(section_key)])
 
-			for key, value in dict_data.items():
-				for i, sublist in enumerate(value):
-					for j, label in enumerate(sublist):
-						if isinstance(label, list):
-							for k, sublabel in enumerate(label):
-								if isinstance(sublabel, str) and sublabel in label_list:
-									index = label_list.index(sublabel)
-									if index < len(line_edit_list):
-										self.data_dict[key][i][j].append('')
-										self.data_dict[key][i][j].append(line_edit_list[index])
+		output_path = 'file.pdf'
+		congregation = 'GLODENI-SUD'
 
-			print(f'\n\n{self.data_dict}')
+
+		print(self.data_dict)
+		service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, self.data_dict)
+		service_schedule.generate_pdf()
+
 
 				# if not label_list[row] in ['COMORI DIN CUVÂNTUL LUI DUMNEZEU', 'SĂ FIM MAI EFICIENȚI ÎN PREDICARE', 'VIAȚA DE CREȘTIN']:
 				#     list_data.append([label_list[row], line_edit_list[row].text()])
 		
-			# dict_data[tab_title] = list_data
+			# data_dict[tab_title] = list_data
 
-		#print(dict_data)
+		#print(data_dict)
 
 
 		# widgets = [self.tabWidget.tabText(index) for index in range(self.tabWidget.count())]
@@ -959,10 +1074,14 @@ class WorkerThread(QThread):
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
 
-	main_window = PDFGeneratorApp()
+	main_window = MainApp()
 	main_window.show()
 
 	sys.exit(app.exec_())
+
+
+
+
 
 	# workbook_data = {
 	# 	'4-10 septembrie': [['ESTERA 1, 2'], [[0, 'Cântarea 137'], [1, 'Cuvinte introductive']], [[10, '„ Străduiește-te să fii modest la fel ca Estera ”:'], [10, 'Nestemate spirituale:'], [4, 'Citirea Bibliei:']], [[5, 'Vizita inițială – Material video:'], [3, 'Vizita inițială:'], [5, 'Cuvântare:']], [[0, 'Cântarea 106'], [5, 'Ce spun alți tineri – Înfățișare:'], [10, 'Realizări organizatorice:'], [30, 'Studiul Bibliei în congregație:'], [3, 'Cuvinte de încheiere'], [0, 'Cântarea 101 și rugăciune']]],
@@ -980,30 +1099,21 @@ if __name__ == "__main__":
 	# 		else:
 	# 			workbook_data[date][items] = items + ' ' + line_edit_list[label_list.index(item)]
 
-
-
-
-
-
-
-
-
-	print(workbook_data)
+	# print(workbook_data)
 
 
 
 
 # if __name__ == '__main__':
 
-#     data_dict = {
-#             '6-12 noiembrie': [['IOV 13, 14'], ['Cântarea 151 și rugăciune', 'Cuvinte introductive (1 min.)'], ['„Dacă omul moare, poate el trăi din nou?”: (10 min.)', 'Nestemate spirituale: (10 min.)', 'Citirea Bibliei: (4\xa0min.) Iov 13:1-28 (th lecția\xa012)'], ['Vizita inițială – Material video: (5 min.) Discuție. Se va viziona materialul Vizita inițială – Biblia (2Ti 3:16, 17). La fiecare pauză acesta va fi oprit, iar auditoriul va răspunde la întrebările afișate.', 'Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață!. (th lecția\xa02)', 'Studiu biblic: (5\xa0min.) lff recapitulare – partea\xa0I, întrebările\xa01-5 (th lecția\xa019)'], ['Cântarea 127', '„Să punem ceva deoparte”: (15\xa0min.) Discuție și material video. Tema va fi ținută de un bătrân. Laudă congregația pentru donațiile făcute în sprijinul organizației lui Iehova.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa01 ¶16-21', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 76 și rugăciune']], '13-19 noiembrie': [['IOV 15-17'], ['Cântarea 90 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Să nu-l imităm pe Elifaz când vrem să le aducem consolare altora”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 17:1-16 (th lecția\xa012)'], ['Vizita ulterioară – Material video: (5\xa0min.) Discuție. Se va viziona materialul Vizita ulterioară – Biblia (Iov 26:7). La fiecare pauză, acesta va fi oprit, iar auditoriul va răspunde la întrebările afișate.', 'Vizita ulterioară: (3\xa0min.) Începe cu subiectul conversației-model. Prezintă programul nostru de studiere a Bibliei și oferă o carte de vizită „Curs biblic gratuit”. (th lecția\xa011)', 'Studiu biblic: (5\xa0min.) lff recapitulare – partea\xa0I, întrebările\xa06-10 (th lecția\xa08)'], ['Cântarea 96', 'Necesități locale: (15\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶1-7 și introducerea la partea\xa0I', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 118 și rugăciune']], '20-26 noiembrie': [['IOV 18, 19'], ['Cântarea 44 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Să nu le întoarcem niciodată spatele fraților noștri creștini”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 18:1-21 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Depășește o obiecție des întâlnită. (th lecția\xa012)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Invită persoana la o întrunire a congregației. Prezintă și analizează materialul video Ce activități se desfășoară la o sală a Regatului? (nu se va viziona materialul). (th lecția\xa03)', 'Cuvântare: (5\xa0min.) w20.10 17 ¶10,\xa011 – Tema: Încurajează-ți elevul să-și facă prieteni în congregație. (th lecția\xa020)'], ['Cântarea 90', 'Cum poți să devii prietenul lui Iehova – Ajută-i pe alții: (5\xa0min.) Discuție. Se va viziona materialul. Apoi, dacă este posibil, invită câțiva copii, aleși dinainte, să răspundă la următoarele întrebări: Cum îi pot ajuta copiii pe alții?', '„O măsură luată pentru încurajarea celor ce slujesc la Betel”: (10\xa0min.) Discuție și material video.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶8-15', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 63 și rugăciune']], '27 noiembrie – 3 decembrie': [['IOV 20, 21'], ['Cântarea 38 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Dreptatea unui om nu se reflectă în starea lui materială”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 20:1-22 (th lecția\xa05)'], ['Vizita inițială: (2\xa0min.) Folosește subiectul conversației-model. (th lecția\xa01)', 'Vizita ulterioară: (5\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață! și arată cum se desfășoară un studiu biblic. (th lecția\xa06)', 'Cuvântare: (5 min.) g 5/09 12,\xa013 – Tema: Vrea Dumnezeu să fim bogați? (th lecția\xa017)'], ['Cântarea 136', '„Să fim mulțumiți cu ce avem”: (15\xa0min.) Discuție. Se va viziona materialul.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶16-23', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 103 și rugăciune']], '4-10 decembrie': [['IOV 22-24'], ['Cântarea 49 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Poate omul să-i fie de folos lui Dumnezeu?”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 22:1-22 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Vorbește-i persoanei despre site-ul nostru și oferă-i o carte de vizită cu jw.org. (th lecția\xa011)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Prezintă și analizează materialul video De ce să studiați Biblia? (nu se va viziona materialul). (th lecția\xa02)', 'Cuvântare: (5\xa0min.) w21.05 18, 19 ¶17-20 – Tema: Păstrându-ne atitudinea pozitivă îi permitem lui Iehova să ne folosească. (th lecția\xa020)'], ['Cântarea 134', '„Părinți, ajutați-vă copiii să-l bucure pe Dumnezeu”: (10\xa0min.) Discuție și material video.', 'Necesități locale: (5\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa03 ¶1-3, chenarele de la pag.\xa023, 24, 25,\xa026 și\xa027', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 25 și rugăciune']], '11-17 decembrie': [['IOV 25-27'], ['Cântarea 34 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„A fi integri nu înseamnă a fi perfecți”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 25:1–26:14 (th lecția\xa012)'], ['Vizita inițială: (2\xa0min.) Folosește subiectul conversației-model. Depășește o obiecție des întâlnită. (th lecția\xa01)', 'Vizita ulterioară: (5\xa0min.) Începe cu subiectul conversației-model. Arată-i persoanei cum să găsească informații pe site-ul jw.org cu privire la un subiect care o interesează. (th lecția\xa017)', 'Studiu biblic: (5\xa0min.) lff lecția\xa013, introducere și punctele\xa01-3 (th lecția\xa015)'], ['Cântarea 45', '„Integritatea și gândurile noastre”: (5\xa0min.) Discuție.', 'Realizări organizatorice: (10\xa0min.) Se va viziona materialul Realizări organizatorice pentru luna decembrie.', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa03 ¶4-11', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 57 și rugăciune']], '18-24 decembrie': [['IOV 28,\xa029'], ['Cântarea 39 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Ai o reputație ca a lui Iov?”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 28:1-28 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață!. (th lecția\xa03)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Oferă-i persoanei broșura Bucură-te pentru totdeauna de viață! și analizează pe scurt „Cum poți trage foloase din aceste lecții biblice”. (th lecția\xa017)', 'Studiu biblic: (5\xa0min.) lff lecția\xa013, „Aprofundează” și punctul\xa04 (th lecția\xa06)'], ['Cântarea 121', '„Cum contribui eu la buna reputație a organizației noastre”: (15\xa0min.) Discuție și material video.', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa03 ¶12-18', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 50 și rugăciune']], '25-31 decembrie': [['IOV 30,\xa031'], ['Cântarea 28 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Cum și-a păstrat Iov castitatea”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 31:15-40 (th lecția\xa05)'], ['Vizita inițială: (4\xa0min.) Începe cu subiectul conversației-model. Prezintă programul nostru de studiere a Bibliei și oferă o carte de vizită „Curs biblic gratuit”. (th lecția\xa01)', 'Vizita ulterioară: (3\xa0min.) Începe cu subiectul conversației-model. Invită persoana la o întrunire a congregației. Prezintă și analizează materialul video Ce activități se desfășoară la o sală a Regatului? (nu se va viziona materialul). (th lecția\xa011)', 'Cuvântare: (5\xa0min.) g16.4 8,\xa09 – Tema: Cum pot să explic punctul de vedere biblic cu privire la homosexualitate? (th lecția\xa014)'], ['Cântarea 36', '„De ce este dăunătoare pornografia”: (7\xa0min.) Discuție și material video.', 'Necesități locale: (8\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa04 ¶1-8', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 74 și rugăciune']]}
+	# data_dict = {'6-12 noiembrie': [['IOV 13, 14'], ['Cântarea 151 și rugăciune', 'Cuvinte introductive (1 min.)'], ['„Dacă omul moare, poate el trăi din nou?”: (10 min.)', 'Nestemate spirituale: (10 min.)', 'Citirea Bibliei: (4\xa0min.) Iov 13:1-28 (th lecția\xa012)'], ['Vizita inițială – Material video: (5 min.) Discuție. Se va viziona materialul Vizita inițială – Biblia (2Ti 3:16, 17). La fiecare pauză acesta va fi oprit, iar auditoriul va răspunde la întrebările afișate.', 'Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață!. (th lecția\xa02)', 'Studiu biblic: (5\xa0min.) lff recapitulare – partea\xa0I, întrebările\xa01-5 (th lecția\xa019)'], ['Cântarea 127', '„Să punem ceva deoparte”: (15\xa0min.) Discuție și material video. Tema va fi ținută de un bătrân. Laudă congregația pentru donațiile făcute în sprijinul organizației lui Iehova.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa01 ¶16-21', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 76 și rugăciune']], '13-19 noiembrie': [['IOV 15-17'], ['Cântarea 90 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Să nu-l imităm pe Elifaz când vrem să le aducem consolare altora”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 17:1-16 (th lecția\xa012)'], ['Vizita ulterioară – Material video: (5\xa0min.) Discuție. Se va viziona materialul Vizita ulterioară – Biblia (Iov 26:7). La fiecare pauză, acesta va fi oprit, iar auditoriul va răspunde la întrebările afișate.', 'Vizita ulterioară: (3\xa0min.) Începe cu subiectul conversației-model. Prezintă programul nostru de studiere a Bibliei și oferă o carte de vizită „Curs biblic gratuit”. (th lecția\xa011)', 'Studiu biblic: (5\xa0min.) lff recapitulare – partea\xa0I, întrebările\xa06-10 (th lecția\xa08)'], ['Cântarea 96', 'Necesități locale: (15\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶1-7 și introducerea la partea\xa0I', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 118 și rugăciune']], '20-26 noiembrie': [['IOV 18, 19'], ['Cântarea 44 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Să nu le întoarcem niciodată spatele fraților noștri creștini”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 18:1-21 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Depășește o obiecție des întâlnită. (th lecția\xa012)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Invită persoana la o întrunire a congregației. Prezintă și analizează materialul video Ce activități se desfășoară la o sală a Regatului? (nu se va viziona materialul). (th lecția\xa03)', 'Cuvântare: (5\xa0min.) w20.10 17 ¶10,\xa011 – Tema: Încurajează-ți elevul să-și facă prieteni în congregație. (th lecția\xa020)'], ['Cântarea 90', 'Cum poți să devii prietenul lui Iehova – Ajută-i pe alții: (5\xa0min.) Discuție. Se va viziona materialul. Apoi, dacă este posibil, invită câțiva copii, aleși dinainte, să răspundă la următoarele întrebări: Cum îi pot ajuta copiii pe alții?', '„O măsură luată pentru încurajarea celor ce slujesc la Betel”: (10\xa0min.) Discuție și material video.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶8-15', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 63 și rugăciune']], '27 noiembrie – 3 decembrie': [['IOV 20, 21'], ['Cântarea 38 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Dreptatea unui om nu se reflectă în starea lui materială”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 20:1-22 (th lecția\xa05)'], ['Vizita inițială: (2\xa0min.) Folosește subiectul conversației-model. (th lecția\xa01)', 'Vizita ulterioară: (5\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață! și arată cum se desfășoară un studiu biblic. (th lecția\xa06)', 'Cuvântare: (5 min.) g 5/09 12,\xa013 – Tema: Vrea Dumnezeu să fim bogați? (th lecția\xa017)'], ['Cântarea 136', '„Să fim mulțumiți cu ce avem”: (15\xa0min.) Discuție. Se va viziona materialul.', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa02 ¶16-23', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 103 și rugăciune']], '4-10 decembrie': [['IOV 22-24'], ['Cântarea 49 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Poate omul să-i fie de folos lui Dumnezeu?”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 22:1-22 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Vorbește-i persoanei despre site-ul nostru și oferă-i o carte de vizită cu jw.org. (th lecția\xa011)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Prezintă și analizează materialul video De ce să studiați Biblia? (nu se va viziona materialul). (th lecția\xa02)', 'Cuvântare: (5\xa0min.) w21.05 18, 19 ¶17-20 – Tema: Păstrându-ne atitudinea pozitivă îi permitem lui Iehova să ne folosească. (th lecția\xa020)'], ['Cântarea 134', '„Părinți, ajutați-vă copiii să-l bucure pe Dumnezeu”: (10\xa0min.) Discuție și material video.', 'Necesități locale: (5\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt cap.\xa03 ¶1-3, chenarele de la pag.\xa023, 24, 25,\xa026 și\xa027', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 25 și rugăciune']], '11-17 decembrie': [['IOV 25-27'], ['Cântarea 34 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„A fi integri nu înseamnă a fi perfecți”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 25:1–26:14 (th lecția\xa012)'], ['Vizita inițială: (2\xa0min.) Folosește subiectul conversației-model. Depășește o obiecție des întâlnită. (th lecția\xa01)', 'Vizita ulterioară: (5\xa0min.) Începe cu subiectul conversației-model. Arată-i persoanei cum să găsească informații pe site-ul jw.org cu privire la un subiect care o interesează. (th lecția\xa017)', 'Studiu biblic: (5\xa0min.) lff lecția\xa013, introducere și punctele\xa01-3 (th lecția\xa015)'], ['Cântarea 45', '„Integritatea și gândurile noastre”: (5\xa0min.) Discuție.', 'Realizări organizatorice: (10\xa0min.) Se va viziona materialul Realizări organizatorice pentru luna decembrie.', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa03 ¶4-11', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 57 și rugăciune']], '18-24 decembrie': [['IOV 28,\xa029'], ['Cântarea 39 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Ai o reputație ca a lui Iov?”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 28:1-28 (th lecția\xa05)'], ['Vizita inițială: (3\xa0min.) Începe cu subiectul conversației-model. Oferă broșura Bucură-te pentru totdeauna de viață!. (th lecția\xa03)', 'Vizita ulterioară: (4\xa0min.) Începe cu subiectul conversației-model. Oferă-i persoanei broșura Bucură-te pentru totdeauna de viață! și analizează pe scurt „Cum poți trage foloase din aceste lecții biblice”. (th lecția\xa017)', 'Studiu biblic: (5\xa0min.) lff lecția\xa013, „Aprofundează” și punctul\xa04 (th lecția\xa06)'], ['Cântarea 121', '„Cum contribui eu la buna reputație a organizației noastre”: (15\xa0min.) Discuție și material video.', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa03 ¶12-18', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 50 și rugăciune']], '25-31 decembrie': [['IOV 30,\xa031'], ['Cântarea 28 și rugăciune', 'Cuvinte introductive (1\xa0min.)'], ['„Cum și-a păstrat Iov castitatea”: (10\xa0min.)', 'Nestemate spirituale: (10\xa0min.)', 'Citirea Bibliei: (4\xa0min.) Iov 31:15-40 (th lecția\xa05)'], ['Vizita inițială: (4\xa0min.) Începe cu subiectul conversației-model. Prezintă programul nostru de studiere a Bibliei și oferă o carte de vizită „Curs biblic gratuit”. (th lecția\xa01)', 'Vizita ulterioară: (3\xa0min.) Începe cu subiectul conversației-model. Invită persoana la o întrunire a congregației. Prezintă și analizează materialul video Ce activități se desfășoară la o sală a Regatului? (nu se va viziona materialul). (th lecția\xa011)', 'Cuvântare: (5\xa0min.) g16.4 8,\xa09 – Tema: Cum pot să explic punctul de vedere biblic cu privire la homosexualitate? (th lecția\xa014)'], ['Cântarea 36', '„De ce este dăunătoare pornografia”: (7\xa0min.) Discuție și material video.', 'Necesități locale: (8\xa0min.)', 'Studiul Bibliei în congregație: (30\xa0min.) bt\xa0cap.\xa04 ¶1-8', 'Cuvinte de încheiere (3\xa0min.)', 'Cântarea 74 și rugăciune']]}
 	
-#     output_path = 'file.pdf'
-#     congregation = 'GLODENI-SUD'
+	# output_path = 'file.pdf'
+	# congregation = 'GLODENI-SUD'
 
 
-#     service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, data_dict)
-#     service_schedule.generate_pdf()
+	# service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, data_dict)
+	# service_schedule.generate_pdf()
 
 
 	# site_domain = 'https://www.jw.org'
@@ -1019,3 +1129,52 @@ if __name__ == "__main__":
 	# data_dict = parse_workbook.get_dict_data()
 	# print(data_dict)
 	
+
+
+
+
+
+
+
+
+
+
+# dict_data = {"6-12 noiembrie":{"header":{"IOV 13, 14":[0,""]},"intro":{"Cântarea 151":[0,""],"Cuvinte introductive":[1,""]},"TREASURES":{"„ Dacă omul moare, poate el trăi din nou? ”":[10,""],"Nestemate spirituale":[10,""],"Citirea Bibliei":[4,""]},"MINISTRY":{"Vizita inițială – Material video":[5,""],"Vizita inițială":[3,""],"Studiu biblic":[5,""]},"LIVING AS CHRISTIANS":{"Cântarea 127":[0,""],"„ Să punem ceva deoparte ”":[15,""],"Studiul Bibliei în congregație":[30,""],"Cuvinte de încheiere":[3,""],"Cântarea 76 și rugăciune":[0,""]}},"13-19 noiembrie":{"header":{"IOV 15-17":[0,""]},"intro":{"Cântarea 90":[0,""],"Cuvinte introductive":[1,""]},"TREASURES":{"„ Să nu-l imităm pe Elifaz când vrem să le aducem consolare altora ”:":[10,""],"Nestemate spirituale:":[10,""],"Citirea Bibliei":[4,""]},"MINISTRY":{"Vizita ulterioară – Material video:":[5,""],"Vizita ulterioară:":[3,""],"Studiu biblic:":[5,""]},"LIVING AS CHRISTIANS":{"Cântarea 96":[0,""],"Necesități locale":[15,""],"Studiul Bibliei în congregație:":[30,""],"Cuvinte de încheiere":[3,""],"Cântarea 118 și rugăciune":[0,""]}}}
+
+# label_list = ['Președinte', 'Cântarea 151', 'Cuvinte introductive', '„ Dacă omul moare, poate el trăi din nou? ”', 'Nestemate spirituale', 'Citirea Bibliei', 'Vizita inițială – Material video', 'Vizita inițială', 'Studiu biblic', 'Cântarea 127', '„ Să punem ceva deoparte ”', 'Studiul Bibliei în congregație', 'Cuvinte de încheiere', 'Cântarea 76 și rugăciune']
+# entry_list = ['Petru Russu', 'Gheorghe Fanea', 'Gheorghe Fanea', 'Petru Russu', 'Gheorghe Fanea', 'Andrei Cenusa', '', 'Natalia fanea/Galina Moldovanu', 'Nina Vidrasco/Elea Popovici', '', 'Petru Russu', 'Gheorghe Fanea/Vasile Pasare', 'Petru Russu', 'Ruslan Bodiu']
+
+# date_list = list(dict_data.keys())
+# print(date_list)
+
+# for date_index in range(len(date_list)):
+#     header = dict_data[date_list[date_index]]["header"]
+#     intro_dict = dict_data[date_list[date_index]]["intro"]
+#     section_1_dict = dict_data[date_list[date_index]]["TREASURES"]
+#     section_2_dict = dict_data[date_list[date_index]]["MINISTRY"]
+#     section_3_dict = dict_data[date_list[date_index]]["LIVING AS CHRISTIANS"]
+	
+#     header[list(header.keys())[0]].append(entry_list[label_list.index("Președinte")])
+	
+#     for section_key in list(intro_dict.keys()):
+#         intro_dict[section_key].append(entry_list[label_list.index(section_key)])
+#         print(intro_dict[section_key])
+		
+#     for section_key in list(section_1_dict.keys()):
+#         section_1_dict[section_key].append(entry_list[label_list.index(section_key)])
+#         print(section_1_dict[section_key])
+	
+#     for section_key in list(section_2_dict.keys()):
+#         section_2_dict[section_key].append(entry_list[label_list.index(section_key)])
+#         print(section_2_dict[section_key])
+	
+#     for section_key in list(section_3_dict.keys()):
+#         section_3_dict[section_key].append(entry_list[label_list.index(section_key)])
+#         print(section_3_dict[section_key])
+	
+#     break
+
+# print(len(label_list))
+# print(len(entry_list))
+
+# print(dict_data)
