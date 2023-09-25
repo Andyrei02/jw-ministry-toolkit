@@ -186,7 +186,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../image/groups.png</normaloff>../image/groups.png</iconset>
+           <normaloff>../image/workbook_icon.png</normaloff>../image/workbook_icon.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -1011,6 +1011,14 @@
                 <layout class="QHBoxLayout" name="horizontalLayout_8">
                  <item>
                   <widget class="QProgressBar" name="progressbar_workbook">
+                   <property name="font">
+                    <font>
+                     <family>Open Sans</family>
+                     <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
                    <property name="value">
                     <number>0</number>
                    </property>
@@ -1046,7 +1054,12 @@
             </widget>
            </item>
            <item>
-            <widget class="QTabWidget" name="tabWidget">
+            <widget class="QTabWidget" name="work_book_content_widget">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
              <property name="currentIndex">
               <number>-1</number>
              </property>

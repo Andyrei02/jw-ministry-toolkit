@@ -209,3 +209,18 @@ QListWidget::item:selected {
 #button_parsing_workbook:hover{
 	background-color: #2f3b64;
 }
+
+#work_book_content_widget{
+
+}
+
+#progressbar_workbook{
+	border: 2px solid grey;
+	border-radius: 5px;
+	text-align: center;
+}
+
+#progressbar_workbook::chunk {
+	background-color: #05B8CC;
+	width: 20px;
+}
