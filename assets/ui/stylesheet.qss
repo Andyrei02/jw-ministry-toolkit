@@ -1,7 +1,8 @@
 /*= MainWindow 
 ===========================================*/
 #MainWindow{
-background-color: qlineargradient(spread:pad, x1:0.516129, y1:0, x2:0.585, y2:1, stop:0 rgba(44, 50, 59, 255), stop:1 rgba(24, 28, 38, 255));	color: #fff;
+	background-color: #111111;
+	color: #FFFFFF;
 	border-radius: 10px;
 	border: none;
 }
@@ -13,7 +14,7 @@ QTabWidget{
 }
 
 QScrollArea{
-	background-color: #8a9bb1;
+	background-color: #000000;
 	border: none;
 	border-radius: 10px;
 }
@@ -31,7 +32,7 @@ QLineEdit{
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	background-color: #4a5463;
+	background-color: #444444;
 	color: #fff;
 }
 
@@ -64,53 +65,67 @@ QListWidget::item:selected {
 /*= Menu 
 ===========================================*/
 #full_menu_widget{
-	background-color: #4a5463;
+	background-color: #333333;
 	border-radius: 10px;
 }
 
-
 #icon_only_widget{
-	background-color: #4a5463;
+	background-color: #333333;
 	border-radius: 10px;
 }
 
 #cart_widget_btn:hover{
-	background-color: #434c59;
+	background-color: #555555;
 }
 
 #cart_widget_btn:pressed{
-	background-color: #3b434f;
+	background-color: #222222;
+}
+#cart_widget_btn:disabled{
+	background-color: #222222;
 }
 
-#group_list_widget_btn:hover{
-	background-color: #434c59;
+#workbook_widget_btn:hover{
+	background-color: #555555;
 }
 
-#group_list_widget_btn:pressed{
-	background-color: #3b434f;
+#workbook_widget_btn:pressed{
+	background-color: #222222;
+}
+
+#workbook_widget_btn:disabled{
+	background-color: #222222;
 }
 
 #style_btn:hover{
-	background-color: #434c59;
+	background-color: #555555;
 }
 
 #style_btn:pressed{
-	background-color: #3b434f;
+	background-color: #222222;
+}
+
+#style_btn:disabled{
+	background-color: #222222;
 }
 
 #language_btn:hover{
-	background-color: #434c59;
+	background-color: #555555;
 }
 
 #language_btn:pressed{
-	background-color: #3b434f;
+	background-color: #222222;
+}
+
+#language_btn:disabled{
+	background-color: #222222;
 }
 
 
 /*= widget cart widget
 ===========================================*/
 #frame_title_image{
-	background-color: #8a9bb1;
+	background-color: #333333;
 	border-radius: 10px;
 }
 
@@ -127,27 +142,27 @@ QListWidget::item:selected {
 }
 
 #add_name_button{
-	background-color: #008080;
-}
-
-#add_name_button:hover{
 	background-color: #006f6f;
 }
 
-#add_name_button:pressed{
+#add_name_button:hover{
 	background-color: #005858;
 }
 
+#add_name_button:pressed{
+	background-color: #003f3f;
+}
+
 #remove_name_button{
-	background-color: #d62828;
+	background-color: #AA0000;
 }
 
 #remove_name_button:hover{
-	background-color: #ac2020;
+	background-color: #880000;
 }
 
 #remove_name_button:pressed{
-	background-color: #821818;
+	background-color: #660000;
 }
 
 #browse_output_button{
@@ -162,25 +177,25 @@ QListWidget::item:selected {
 	background-color: #2f3b64;
 }
 
-#generate_button{
-	background-color: #02ab72;
+#generate_cart_button{
+	background-color: #00AA00;
 }
 
-#generate_button:hover{
-	background-color: #029561;
+#generate_cart_button:hover{
+	background-color: #008800;
 }
 
-#generate_button:pressed{
-	background-color: #016c47;
+#generate_cart_button:pressed{
+	background-color: #005500;
 }
 
 #frame_list_preview{
-	background-color: #8a9bb1;
+	background-color: #333333;
 	border-radius: 10px;
 }
 
 #frame_output{
-	background-color: #8a9bb1;
+	background-color: #333333;
 	border-radius: 10px;
 }
 
@@ -189,29 +204,47 @@ QListWidget::item:selected {
 
 /*= widget workbook widget
 ===========================================*/
-
-#generate_workbook_button{
-	background-color: #48578e;
+#frame_generate_workbook{
+	background-color: #333333;
+	border-radius: 10px;
 }
 
-#generate_workbook_button:pressed{
-	background-color: #2f3b64;
-}
-
-#button_parsing_workbook{
-	background-color: #48578e;
-}
-
-#button_parsing_workbook:pressed{
-	background-color: #2f3b64;
-}
-
-#button_parsing_workbook:hover{
-	background-color: #2f3b64;
+#frame_parse_workbook{
+	background-color: #333333;
+	border-radius: 10px;
 }
 
 #work_book_content_widget{
+	background-color: #333333;
+	border-radius: 10px;
+}
 
+#generate_workbook_button{
+	background-color: #00AA00;
+}
+
+#generate_workbook_button:hover{
+	background-color: #008800;
+}
+
+#generate_workbook_button:pressed{
+	background-color: #005500;
+}
+
+#button_parsing_workbook{
+	background-color: #00AA00;
+}
+
+#button_parsing_workbook:hover{
+	background-color: #008800;
+}
+
+#button_parsing_workbook:pressed{
+	background-color: #005500;
+}
+
+#button_parsing_workbook:disabled{
+	background-color: #005500;
 }
 
 #progressbar_workbook{
@@ -221,6 +254,6 @@ QListWidget::item:selected {
 }
 
 #progressbar_workbook::chunk {
-	background-color: #05B8CC;
+	background-color: #007ACC;
 	width: 20px;
 }

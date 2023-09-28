@@ -42,7 +42,7 @@ class MainApp(QMainWindow):
 		self.generate_workbook_button.clicked.connect(self.generate_workbook_pdf)
 
 		self.cart_widget_btn.clicked.connect(self.set_cart_widget)
-		self.group_list_widget_btn.clicked.connect(self.set_group_list_widget)
+		self.workbook_widget_btn.clicked.connect(self.set_group_list_widget)
 
 		self.title_entry.installEventFilter(self)
 		self.img_entry.installEventFilter(self)
@@ -162,13 +162,13 @@ class MainApp(QMainWindow):
 			self.work_book_content_widget.addTab(tab, list_tabs[tab_index])
 
 	def set_cart_widget(self):
-		self.cart_widget_btn.setStyleSheet('#cart_widget_btn{ background-color: #3b434f;}')
-		self.group_list_widget_btn.setStyleSheet('')
+		self.cart_widget_btn.setEnabled(False)
+		self.workbook_widget_btn.setEnabled(True)
 		self.stackedWidget.setCurrentIndex(0)
 
 	def set_group_list_widget(self):
-		self.group_list_widget_btn.setStyleSheet('#group_list_widget_btn{ background-color: #3b434f;}')
-		self.cart_widget_btn.setStyleSheet('')
+		self.workbook_widget_btn.setEnabled(False)
+		self.cart_widget_btn.setEnabled(True)
 		self.stackedWidget.setCurrentIndex(1)
 
 	def eventFilter(self, obj, event):
@@ -249,11 +249,12 @@ class MainApp(QMainWindow):
 		title = self.title_entry.text()
 		img_path = self.img_entry.text()
 		self.output_path = self.output_entry.text()
-		name_list = [self.name_list_widget.item(index).text() for index in range(self.name_list_widget.count())]
+		if self.output_path:
+			name_list = [self.name_list_widget.item(index).text() for index in range(self.name_list_widget.count())]
 
-		pdf_generator = Testimony_Cart_PDF_Generator(self.output_path, title, img_path, name_list)
-		pdf_generator.generate_pdf()
-		QMessageBox.information(self, "PDF Generated", "PDF has been generated successfully!")
+			pdf_generator = Testimony_Cart_PDF_Generator(self.output_path, title, img_path, name_list)
+			pdf_generator.generate_pdf()
+			QMessageBox.information(self, "PDF Generated", "PDF has been generated successfully!")
 
 	def update_preview(self):
 		title = self.title_entry.text()

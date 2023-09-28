@@ -89,12 +89,16 @@ class Service_Schedule_PDF_Generator:
         self.congregation = congregation
         self.data_dict = data_dict
         self.inv_canvas = canvas.Canvas(output_path, pagesize=A4, bottomup=0)
+        self.current_path = os.path.dirname(__file__)
         self.init_pdf()
 
     def init_pdf(self):
-        pdfmetrics.registerFont(TTFont('CalibriRegular', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Calibri Regular.ttf'))
-        pdfmetrics.registerFont(TTFont('CalibriBold', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Calibri Bold.TTF'))
-        pdfmetrics.registerFont(TTFont('CambriaBold', '/home/andreic/Documents/Congregatie/jw-ministry-toolkit/assets/font/Cambria-Bold.ttf'))
+        calibri_regular_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Calibri Regular.ttf")
+        calibri_bold_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Calibri Bold.TTF")
+        cambria_bold_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Cambria-Bold.ttf")
+        pdfmetrics.registerFont(TTFont('CalibriRegular', calibri_regular_path))
+        pdfmetrics.registerFont(TTFont('CalibriBold', calibri_bold_path))
+        pdfmetrics.registerFont(TTFont('CambriaBold', cambria_bold_path))
 
         self.GRAY = (86/255,86/255,86/255)
         self.BLACK = (0,0,0)
@@ -201,20 +205,19 @@ class Service_Schedule_PDF_Generator:
         # Section 1
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.GRAY)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -15, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
 
         img_scale = (12, 12)
-        current_path = os.path.dirname(__file__)
-        image_path = os.path.join(os.path.realpath(current_path), "assets", "image", "section_1_icon.png")
-        self.inv_canvas.translate(2, current_row-2)
+        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_1_icon.png")
+        self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
-        self.inv_canvas.translate(-2, -(current_row-2))
+        self.inv_canvas.translate(-2, -(current_row-4))
 
         self.inv_canvas.setFont("CalibriBold", 10)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-4, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
+        self.inv_canvas.drawString(10, current_row-6, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
         current_row += row_height
 
         section_1_keys = list(section_1_dict.keys())
@@ -247,20 +250,19 @@ class Service_Schedule_PDF_Generator:
         # Section 2
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.YELLOW)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -15, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
 
         img_scale = (12, 12)
-        current_path = os.path.dirname(__file__)
-        image_path = os.path.join(os.path.realpath(current_path), "assets", "image", "section_2_icon.png")
-        self.inv_canvas.translate(2, current_row-2)
+        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_2_icon.png")
+        self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
-        self.inv_canvas.translate(-2, -(current_row-2))
+        self.inv_canvas.translate(-2, -(current_row-4))
 
         self.inv_canvas.setFont("CalibriBold", 10)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-4, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
+        self.inv_canvas.drawString(10, current_row-6, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
         current_row += row_height
 
         section_2_keys = list(section_2_dict.keys())
@@ -292,20 +294,19 @@ class Service_Schedule_PDF_Generator:
         # Section 3
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.RED)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -15, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
 
         img_scale = (12, 12)
-        current_path = os.path.dirname(__file__)
-        image_path = os.path.join(os.path.realpath(current_path), "assets", "image", "section_3_icon.png")
-        self.inv_canvas.translate(2, current_row-2)
+        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_3_icon.png")
+        self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
-        self.inv_canvas.translate(-2, -(current_row-2))
+        self.inv_canvas.translate(-2, -(current_row-4))
         
         self.inv_canvas.setFont("CalibriBold", 10)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-4, f'VIAȚA DE CREȘTIN')
+        self.inv_canvas.drawString(10, current_row-6, f'VIAȚA DE CREȘTIN')
         current_row += row_height
 
         section_3_keys = list(section_3_dict.keys())

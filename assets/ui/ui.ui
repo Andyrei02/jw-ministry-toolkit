@@ -171,7 +171,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="group_list_widget_btn">
+        <widget class="QPushButton" name="workbook_widget_btn">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -410,7 +410,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Lista Grupelor</string>
+          <string>Caietul pentru intruniri</string>
          </property>
         </widget>
        </item>
@@ -982,7 +982,7 @@
          <widget class="QWidget" name="widget_2" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
-            <widget class="QFrame" name="frame_2">
+            <widget class="QFrame" name="frame_parse_workbook">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
              </property>
@@ -1066,7 +1066,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QFrame" name="frame">
+            <widget class="QFrame" name="frame_generate_workbook">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
              </property>
