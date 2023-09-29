@@ -27,8 +27,9 @@ python main.py
 Use the application to create forms, manage lists, and generate PDF documents.
 
 ## Screenshots
-![Screenshot from 2023-09-25 22-25-52](https://github.com/Andyrei02/jw-ministry-toolkit/assets/69972869/3494a244-cf15-41ac-9149-f390fd0e10ee)
-![Screenshot from 2023-09-25 22-26-19](https://github.com/Andyrei02/jw-ministry-toolkit/assets/69972869/6b5c377b-6ab1-4376-b936-7edfe602248a)
+![Screenshot from 2023-09-29 21-26-00](https://github.com/Andyrei02/jw-ministry-toolkit/assets/69972869/71a255be-02e4-4f9a-a71b-074c191adfc7)
+![Screenshot from 2023-09-29 21-26-07](https://github.com/Andyrei02/jw-ministry-toolkit/assets/69972869/a8a1cdb8-7141-4827-a441-04823a4275a9)
+
 
 
 ## Contributing
