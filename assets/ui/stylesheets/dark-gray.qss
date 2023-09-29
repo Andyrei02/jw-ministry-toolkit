@@ -14,7 +14,7 @@ QTabWidget{
 }
 
 QScrollArea{
-	background-color: #000000;
+	background-color: #111111;
 	border: none;
 	border-radius: 10px;
 }
@@ -60,6 +60,10 @@ QListWidget::item:selected {
 	border-radius: 5px
 }
 
+#frame_version{
+	background-color: #333333;
+	border-radius: 10px;
+}
 
 
 /*= Menu 

@@ -1,5 +1,6 @@
 import sys
 import os
+import glob
 
 import fitz
 
@@ -8,6 +9,7 @@ from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5 import uic
 
+from config import Config
 from pdf_generator import Testimony_Cart_PDF_Generator, Service_Schedule_PDF_Generator
 from parse_workbook import Parse_Meeting_WorkBook
 
@@ -17,20 +19,26 @@ class MainApp(QMainWindow):
 		super().__init__()
 		ui_path = os.path.join(os.getcwd(), 'assets', 'ui', 'ui.ui')
 		uic.loadUi(ui_path, self)
-
-		self.init_ui()
+		
 		## loading style file
-		with open(os.path.join('assets', 'ui', 'stylesheet.qss'), 'r') as style_file:
+		self.config = Config()
+		self.current_theme = self.config.get_item('theme')
+		with open(os.path.join('assets', 'ui', 'stylesheets', self.current_theme+'.qss'), 'r') as style_file:
 			style_str = style_file.read()
 		self.setStyleSheet(style_str)
 
+		self.init_ui()
+
 	def init_ui(self):
+		self.label_version_app.setText(f"v. {self.config.get_item('version')}")
 		self.full_menu_widget.setHidden(True)
 		self.default_title = 'Mărturia cu căruciorul'
 		self.output_path = None
 		self.data_dict = {}
 
 		self.set_cart_widget()
+
+		self.style_btn.clicked.connect(self.next_theme)
 
 		self.name_entry.returnPressed.connect(self.add_name)
 		self.add_name_button.clicked.connect(self.add_name)
@@ -51,6 +59,20 @@ class MainApp(QMainWindow):
 		self.pdf_preview.setAlignment(Qt.AlignCenter)
 
 		self.button_parsing_workbook.clicked.connect(self.parsing_workbook)
+
+	def next_theme(self):
+		styles_path = os.path.join(os.getcwd(), 'assets', 'ui', 'stylesheets')
+		list_themes = glob.glob(os.path.join(styles_path, '*.qss'))
+		current_theme_index = list_themes.index(os.path.join(styles_path, self.current_theme+'.qss'))
+		current_theme_index = list_themes.index(os.path.join(styles_path, self.current_theme + '.qss'))
+		next_theme_index = (current_theme_index + 1) % len(list_themes)
+		next_theme = os.path.basename(list_themes[next_theme_index])
+		self.current_theme = next_theme[:-4]
+		self.config.set_item('theme', self.current_theme)
+
+		with open(os.path.join(styles_path, self.current_theme+'.qss'), 'r') as style_file:
+			style_str = style_file.read()
+		self.setStyleSheet(style_str)
 
 	def show_workbook(self):
 		data_dict = self.data_dict

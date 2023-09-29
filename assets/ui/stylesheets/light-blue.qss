@@ -1,0 +1,263 @@
+/*= MainWindow 
+===========================================*/
+#MainWindow{
+	background-color: #FFFFFF;
+	color: #FFFFFF;
+	border-radius: 10px;
+	border: none;
+}
+
+QTabWidget{
+	background-color: #8a9bb1;
+	border: none;
+	border-radius: 10px;
+}
+
+QScrollArea{
+	background-color: #9dbcfc;
+	border: none;
+	border-radius: 10px;
+}
+
+QWidget{
+	border: none;
+}
+
+QFrame{
+	border: none;
+	color: #fff;
+}
+
+QLineEdit{
+	border: none;
+	border-radius: 10px;
+	padding: 5px;
+	background-color: #b6cbed;
+	color: #fff;
+}
+
+QPushButton {
+	color: white;
+	border-radius: 10px;
+	border: none;
+	padding: 5px 10px;
+}
+
+QListWidget{
+	background-color: #b6cbed;
+	border-radius: 10px;
+}
+
+QListWidget::item {
+	background-color:  #434c59;
+	padding: 2px;
+	border-radius: 5px
+}
+
+QListWidget::item:selected {
+	background-color: #39414c;
+	color: white;
+	border-radius: 5px
+}
+
+#frame_version{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+
+/*= Menu 
+===========================================*/
+#full_menu_widget{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#icon_only_widget{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#cart_widget_btn:hover{
+	background-color: #b6cbed;
+}
+
+#cart_widget_btn:pressed{
+	background-color: #3675f6;
+}
+#cart_widget_btn:disabled{
+	background-color: #3675f6;
+}
+
+#workbook_widget_btn:hover{
+	background-color: #b6cbed;
+}
+
+#workbook_widget_btn:pressed{
+	background-color: #3675f6;
+}
+
+#workbook_widget_btn:disabled{
+	background-color: #3675f6;
+}
+
+#style_btn:hover{
+	background-color: #b6cbed;
+}
+
+#style_btn:pressed{
+	background-color: #3675f6;
+}
+
+#style_btn:disabled{
+	background-color: #3675f6;
+}
+
+#language_btn:hover{
+	background-color: #b6cbed;
+}
+
+#language_btn:pressed{
+	background-color: #3675f6;
+}
+
+#language_btn:disabled{
+	background-color: #3675f6;
+}
+
+
+/*= widget cart widget
+===========================================*/
+#frame_title_image{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#browse_img_button{
+	background-color: #3675f6;
+}
+
+#browse_img_button:hover{
+	background-color: #404e7f;
+}
+
+#browse_img_button:pressed{
+	background-color: #2f3b64;
+}
+
+#add_name_button{
+	background-color: #3675f6;
+}
+
+#add_name_button:hover{
+	background-color: #005858;
+}
+
+#add_name_button:pressed{
+	background-color: #003f3f;
+}
+
+#remove_name_button{
+	background-color: #AA0000;
+}
+
+#remove_name_button:hover{
+	background-color: #880000;
+}
+
+#remove_name_button:pressed{
+	background-color: #660000;
+}
+
+#browse_output_button{
+	background-color: #48578e;
+}
+
+#browse_output_button:hover{
+	background-color: #404e7f;
+}
+
+#browse_output_button:pressed{
+	background-color: #2f3b64;
+}
+
+#generate_cart_button{
+	background-color: #3675f6;
+}
+
+#generate_cart_button:hover{
+	background-color: #008800;
+}
+
+#generate_cart_button:pressed{
+	background-color: #005500;
+}
+
+#frame_list_preview{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#frame_output{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+
+
+
+/*= widget workbook widget
+===========================================*/
+#frame_generate_workbook{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#frame_parse_workbook{
+	background-color: #9dbcfc;
+	border-radius: 10px;
+}
+
+#work_book_content_widget{
+	background-color: #333333;
+	border-radius: 10px;
+}
+
+#generate_workbook_button{
+	background-color: #3675f6;
+}
+
+#generate_workbook_button:hover{
+	background-color: #008800;
+}
+
+#generate_workbook_button:pressed{
+	background-color: #005500;
+}
+
+#button_parsing_workbook{
+	background-color: #3675f6;
+}
+
+#button_parsing_workbook:hover{
+	background-color: #008800;
+}
+
+#button_parsing_workbook:pressed{
+	background-color: #005500;
+}
+
+#button_parsing_workbook:disabled{
+	background-color: #005500;
+}
+
+#progressbar_workbook{
+	border: 2px solid grey;
+	border-radius: 5px;
+	text-align: center;
+}
+
+#progressbar_workbook::chunk {
+	background-color: #3675f6;
+	width: 20px;
+}

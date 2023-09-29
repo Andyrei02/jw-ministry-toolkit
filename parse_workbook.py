@@ -1,3 +1,6 @@
+import concurrent.futures
+
+
 import requests
 import re
 from bs4 import BeautifulSoup
@@ -120,43 +123,52 @@ class Parse_Meeting_WorkBook(QObject):
 			return int(time_str)
 		return 0
 
+	def download_page(self, page):
+		url = self.domain + page[1]
+		soup = self.get_site_page(url)
+		soup_article = self.get_article(soup)
+		section_list = self.get_section_list(soup_article)
+		date, header = self.get_article_header(soup_article)
+		
+		intro = {}
+		for item in self.get_data_list_section_1(section_list[0]):
+			intro[item[1]] = [item[0]]
+
+		section_1 = {}
+		for item in self.get_data_list_section_2(section_list[1]):
+			section_1[item[1]] = [item[0]]
+
+		section_2 = {}
+		for item in self.get_data_list_section_3(section_list[2]):
+			section_2[item[1]] = [item[0]]
+
+		section_3 = {}
+		for item in self.get_data_list_section_4(section_list[3]):
+			section_3[item[1]] = [item[0]]
+
+		return date, {"header": {header: [0]}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
+
 	def get_dict_data(self):
 		page_list = self.get_pages_list()
 		total_pages = len(page_list)
 		downloaded_pages = 0
-
 		data_dict = {}
 
-		for page in page_list:
-			url = self.domain + page[1]
+		# Use ThreadPoolExecutor for concurrent downloads
+		with concurrent.futures.ThreadPoolExecutor() as executor:
+			# Download pages concurrently
+			future_to_page = {executor.submit(self.download_page, page): page for page in page_list}
+			for future in concurrent.futures.as_completed(future_to_page):
+				page = future_to_page[future]
+				try:
+					date, page_data = future.result()
+					data_dict[date] = page_data
+				except Exception as e:
+					print(f"Error downloading page {page}: {e}")
 
-			soup = self.get_site_page(url)
-			soup_article = self.get_article(soup)
-			section_list = self.get_section_list(soup_article)
-
-			# Add date in dict:
-			date, header = self.get_article_header(soup_article)
-
-			intro = {}
-			for item in self.get_data_list_section_1(section_list[0]):
-				intro[item[1]] = [item[0]]
-
-			section_1 = {}
-			for item in self.get_data_list_section_2(section_list[1]):
-				section_1[item[1]] = [item[0]]
-
-			section_2 = {}
-			for item in self.get_data_list_section_3(section_list[2]):
-				section_2[item[1]] = [item[0]]
-
-			section_3 = {}
-			for item in self.get_data_list_section_4(section_list[3]):
-				section_3[item[1]] = [item[0]]
-
-			data_dict[date] = {"header": {header: [0]}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
-
-			downloaded_pages += 1
-			downloaded_progress = int((downloaded_pages / total_pages) * 100)
-			self.download_progress_signal.emit(downloaded_progress)
+				downloaded_pages += 1
+				downloaded_progress = int((downloaded_pages / total_pages) * 100)
+				self.download_progress_signal.emit(downloaded_progress)
 
 		return data_dict
+
