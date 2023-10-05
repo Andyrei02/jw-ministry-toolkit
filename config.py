@@ -1,10 +1,16 @@
 import os
+import sys
 import json
 
 
 class Config:
     def __init__(self):
-        self.config_file_path = os.path.join('assets', 'config.json')
+        if getattr(sys, 'frozen', False):
+            self.current_path = os.path.dirname(sys.executable)
+        else:
+            self.current_path = os.path.dirname(__file__)
+
+        self.config_file_path = os.path.join(self.current_path, 'assets', 'config.json')
         self.config_data = self.load_config()
 
     def load_config(self):

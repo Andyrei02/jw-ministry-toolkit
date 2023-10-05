@@ -17,13 +17,14 @@ from parse_workbook import Parse_Meeting_WorkBook
 class MainApp(QMainWindow):
 	def __init__(self):
 		super().__init__()
-		ui_path = os.path.join(os.getcwd(), 'assets', 'ui', 'ui.ui')
+		self.config = Config()
+		self.current_path = self.config.current_path
+		ui_path = os.path.join(self.current_path, 'assets', 'ui', 'ui.ui')
 		uic.loadUi(ui_path, self)
 		
 		## loading style file
-		self.config = Config()
 		self.current_theme = self.config.get_item('theme')
-		with open(os.path.join('assets', 'ui', 'stylesheets', self.current_theme+'.qss'), 'r') as style_file:
+		with open(os.path.join(self.current_path, 'assets', 'ui', 'stylesheets', self.current_theme+'.qss'), 'r') as style_file:
 			style_str = style_file.read()
 		self.setStyleSheet(style_str)
 
@@ -61,7 +62,7 @@ class MainApp(QMainWindow):
 		self.button_parsing_workbook.clicked.connect(self.parsing_workbook)
 
 	def next_theme(self):
-		styles_path = os.path.join(os.getcwd(), 'assets', 'ui', 'stylesheets')
+		styles_path = os.path.join(self.current_path, 'assets', 'ui', 'stylesheets')
 		list_themes = glob.glob(os.path.join(styles_path, '*.qss'))
 		current_theme_index = list_themes.index(os.path.join(styles_path, self.current_theme+'.qss'))
 		current_theme_index = list_themes.index(os.path.join(styles_path, self.current_theme + '.qss'))
@@ -261,7 +262,7 @@ class MainApp(QMainWindow):
 			for section_key in list(section_3_dict.keys()):
 				section_3_dict[section_key].append(line_edit_list[label_list.index(section_key)])
 
-		output_path = 'file.pdf'
+		output_path = os.path.join(self.current_path, 'file.pdf')
 		congregation = 'GLODENI-SUD'
 
 		service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, self.data_dict)
@@ -281,7 +282,7 @@ class MainApp(QMainWindow):
 	def update_preview(self):
 		title = self.title_entry.text()
 		img_path = self.img_entry.text()
-		output_temp = os.path.join(os.getcwd(), "temp.pdf.temp")
+		output_temp = os.path.join(self.current_path, "temp.pdf.temp")
 		name_list = [self.name_list_widget.item(index).text() for index in range(self.name_list_widget.count())]
 
 		pdf_generator = Testimony_Cart_PDF_Generator(output_temp, title, img_path, name_list)

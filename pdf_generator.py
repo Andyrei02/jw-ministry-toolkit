@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -6,11 +7,15 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import cm
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from datetime import datetime, timedelta
+
+from config import Config
 
 
 class Testimony_Cart_PDF_Generator:
     def __init__(self, output_path, title=None, image=None, name_list=None):
+        self.config = Config()
+        self.current_path = self.config.current_path
+
         self.title = title
         self.image = image
         self.name_list = name_list
@@ -18,12 +23,15 @@ class Testimony_Cart_PDF_Generator:
         self.init_pdf()
 
     def init_pdf(self):
-        pdfmetrics.registerFont(TTFont('DejaVu', 'DejaVuSans.ttf'))
-        pdfmetrics.registerFont(TTFont('DejaVuBold', 'DejaVuSans-Bold.ttf'))
-        pdfmetrics.registerFont(TTFont('DejaVuOblique', 'DejaVuSans-Oblique.ttf'))
+        calibri_regular_path = os.path.join(self.current_path, "assets", "font", "Calibri Regular.ttf")
+        calibri_bold_path = os.path.join(self.current_path, "assets", "font", "Calibri Bold.TTF")
+        cambria_bold_path = os.path.join(self.current_path, "assets", "font", "Cambria-Bold.ttf")
+        pdfmetrics.registerFont(TTFont('CalibriRegular', calibri_regular_path))
+        pdfmetrics.registerFont(TTFont('CalibriBold', calibri_bold_path))
+        pdfmetrics.registerFont(TTFont('CambriaBold', cambria_bold_path))
 
     def draw_header(self):
-        self.inv_canvas.setFont("DejaVuBold", 35)
+        self.inv_canvas.setFont("CalibriBold", 35)
         self.inv_canvas.drawCentredString(A4[0]/2, 40, self.title)
 
         if self.image:
@@ -65,9 +73,9 @@ class Testimony_Cart_PDF_Generator:
                         break
 
                     current_name += 1
-                    self.inv_canvas.setFont("DejaVuOblique", 17)
+                    self.inv_canvas.setFont("CalibriRegular", 17)
                     self.inv_canvas.drawCentredString(current_column, current_row - 10, str(current_name))
-                    self.inv_canvas.setFont("DejaVuBold", 20)
+                    self.inv_canvas.setFont("CalibriBold", 20)
                     self.inv_canvas.drawString(current_column + 20, current_row - 10, str(self.name_list[current_name - 1]))
 
                     current_row += h_row
@@ -89,13 +97,14 @@ class Service_Schedule_PDF_Generator:
         self.congregation = congregation
         self.data_dict = data_dict
         self.inv_canvas = canvas.Canvas(output_path, pagesize=A4, bottomup=0)
-        self.current_path = os.path.dirname(__file__)
+        self.config = Config()
+        self.current_path = self.config.current_path
         self.init_pdf()
 
     def init_pdf(self):
-        calibri_regular_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Calibri Regular.ttf")
-        calibri_bold_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Calibri Bold.TTF")
-        cambria_bold_path = os.path.join(os.path.realpath(self.current_path), "assets", "font", "Cambria-Bold.ttf")
+        calibri_regular_path = os.path.join(self.current_path, "assets", "font", "Calibri Regular.ttf")
+        calibri_bold_path = os.path.join(self.current_path, "assets", "font", "Calibri Bold.TTF")
+        cambria_bold_path = os.path.join(self.current_path, "assets", "font", "Cambria-Bold.ttf")
         pdfmetrics.registerFont(TTFont('CalibriRegular', calibri_regular_path))
         pdfmetrics.registerFont(TTFont('CalibriBold', calibri_bold_path))
         pdfmetrics.registerFont(TTFont('CambriaBold', cambria_bold_path))
@@ -118,8 +127,8 @@ class Service_Schedule_PDF_Generator:
         return new_time_str
 
     def draw_header(self):
-        image_filename = "assets/image/img.jpg"  # Replace with your image file
-        self.inv_canvas.drawImage(image_filename, 0, 0, width=A4[0], height=A4[1])
+        # image_filename = os.path.join(self.current_path, "assets", "image", "img.jpg")  # Replace with your image file
+        # self.inv_canvas.drawImage(image_filename, 0, 0, width=A4[0], height=A4[1])
 
         left_text = self.congregation
         self.inv_canvas.setFont("CalibriBold", 11)
@@ -138,7 +147,7 @@ class Service_Schedule_PDF_Generator:
     def draw_content(self, header_date):
         current_row = 0
         row_height = 15
-        section_title_height = 30
+        section_title_height = 35
         center_content_x = self.text_margins[1]/2
         column_two_comment_x = self.text_margins[1] - self.content_pos[0] - 150
 
@@ -205,19 +214,19 @@ class Service_Schedule_PDF_Generator:
         # Section 1
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.GRAY)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
 
-        img_scale = (12, 12)
-        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_1_icon.png")
+        img_scale = (16, 16)
+        image_path = os.path.join(self.current_path, "assets", "image", "section_1_icon.png")
         self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-2, -(current_row-4))
 
-        self.inv_canvas.setFont("CalibriBold", 10)
+        self.inv_canvas.setFont("CalibriBold", 14)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-6, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
+        self.inv_canvas.drawString(15, current_row-7, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
         current_row += row_height
 
         section_1_keys = list(section_1_dict.keys())
@@ -229,9 +238,14 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.setFillColorRGB(*self.GRAY)
             self.inv_canvas.circle(35, current_row-3, 2, stroke=0, fill=1)
 
-            self.inv_canvas.setFont("CalibriRegular", 11)
-            self.inv_canvas.setFillColorRGB(*self.BLACK)
-            self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
+            available_width = column_two_comment_x  # Set this to the appropriate value
+            lines = self.split_text_into_lines(key, available_width)
+            for line in lines:
+                self.inv_canvas.setFont("CalibriRegular", 11)
+                self.inv_canvas.setFillColorRGB(*self.BLACK)
+                self.inv_canvas.drawString(subtitle_pos_x, current_row, line)
+                current_row += row_height
+            current_row -= row_height
 
             self.inv_canvas.setFont("CalibriBold", 8)
             x_comment = column_two_comment_x - stringWidth(section_1_dict[key][1], 'CalibriBold', 8)
@@ -250,19 +264,19 @@ class Service_Schedule_PDF_Generator:
         # Section 2
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.YELLOW)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
 
-        img_scale = (12, 12)
-        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_2_icon.png")
+        img_scale = (16, 16)
+        image_path = os.path.join(self.current_path, "assets", "image", "section_2_icon.png")
         self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-2, -(current_row-4))
 
-        self.inv_canvas.setFont("CalibriBold", 10)
+        self.inv_canvas.setFont("CalibriBold", 14)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-6, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
+        self.inv_canvas.drawString(15, current_row-7, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
         current_row += row_height
 
         section_2_keys = list(section_2_dict.keys())
@@ -294,19 +308,19 @@ class Service_Schedule_PDF_Generator:
         # Section 3
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.RED)
-        self.inv_canvas.roundRect(-10, current_row, center_content_x, -20, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
 
-        img_scale = (12, 12)
-        image_path = os.path.join(os.path.realpath(self.current_path), "assets", "image", "section_3_icon.png")
+        img_scale = (16, 16)
+        image_path = os.path.join(self.current_path, "assets", "image", "section_3_icon.png")
         self.inv_canvas.translate(2, current_row-4)
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.drawImage(image_path, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-2, -(current_row-4))
         
-        self.inv_canvas.setFont("CalibriBold", 10)
+        self.inv_canvas.setFont("CalibriBold", 14)
         self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(10, current_row-6, f'VIAȚA DE CREȘTIN')
+        self.inv_canvas.drawString(15, current_row-7, f'VIAȚA DE CREȘTIN')
         current_row += row_height
 
         section_3_keys = list(section_3_dict.keys())
@@ -335,6 +349,19 @@ class Service_Schedule_PDF_Generator:
             current_hour = self.add_minutes_to_time(current_hour, next_hour)
             current_row += row_height
 
+    def split_text_into_lines(self, text, max_width):
+        lines = []
+        words = text.split()
+        while words:
+            line = ''
+            while words and self.inv_canvas.stringWidth(line + words[0], 'CalibriRegular', 11) <= max_width:
+                if line:
+                    line += ' '
+                line += words.pop(0)
+            lines.append(line)
+        return lines
+
+
     def generate_pdf(self):
         
         i = 0
@@ -347,9 +374,9 @@ class Service_Schedule_PDF_Generator:
                 self.inv_canvas.translate(-self.content_pos[0], -self.content_pos[1])
                 i = 1
             else:
-                self.inv_canvas.translate(self.content_pos[0], A4[1]/2)
+                self.inv_canvas.translate(self.content_pos[0], (A4[1]/2)+10)
                 self.draw_content(header_date)
-                self.inv_canvas.translate(-self.content_pos[0], -A4[1]/2)
+                self.inv_canvas.translate(-self.content_pos[0], -(A4[1]/2)+10)
                 self.inv_canvas.showPage()
                 i = 0
 
