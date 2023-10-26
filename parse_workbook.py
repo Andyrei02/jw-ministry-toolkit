@@ -1,5 +1,5 @@
 import concurrent.futures
-
+from datetime import datetime
 
 import requests
 import re
@@ -132,22 +132,50 @@ class Parse_Meeting_WorkBook(QObject):
 		
 		intro = {}
 		for item in self.get_data_list_section_1(section_list[0]):
-			intro[item[1]] = [item[0]]
+			intro[item[1]] = [item[0], '']
 
 		section_1 = {}
 		for item in self.get_data_list_section_2(section_list[1]):
-			section_1[item[1]] = [item[0]]
+			section_1[item[1]] = [item[0], '']
 
 		section_2 = {}
 		for item in self.get_data_list_section_3(section_list[2]):
-			section_2[item[1]] = [item[0]]
+			section_2[item[1]] = [item[0], '']
 
 		section_3 = {}
 		for item in self.get_data_list_section_4(section_list[3]):
-			section_3[item[1]] = [item[0]]
+			section_3[item[1]] = [item[0], '']
 
-		return date, {"header": {header: [0]}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
+		return date, {"header": {header: [0, '']}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
 
+	def sort_dict_by_dates(self, date_dict):
+		def convert_month_to_number(month_word):
+			month_mapping = {
+				'ianuarie': '01',
+				'februarie': '02',
+				'martie': '03',
+				'aprilie': '04',
+				'mai': '05',
+				'iunie': '06',
+				'iulie': '07',
+				'august': '08',
+				'septembrie': '09',
+				'octombrie': '10',
+				'noiembrie': '11',
+				'decembrie': '12'
+			}
+			return month_mapping.get(month_word, '00')
+
+		def custom_sort(date_str):
+			date_parts = date_str.split(' ')
+			day, month_word = date_parts[:2]
+			day = day.split('-')[0]
+			month = convert_month_to_number(month_word)
+			return datetime.strptime(f'{day}.{month}', '%d.%m').date()
+
+		sorted_items = dict(sorted(date_dict.items(), key=lambda item: custom_sort(item[0])))
+		return sorted_items
+		
 	def get_dict_data(self):
 		page_list = self.get_pages_list()
 		total_pages = len(page_list)
@@ -170,5 +198,4 @@ class Parse_Meeting_WorkBook(QObject):
 				downloaded_progress = int((downloaded_pages / total_pages) * 100)
 				self.download_progress_signal.emit(downloaded_progress)
 
-		return data_dict
-
+		return self.sort_dict_by_dates(data_dict)

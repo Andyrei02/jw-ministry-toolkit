@@ -248,19 +248,18 @@ class MainApp(QMainWindow):
 			section_2_dict = self.data_dict[date_list[tab_index]]["section_2"]
 			section_3_dict = self.data_dict[date_list[tab_index]]["section_3"]
 			
-			header_dict[list(header_dict.keys())[0]].append(line_edit_list[label_list.index("Președinte")])
-			
+			header_dict[list(header_dict.keys())[0]][1] = line_edit_list[label_list.index("Președinte")]
 			for section_key in list(intro_dict.keys()):
-				intro_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+				intro_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
 			
 			for section_key in list(section_1_dict.keys()):
-				section_1_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+				section_1_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
 			
 			for section_key in list(section_2_dict.keys()):
-				section_2_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+				section_2_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
 			
 			for section_key in list(section_3_dict.keys()):
-				section_3_dict[section_key].append(line_edit_list[label_list.index(section_key)])
+				section_3_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
 
 		output_path = os.path.join(self.current_path, 'file.pdf')
 		congregation = 'GLODENI-SUD'
@@ -320,7 +319,7 @@ class MainApp(QMainWindow):
 
 		site_domain = 'https://www.jw.org'
 		meeting_workbooks_url = 'https://www.jw.org/ro/biblioteca/caiet-pentru-intrunire'
-		current_workbook_name = 'septembrie-octobrie-2023-mwb/'
+		current_workbook_name = 'noiembrie-decembrie-2023-mwb/'
 		workbook_url = os.path.join(meeting_workbooks_url, current_workbook_name)
 
 		self.worker_thread = WorkerThread(site_domain, workbook_url)

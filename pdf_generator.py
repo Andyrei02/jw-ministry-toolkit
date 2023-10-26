@@ -38,7 +38,7 @@ class Testimony_Cart_PDF_Generator:
             img_scale = (350, 300)
             self.inv_canvas.translate(A4[0]/2, 350)
             self.inv_canvas.scale(1, -1)
-            self.inv_canvas.drawImage(self.image, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1])
+            self.inv_canvas.drawImage(self.image, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
             self.inv_canvas.scale(1, -1)
             self.inv_canvas.translate(-A4[0]/2, -350)
 
@@ -127,8 +127,8 @@ class Service_Schedule_PDF_Generator:
         return new_time_str
 
     def draw_header(self):
-        # image_filename = os.path.join(self.current_path, "assets", "image", "img.jpg")  # Replace with your image file
-        # self.inv_canvas.drawImage(image_filename, 0, 0, width=A4[0], height=A4[1])
+        image_filename = os.path.join(self.current_path, "assets", "image", "img.jpg")  # Replace with your image file
+        self.inv_canvas.drawImage(image_filename, 0, 0, width=A4[0], height=A4[1])
 
         left_text = self.congregation
         self.inv_canvas.setFont("CalibriBold", 11)
@@ -361,11 +361,15 @@ class Service_Schedule_PDF_Generator:
             lines.append(line)
         return lines
 
-
     def generate_pdf(self):
         
         i = 0
+        now_list = ['23-29 octombrie', '30 octombrie – 5 noiembrie']
+        # print(list(self.data_dict.keys()))
+        # print(list(self.data_dict.keys())[-2:])
+
         for header_date in list(self.data_dict.keys()):
+        # for header_date in now_list:
 
             if i == 0:
                 self.draw_header()
