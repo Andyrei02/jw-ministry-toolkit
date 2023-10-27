@@ -5,8 +5,11 @@ from dotenv import load_dotenv
 from config import Config
 
 class GitProject:
-	def __init__(self, project_directory):
+	def __init__(self, project_directory, name_github, token_github):
 		self.project_directory = project_directory
+		self.repository_name = os.path.basename(self.project_directory)
+		self.name_github = name_github
+		self.token_github = token_github
 
 	def add(self):
 		os.chdir(self.project_directory)
@@ -19,7 +22,7 @@ class GitProject:
 		os.system(f'git commit -m "{commit_description}"')
 
 	def push(self):
-		os.system("git push -u origin main")
+		os.system(f"git push -u {self.name_github}:{self.token_github}@github.com/{self.name_github}/{self.repository_name}.git main")
 
 	def print_completed(self):
 		self.status()
@@ -35,15 +38,12 @@ def main():
 	if name_github is None or token_github is None:
 		print("GitHub credentials not found in the .env file.")
 		return
-
-	os.environ['GITHUB_USERNAME'] = os.getenv("GITHUB_USERNAME")
-	os.environ['GITHUB_TOKEN'] = os.getenv("GITHUB_TOKEN")
 	
 	config = Config()
 	current_path = config.current_path
 
 	# Create a GitProject instance
-	my_project = GitProject(current_path)
+	my_project = GitProject(current_path, name_github, token_github)
 
 	my_project.add()
 	my_project.status()
