@@ -22,16 +22,16 @@ class GitProject:
 		os.system(f'git commit -m "{commit_description}"')
 
 	def push(self):
-		os.system(f"git push -u {self.name_github}:{self.token_github}@github.com/{self.name_github}/{self.repository_name}.git main")
+		os.system(f'git push -u https://{self.name_github}:{self.token_github}@github.com/{self.name_github}/{self.repository_name}.git main')
 
 	def print_completed(self):
+		print('\n')
 		self.status()
 		print("Project successfully pushed to the remote repository.")
 
 
 def main():
 	load_dotenv()
-
 	name_github = os.getenv("GITHUB_USERNAME")
 	token_github = os.getenv("GITHUB_TOKEN")
 
@@ -44,12 +44,9 @@ def main():
 
 	# Create a GitProject instance
 	my_project = GitProject(current_path, name_github, token_github)
-
 	my_project.add()
 	my_project.status()
-
 	commit_description = input("Enter commit description: ")
-
 	my_project.commit(commit_description)
 	my_project.push()
 
