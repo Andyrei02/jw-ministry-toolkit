@@ -20,6 +20,7 @@ class GitProject:
 
 	def commit(self, commit_description):
 		os.system(f'git commit -m "{commit_description}"')
+		print('\n')
 
 	def push(self):
 		os.system(f'git push -u https://{self.name_github}:{self.token_github}@github.com/{self.name_github}/{self.repository_name}.git main')
