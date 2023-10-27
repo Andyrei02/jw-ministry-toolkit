@@ -41,10 +41,22 @@ Contributions are welcome! If you have suggestions, bug reports, or would like t
 3.    Make your changes and test thoroughly.
 4.    Submit a pull request with a clear description of your changes.
 
+## ToDo
+
+* Cart pdf generator frame
+	* [ ]  function for upload file
+	* [ ] sort names 
+	* [ ] optimize preview
+* workbook frame
+	* [ ] function to select output pages (checkbox to select)
+	* [ ] after file creation show success information
+
+
 ## Author
 
-Andrei Cenusa
+(2023) Andrei Cenusa
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+

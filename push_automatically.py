@@ -27,7 +27,6 @@ class GitProject:
 
 	def print_completed(self):
 		print('\n')
-		self.status()
 		print("Project successfully pushed to the remote repository.")
 
 
