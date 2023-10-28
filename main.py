@@ -3,6 +3,7 @@ import os
 import glob
 
 import fitz
+import PyPDF2
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidget, QMessageBox, QGraphicsScene, QGraphicsPixmapItem, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QImage, QPixmap
@@ -39,6 +40,8 @@ class MainApp(QMainWindow):
 
 		self.set_cart_widget()
 
+		self.upload_pdf_button.clicked.connect(self.upload_pdf_cart)
+
 		self.style_btn.clicked.connect(self.next_theme)
 
 		self.name_entry.returnPressed.connect(self.add_name)
@@ -74,6 +77,21 @@ class MainApp(QMainWindow):
 		with open(os.path.join(styles_path, self.current_theme+'.qss'), 'r') as style_file:
 			style_str = style_file.read()
 		self.setStyleSheet(style_str)
+
+	def upload_pdf_cart(self):
+		pdf_path, _ = QFileDialog.getOpenFileName(self, "Select pdf file", "", "pdf Files (*.pdf)")
+		if pdf_path:
+			with open(pdf_path, 'rb') as pdf_file:
+				pdf_reader = PyPDF2.PdfReader(pdf_file)
+				page = pdf_reader.pages[0]
+				text = page.extract_text()
+
+			list_names = text.split('\n')
+			list_names = [item for item in list_names if not (any(char.isdigit() for char in item) or item == "")]
+
+			print(list_names)
+			self.title_entry.setText(list_names[0])
+			self.add_name(list_names[1:])
 
 	def show_workbook(self):
 		data_dict = self.data_dict
@@ -211,11 +229,17 @@ class MainApp(QMainWindow):
 		if self.output_path:
 			self.output_entry.setText(self.output_path)
 
-	def add_name(self):
-		name = self.name_entry.text().strip()
-		if name:
-			self.name_list_widget.addItem(name)
-			self.name_entry.clear()
+	def add_name(self, list_names=None):
+		if not list_names:
+			name = self.name_entry.text().strip()
+			if name:
+				self.name_list_widget.addItem(name)
+				self.name_entry.clear()
+		else:
+			for name in list_names:
+				if name:
+					self.name_list_widget.addItem(name)
+
 		self.update_preview()
 
 	def remove_name(self):

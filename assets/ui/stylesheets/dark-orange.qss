@@ -132,6 +132,21 @@ QListWidget::item:selected {
 	border-radius: 10px;
 }
 
+#upload_pdf_button{
+	background-color: #f5b303;
+	color: #171717;
+}
+
+#upload_pdf_button:hover{
+	background-color: #d49303;
+	color: #171717;
+}
+
+#upload_pdf_button:pressed{
+	background-color: #b27e03;
+	color: #171717;
+}
+
 #browse_img_button{
 	background-color: #f5b303;
 	color: #171717;

@@ -18,9 +18,13 @@ class Testimony_Cart_PDF_Generator:
 
         self.title = title
         self.image = image
-        self.name_list = name_list
+        self.name_list = sorted(name_list, key=self.custom_sort)
         self.inv_canvas = canvas.Canvas(output_path, pagesize=A4, bottomup=0)
         self.init_pdf()
+
+    def custom_sort(self, name):
+        # Split the name into first and last names
+        return name.split()
 
     def init_pdf(self):
         calibri_regular_path = os.path.join(self.current_path, "assets", "font", "Calibri Regular.ttf")
@@ -80,6 +84,7 @@ class Testimony_Cart_PDF_Generator:
 
                     current_row += h_row
 
+                self.inv_canvas.drawCentredString(current_column, current_row - 10, '')
                 current_column += w_column
                 current_row = h_row
 

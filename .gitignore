@@ -5,6 +5,7 @@ __pycache__/
 
 # PDF files
 *.pdf
+file.pdf
 
 # C extensions
 *.so

@@ -44,8 +44,8 @@ Contributions are welcome! If you have suggestions, bug reports, or would like t
 ## ToDo
 
 * Cart pdf generator frame
-	* [ ]  function for upload file
-	* [ ] sort names 
+	* [x] function for upload file
+	* [x] sort names 
 	* [ ] optimize preview
 * workbook frame
 	* [ ] function to select output pages (checkbox to select)
