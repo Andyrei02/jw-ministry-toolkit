@@ -369,13 +369,8 @@ class Service_Schedule_PDF_Generator:
     def generate_pdf(self):
         
         i = 0
-        now_list = ['23-29 octombrie', '30 octombrie – 5 noiembrie']
-        # print(list(self.data_dict.keys()))
-        # print(list(self.data_dict.keys())[-2:])
 
         for header_date in list(self.data_dict.keys()):
-        # for header_date in now_list:
-
             if i == 0:
                 self.draw_header()
                 self.inv_canvas.translate(self.content_pos[0], self.content_pos[1])

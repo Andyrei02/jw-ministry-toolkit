@@ -122,7 +122,7 @@ class MainApp(QMainWindow):
 			row += 1
 
 			header_dict = data_dict[list_tabs[tab_index]]['header']
-			for item in list(header_dict.keys()):
+			for item in list(header_dict.keys())[1:]:
 				label_item = QLabel(item)
 				label_item.setWordWrap(True)
 				label_item.setMaximumWidth(label_width)
@@ -290,6 +290,7 @@ class MainApp(QMainWindow):
 
 		service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, self.data_dict)
 		service_schedule.generate_pdf()
+		QMessageBox.information(self, "PDF Generated", "PDF has been generated successfully!")
 
 	def generate_cart_pdf(self):
 		title = self.title_entry.text()

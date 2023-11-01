@@ -65,6 +65,26 @@ QListWidget::item:selected {
 	border-radius: 10px;
 }
 
+/*= QMesageBox 
+===========================================*/
+QMessageBox{
+	background-color: #25262a;
+	color: #171717;
+}
+
+QMessageBox QPushButton {
+	background-color: #48578e;
+}
+
+QMessageBox QPushButton:hover {
+	background-color: #404e7f;
+}
+
+QMessageBox QPushButton:pressed {
+	background-color: #2f3b64;
+}
+
+
 
 /*= Menu 
 ===========================================*/
