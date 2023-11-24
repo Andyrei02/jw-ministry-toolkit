@@ -1014,6 +1014,26 @@
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
+                <widget class="QWidget" name="tab_3">
+                 <attribute name="title">
+                  <string>Page</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="text">
+                     <string>Enter link to workbook</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="entry_link_workbook"/>
+                  </item>
+                 </layout>
+                </widget>
                 <widget class="QWidget" name="tab">
                  <attribute name="title">
                   <string>Tab 1</string>

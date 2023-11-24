@@ -1,6 +1,7 @@
 import sys
 import os
 import glob
+import requests
 
 import fitz
 import PyPDF2
@@ -343,11 +344,9 @@ class MainApp(QMainWindow):
 		self.progressbar_status_label.setText("Please wait...")
 
 		site_domain = 'https://www.jw.org'
-		meeting_workbooks_url = 'https://www.jw.org/ro/biblioteca/caiet-pentru-intrunire'
-		current_workbook_name = 'noiembrie-decembrie-2023-mwb/'
-		workbook_url = os.path.join(meeting_workbooks_url, current_workbook_name)
+		workbook_url = self.entry_link_workbook.text()
 
-		self.worker_thread = WorkerThread(site_domain, workbook_url)
+		self.worker_thread = WorkerThread(self, site_domain, workbook_url)
 		self.worker_thread.download_progress_signal.connect(self.update_download_progress)
 		self.worker_thread.finished.connect(self.parsing_finished)
 		self.worker_thread.start()
@@ -366,8 +365,9 @@ class MainApp(QMainWindow):
 class WorkerThread(QThread):
 	download_progress_signal = pyqtSignal(int)  # Add this line
 
-	def __init__(self, domain, url):
+	def __init__(self, parent_widget, domain, url):
 		super().__init__()
+		self.parent_widget = parent_widget
 		self.domain = domain
 		self.url = url
 		self.data_dict = {}
@@ -375,7 +375,11 @@ class WorkerThread(QThread):
 	def run(self):
 		self.parser = Parse_Meeting_WorkBook(self.domain, self.url)
 		self.parser.download_progress_signal.connect(self.download_progress_signal.emit)
-		self.data_dict = self.parser.get_dict_data()
+
+		try:
+			self.data_dict = self.parser.get_dict_data()
+		except requests.exceptions.MissingSchema:
+			QMessageBox.information(self.parent_widget, "Info Download", "Error! Please enter correct lik in link tab.")
 
 	def emit_download_progress(self, value):
 		self.download_progress_signal.emit(value)

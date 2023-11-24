@@ -75,7 +75,7 @@ class Parse_Meeting_WorkBook(QObject):
 			p_tag = li.find("p")
 
 			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
+			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
 			strong_text = ' '.join(strong_texts)
 			row_list.append([time, strong_text])
 
@@ -92,7 +92,7 @@ class Parse_Meeting_WorkBook(QObject):
 			p_tag = li.find("p")
 			
 			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
+			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
 			strong_text = ' '.join(strong_texts)
 			row_list.append([time, strong_text])
 
@@ -109,7 +109,7 @@ class Parse_Meeting_WorkBook(QObject):
 			p_tag = li.find("p")
 			
 			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
+			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
 			strong_text = ' '.join(strong_texts)
 			row_list.append([time, strong_text])
 
