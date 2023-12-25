@@ -145,7 +145,7 @@ class MainApp(QMainWindow):
 				row += 1
 
 			section_0_label = QLabel('COMORI DIN CUVÂNTUL LUI DUMNEZEU')
-			section_0_label.setStyleSheet("background-color: rgb(86,86,86);")
+			section_0_label.setStyleSheet("background-color: rgb(48, 102, 111);")
 			grid_layout_1.addWidget(section_0_label, row, 0, 1, 1)
 			row += 1
 

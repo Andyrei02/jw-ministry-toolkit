@@ -24,14 +24,13 @@ class Parse_Meeting_WorkBook(QObject):
 		return article
 
 	def get_synopsis_list(self, soup):
-		synoplis_list = soup.find_all("div", {"class": "syn-body textOnly accordionHandle"})
+		synoplis_list = soup.find_all("div", {"class": "syn-body sqs"})
 		return synoplis_list
 
 	def get_date_and_link_list(self, soup):
 		date_link_list = []
 		for synopsis in soup:
 			date_link_list.append([(synopsis.find("a").text).strip(), synopsis.find("a")['href']])
-
 		return date_link_list
 
 	def get_pages_list(self):
@@ -45,73 +44,76 @@ class Parse_Meeting_WorkBook(QObject):
 		header = soup.find("header")
 		header_title = header.find("h1", {"id": "p1"})
 		header_verses = header.find("h2", {"id": "p2"})
-		return [header_title.text, header_verses.text]
+		return [header_title.text.strip(), header_verses.text.strip()]
 
 	def get_section_list(self, soup):
 		body = soup.find("div", {"class": "bodyTxt"})
-		return body.find_all("div", {"class": "section"})
+
+		# Music list:
+		dc_music = body.find_all("h3", {"class": "dc-icon--music"})
+		dc_music.append(body.find("span", {"class": "dc-icon--music"}))
+		dc_music = [i.text for i in dc_music]
+
+		# Section 1
+		# section 1 Text
+		section_1_text = body.find("div", {"class": "dc-icon--gem"})
+		# items
+		s1_items = body.find_all("h3", {"class": "du-color--teal-700"}, recursive=True)
+		s1_items = [i.text for i in s1_items]
+
+		# Section 2
+		section_2_text = body.find("div", {"class": "dc-icon--wheat"})
+		# items
+		s2_items = body.find_all("h3", {"class": "du-color--gold-700"})
+		s2_items = [i.text for i in s2_items]
+
+		# Section 3
+		section_3_text = body.find("div", {"class": "dc-icon--sheep"})
+		# items
+		s3_items = body.find_all("h3", {"class": "du-color--maroon-600"})
+		s3_items = [i.text for i in  s3_items]
+
+		return body
 
 	def get_data_list_section_1(self, soup):
-		row_list = []
-		pGroup = soup.find("div", {"class": "pGroup"})
-		li_list = pGroup.find_all("li")
-		for li in li_list:
-			p_tag = li.find("p")
+		dc_music = soup.find("h3", {"class": "dc-icon--music"})
+		dc_music = dc_music.text.split('|')
 
-			time = self.find_time_from_p_tag(p_tag)
-			strong_text = p_tag.find("strong").text
-			row_list.append([time, strong_text])
+		row_list = [["0", dc_music[0].strip()], ["0", dc_music[1].strip()]]
 
 		return row_list
 
 	def get_data_list_section_2(self, soup):
-		title = soup.find("div", {"class": "mwbHeadingIcon"}).text
 
+		section_1_text = soup.find("div", {"class": "dc-icon--gem"})
+		title = section_1_text.text
+		# items
+		s1_items = soup.find_all("h3", {"class": "du-color--teal-700"}, recursive=True)
 		row_list = []
-		pGroup = soup.find("div", {"class": "pGroup"})
-		ul = pGroup.find("ul")
-		li_list = ul.find_all("li", recursive=False)
-		for li in li_list:
-			p_tag = li.find("p")
-
-			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
-			strong_text = ' '.join(strong_texts)
-			row_list.append([time, strong_text])
+		for i in s1_items:
+			row_list.append(["0", i.text.strip()])
 
 		return row_list
 
 	def get_data_list_section_3(self, soup):
-		title = soup.find("div", {"class": "mwbHeadingIcon"}).text
-
+		section_2_text = soup.find("div", {"class": "dc-icon--wheat"})
+		title = section_2_text.text
+		# items
+		s2_items = soup.find_all("h3", {"class": "du-color--gold-700"})
 		row_list = []
-		pGroup = soup.find("div", {"class": "pGroup"})
-		ul = pGroup.find("ul")
-		li_list = ul.find_all("li", recursive=False)
-		for li in li_list:
-			p_tag = li.find("p")
-			
-			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
-			strong_text = ' '.join(strong_texts)
-			row_list.append([time, strong_text])
+		for i in s2_items:
+			row_list.append(["0", i.text.strip()])
 
 		return row_list
 
 	def get_data_list_section_4(self, soup):
-		title = soup.find("div", {"class": "mwbHeadingIcon"}).text
-
+		section_3_text = soup.find("div", {"class": "dc-icon--sheep"})
+		title = section_3_text.text
+		# items
+		s3_items = soup.find_all("h3", {"class": "du-color--maroon-600"})
 		row_list = []
-		pGroup = soup.find("div", {"class": "pGroup"})
-		ul = pGroup.find("ul")
-		li_list = ul.find_all("li", recursive=False)
-		for li in li_list:
-			p_tag = li.find("p")
-			
-			time = self.find_time_from_p_tag(p_tag)
-			strong_texts = [p_tag.get_text()]#[strong.get_text() for strong in p_tag.find_all('strong', recursive=True)]
-			strong_text = ' '.join(strong_texts)
-			row_list.append([time, strong_text])
+		for i in s3_items:
+			row_list.append(["0", i.text.strip()])
 
 		return row_list
 
@@ -127,23 +129,23 @@ class Parse_Meeting_WorkBook(QObject):
 		url = self.domain + page[1]
 		soup = self.get_site_page(url)
 		soup_article = self.get_article(soup)
-		section_list = self.get_section_list(soup_article)
+		body = self.get_section_list(soup_article)
 		date, header = self.get_article_header(soup_article)
-		
+
 		intro = {}
-		for item in self.get_data_list_section_1(section_list[0]):
+		for item in self.get_data_list_section_1(body):
 			intro[item[1]] = [item[0], '']
 
 		section_1 = {}
-		for item in self.get_data_list_section_2(section_list[1]):
+		for item in self.get_data_list_section_2(body):
 			section_1[item[1]] = [item[0], '']
 
 		section_2 = {}
-		for item in self.get_data_list_section_3(section_list[2]):
+		for item in self.get_data_list_section_3(body):
 			section_2[item[1]] = [item[0], '']
 
 		section_3 = {}
-		for item in self.get_data_list_section_4(section_list[3]):
+		for item in self.get_data_list_section_4(body):
 			section_3[item[1]] = [item[0], '']
 
 		return date, {"header": {header: [0, '']}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}

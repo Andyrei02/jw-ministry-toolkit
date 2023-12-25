@@ -114,7 +114,8 @@ class Service_Schedule_PDF_Generator:
         pdfmetrics.registerFont(TTFont('CalibriBold', calibri_bold_path))
         pdfmetrics.registerFont(TTFont('CambriaBold', cambria_bold_path))
 
-        self.GRAY = (86/255,86/255,86/255)
+        self.GRAY = (86/255,86/255,86/255) 
+        self.GREEN = (48/255, 102/255, 111/255) #30666f
         self.BLACK = (0,0,0)
         self.WHITE = (1,1,1)
         self.YELLOW = (190/255,137/255,0)
@@ -167,7 +168,7 @@ class Service_Schedule_PDF_Generator:
 
         current_hour = start_hour
         hour_pos_x = 0
-        subtitle_pos_x = 40
+        subtitle_pos_x = 42
 
         # Header Row
         # ===============================================
@@ -198,7 +199,7 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.setFillColorRGB(*self.GRAY)
             self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
 
-            self.inv_canvas.setFont("CalibriRegular", 11)
+            self.inv_canvas.setFont("CalibriRegular", 13)
             self.inv_canvas.setFillColorRGB(*self.BLACK)
             self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
@@ -218,8 +219,8 @@ class Service_Schedule_PDF_Generator:
 
         # Section 1
         # ===============================================
-        self.inv_canvas.setFillColorRGB(*self.GRAY)
-        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
+        self.inv_canvas.setFillColorRGB(*self.GREEN)
+        self.inv_canvas.roundRect(-7, current_row, 25, -25, 5, stroke=0, fill=1)
 
         img_scale = (20, 20)
         image_path = os.path.join(self.current_path, "assets", "image", "section_1_icon.png")
@@ -229,9 +230,9 @@ class Service_Schedule_PDF_Generator:
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-6, -(current_row-2))
 
-        self.inv_canvas.setFont("CalibriBold", 17)
-        self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(23, current_row-7, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
+        self.inv_canvas.setFont("CalibriBold", 25)
+        self.inv_canvas.setFillColorRGB(*self.GREEN)
+        self.inv_canvas.drawString(23, current_row-3, f'COMORI DIN CUVÂNTUL LUI DUMNEZEU')
         current_row += row_height
 
         section_1_keys = list(section_1_dict.keys())
@@ -240,14 +241,14 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.setFillColorRGB(*self.GRAY)
             self.inv_canvas.drawString(0, current_row, current_hour)
 
-            self.inv_canvas.setFillColorRGB(*self.GRAY)
+            self.inv_canvas.setFillColorRGB(*self.GREEN)
             self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
 
             available_width = column_two_comment_x - 65
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
-                self.inv_canvas.setFont("CalibriRegular", 11)
+                self.inv_canvas.setFont("CalibriRegular", 13)
                 self.inv_canvas.setFillColorRGB(*self.BLACK)
                 self.inv_canvas.drawString(subtitle_pos_x, current_row, line)
                 current_row += row_height
@@ -270,7 +271,7 @@ class Service_Schedule_PDF_Generator:
         # Section 2
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.YELLOW)
-        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-7, current_row, 25, -25, 5, stroke=0, fill=1)
 
         img_scale = (20, 20)
         image_path = os.path.join(self.current_path, "assets", "image", "section_2_icon.png")
@@ -280,9 +281,9 @@ class Service_Schedule_PDF_Generator:
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-6, -(current_row-2))
 
-        self.inv_canvas.setFont("CalibriBold", 17)
-        self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(23, current_row-7, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
+        self.inv_canvas.setFont("CalibriBold", 25)
+        self.inv_canvas.setFillColorRGB(*self.YELLOW)
+        self.inv_canvas.drawString(23, current_row-3, f'SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
         current_row += row_height
 
         section_2_keys = list(section_2_dict.keys())
@@ -298,7 +299,7 @@ class Service_Schedule_PDF_Generator:
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
-                self.inv_canvas.setFont("CalibriRegular", 11)
+                self.inv_canvas.setFont("CalibriRegular", 13)
                 self.inv_canvas.setFillColorRGB(*self.BLACK)
                 self.inv_canvas.drawString(subtitle_pos_x, current_row, line)
                 current_row += row_height
@@ -321,7 +322,7 @@ class Service_Schedule_PDF_Generator:
         # Section 3
         # ===============================================
         self.inv_canvas.setFillColorRGB(*self.RED)
-        self.inv_canvas.roundRect(-10, current_row, self.text_margins[1]-5, -25, 3, stroke=0, fill=1)
+        self.inv_canvas.roundRect(-7, current_row, 25, -25, 5, stroke=0, fill=1)
 
         img_scale = (20, 20)
         image_path = os.path.join(self.current_path, "assets", "image", "section_3_icon.png")
@@ -331,9 +332,9 @@ class Service_Schedule_PDF_Generator:
         self.inv_canvas.scale(1, -1)
         self.inv_canvas.translate(-6, -(current_row-2))
         
-        self.inv_canvas.setFont("CalibriBold", 17)
-        self.inv_canvas.setFillColorRGB(*self.WHITE)
-        self.inv_canvas.drawString(23, current_row-7, f'VIAȚA DE CREȘTIN')
+        self.inv_canvas.setFont("CalibriBold", 25)
+        self.inv_canvas.setFillColorRGB(*self.RED)
+        self.inv_canvas.drawString(23, current_row-3, f'VIAȚA DE CREȘTIN')
         current_row += row_height
 
         section_3_keys = list(section_3_dict.keys())
@@ -349,7 +350,7 @@ class Service_Schedule_PDF_Generator:
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
-                self.inv_canvas.setFont("CalibriRegular", 11)
+                self.inv_canvas.setFont("CalibriRegular", 13)
                 self.inv_canvas.setFillColorRGB(*self.BLACK)
                 self.inv_canvas.drawString(subtitle_pos_x, current_row, line)
                 current_row += row_height
@@ -368,7 +369,7 @@ class Service_Schedule_PDF_Generator:
             current_hour = self.add_minutes_to_time(current_hour, next_hour)
             current_row += row_height
 
-        return current_row + row_height
+        return current_row + row_height*2
 
     def split_text_into_lines(self, text, max_width):
         lines = []
