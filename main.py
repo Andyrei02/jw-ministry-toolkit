@@ -6,13 +6,15 @@ import requests
 import fitz
 import PyPDF2
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidget, QMessageBox, QGraphicsScene, QGraphicsPixmapItem, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout
+from datetime import datetime
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidget, QMessageBox, QGraphicsScene, QGraphicsPixmapItem, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5 import uic
 
 from config import Config
-from pdf_generator import Testimony_Cart_PDF_Generator, Service_Schedule_PDF_Generator
+from pdf_generator_module.service_schedule_generator import Service_Schedule_PDF_Generator
+from pdf_generator_module.testimony_cart_generator import Testimony_Cart_PDF_Generator
 from parse_workbook import Parse_Meeting_WorkBook
 
 
@@ -22,6 +24,7 @@ class MainApp(QMainWindow):
 		self.config = Config()
 		self.current_path = self.config.current_path
 		ui_path = os.path.join(self.current_path, 'assets', 'ui', 'ui.ui')
+		self.checked_checkboxes = []
 		uic.loadUi(ui_path, self)
 		
 		## loading style file
@@ -38,6 +41,7 @@ class MainApp(QMainWindow):
 		self.default_title = 'Mărturia cu căruciorul'
 		self.output_path = None
 		self.data_dict = {}
+		self.modifed_data_dict = {}
 
 		self.set_cart_widget()
 
@@ -90,12 +94,17 @@ class MainApp(QMainWindow):
 			list_names = text.split('\n')
 			list_names = [item for item in list_names if not (any(char.isdigit() for char in item) or item == "")]
 
-			print(list_names)
 			self.title_entry.setText(list_names[0])
 			self.add_name(list_names[1:])
 
-	def show_workbook(self):
-		data_dict = self.data_dict
+	def show_workbook(self, checked_checkboxes=None):
+		self.work_book_content_widget.clear()
+		if not checked_checkboxes:
+			data_dict = self.data_dict
+		else:
+			data_dict = {key: value for key, value in self.data_dict.items() if key in checked_checkboxes}
+		self.modifed_data_dict = data_dict
+		list_checkboxes = list(self.data_dict)
 		list_tabs = list(data_dict.keys())
 
 		for tab_index in range(len(list_tabs)):
@@ -202,6 +211,76 @@ class MainApp(QMainWindow):
 
 			# Add the tab to the tab widget
 			self.work_book_content_widget.addTab(tab, list_tabs[tab_index])
+		if not checked_checkboxes:
+			self.add_checkboxes(list_checkboxes)
+
+	def add_checkboxes(self, list_weeks):
+		font = QFont()
+		font.setFamily(u'Open Sans')
+		font.setPointSize(11)
+		font.setBold(True)
+		font.setWeight(75)
+		self.grid_layout_check = QGridLayout(self.frame_select_out_week)
+		def create_checkbox(row, cols, name, font):
+			checkBox = QCheckBox(self.frame_select_out_week)
+			checkBox.setChecked(True)
+			checkBox.stateChanged.connect(self.get_checked_checkboxes)
+			checkBox.setObjectName(name)
+			checkBox.setFont(font)
+			checkBox.setText(name)
+			self.grid_layout_check.addWidget(checkBox, row, cols, 1, 1)
+			self.checked_checkboxes.append(name)
+
+		len_weeks = len(list_weeks)
+		list_num_weeks = list(range(0, len_weeks))
+		matrix_weeks = [list_num_weeks[i:i + 2] for i in range(0, len_weeks, 2)]
+
+		for row_index in range(len(matrix_weeks)):
+			create_checkbox(row_index, 0, list_weeks[matrix_weeks[row_index][0]], font)
+			if len(matrix_weeks[row_index]) == 2:
+				create_checkbox(row_index, 1, list_weeks[matrix_weeks[row_index][1]], font)
+
+	def get_checked_checkboxes(self, state):
+		sender = self.sender()
+
+		if state == 2:
+			self.checked_checkboxes.append(sender.text())
+			# Call your function here
+		else:
+			self.checked_checkboxes.remove(sender.text())
+			# Call your function here
+
+		self.checked_checkboxes = self.sort_list_by_dates(self.checked_checkboxes)
+		self.show_workbook(self.checked_checkboxes)
+
+	def sort_list_by_dates(self, date_list):
+		def convert_month_to_number(month_word):
+			month_mapping = {
+				'ianuarie': '01',
+				'februarie': '02',
+				'martie': '03',
+				'aprilie': '04',
+				'mai': '05',
+				'iunie': '06',
+				'iulie': '07',
+				'august': '08',
+				'septembrie': '09',
+				'octombrie': '10',
+				'noiembrie': '11',
+				'decembrie': '12'
+			}
+			return month_mapping.get(month_word, '00')
+
+		def custom_sort(date_str):
+			date_parts = date_str.split(' ')
+			day, month_word = date_parts[:2]
+			day = day.split('-')[0]
+			month = convert_month_to_number(month_word)
+			return datetime.strptime(f'{day}.{month}', '%d.%m').date()
+
+		sorted_list = sorted(date_list, key=custom_sort)
+		return sorted_list
+
 
 	def set_cart_widget(self):
 		self.cart_widget_btn.setEnabled(False)
@@ -265,13 +344,13 @@ class MainApp(QMainWindow):
 			line_edit_list = tab_widget.findChildren(QLineEdit)
 			line_edit_list = [line_edit.text() for line_edit in line_edit_list]
 
-			date_list = list(self.data_dict.keys())
+			date_list = list(self.modifed_data_dict.keys())
 			# for date_index in range(len(date_list)):
-			header_dict = self.data_dict[date_list[tab_index]]["header"]
-			intro_dict = self.data_dict[date_list[tab_index]]["intro"]
-			section_1_dict = self.data_dict[date_list[tab_index]]["section_1"]
-			section_2_dict = self.data_dict[date_list[tab_index]]["section_2"]
-			section_3_dict = self.data_dict[date_list[tab_index]]["section_3"]
+			header_dict = self.modifed_data_dict[date_list[tab_index]]["header"]
+			intro_dict = self.modifed_data_dict[date_list[tab_index]]["intro"]
+			section_1_dict = self.modifed_data_dict[date_list[tab_index]]["section_1"]
+			section_2_dict = self.modifed_data_dict[date_list[tab_index]]["section_2"]
+			section_3_dict = self.modifed_data_dict[date_list[tab_index]]["section_3"]
 			
 			header_dict[list(header_dict.keys())[0]][1] = line_edit_list[label_list.index("Președinte")]
 			for section_key in list(intro_dict.keys()):
@@ -289,7 +368,7 @@ class MainApp(QMainWindow):
 		output_path = os.path.join(self.current_path, 'file.pdf')
 		congregation = 'GLODENI-SUD'
 
-		service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, self.data_dict)
+		service_schedule = Service_Schedule_PDF_Generator(output_path, congregation, self.modifed_data_dict)
 		service_schedule.generate_pdf()
 		QMessageBox.information(self, "PDF Generated", "PDF has been generated successfully!")
 

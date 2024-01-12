@@ -1,6 +1,5 @@
 import os
 from datetime import datetime, timedelta
-
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
@@ -9,92 +8,6 @@ from reportlab.lib.units import cm
 from reportlab.pdfbase.pdfmetrics import stringWidth
 
 from config import Config
-
-
-class Testimony_Cart_PDF_Generator:
-    def __init__(self, output_path, title=None, image=None, name_list=None):
-        self.config = Config()
-        self.current_path = self.config.current_path
-
-        self.title = title
-        self.image = image
-        self.name_list = sorted(name_list, key=self.custom_sort)
-        self.inv_canvas = canvas.Canvas(output_path, pagesize=A4, bottomup=0)
-        self.init_pdf()
-
-    def custom_sort(self, name):
-        # Split the name into first and last names
-        return name.split()
-
-    def init_pdf(self):
-        calibri_regular_path = os.path.join(self.current_path, "assets", "font", "Calibri Regular.ttf")
-        calibri_bold_path = os.path.join(self.current_path, "assets", "font", "Calibri Bold.TTF")
-        cambria_bold_path = os.path.join(self.current_path, "assets", "font", "Cambria-Bold.ttf")
-        pdfmetrics.registerFont(TTFont('CalibriRegular', calibri_regular_path))
-        pdfmetrics.registerFont(TTFont('CalibriBold', calibri_bold_path))
-        pdfmetrics.registerFont(TTFont('CambriaBold', cambria_bold_path))
-
-    def draw_header(self):
-        self.inv_canvas.setFont("CalibriBold", 35)
-        self.inv_canvas.drawCentredString(A4[0]/2, 40, self.title)
-
-        if self.image:
-            img_scale = (350, 300)
-            self.inv_canvas.translate(A4[0]/2, 350)
-            self.inv_canvas.scale(1, -1)
-            self.inv_canvas.drawImage(self.image, -img_scale[0]/2, 0, width=img_scale[0], height=img_scale[1], mask='auto')
-            self.inv_canvas.scale(1, -1)
-            self.inv_canvas.translate(-A4[0]/2, -350)
-
-    def draw_table(self):
-        table_pos = (25, (A4[1]/2)-50)
-        self.inv_canvas.translate(table_pos[0], table_pos[1])
-
-        w_table = A4[0] - 50
-        h_table = (A4[1]/2)
-
-        self.inv_canvas.roundRect(0, 0, w_table, h_table, 15, fill=0)
-
-        if self.name_list:
-            max_rows = 13
-            n_rows = min(max_rows, len(self.name_list))
-            h_row = (h_table / n_rows)
-            w_column = w_table / 2
-
-            current_row = h_row
-            for _ in range(int(n_rows - 1)):
-                self.inv_canvas.line(0, current_row, w_table, current_row)
-                current_row += h_row
-
-            current_row = h_row
-            current_column = 15
-            current_name = 0
-            max_columns = 2
-
-            for column in range(max_columns):
-                for row in range(int(n_rows)):
-                    if current_name >= len(self.name_list):
-                        break
-
-                    current_name += 1
-                    self.inv_canvas.setFont("CalibriRegular", 17)
-                    self.inv_canvas.drawCentredString(current_column, current_row - 10, str(current_name))
-                    self.inv_canvas.setFont("CalibriBold", 20)
-                    self.inv_canvas.drawString(current_column + 20, current_row - 10, str(self.name_list[current_name - 1]))
-
-                    current_row += h_row
-
-                self.inv_canvas.drawCentredString(current_column, current_row - 10, '')
-                current_column += w_column
-                current_row = h_row
-
-        self.inv_canvas.translate(-table_pos[0], -table_pos[1])
-
-    def generate_pdf(self):
-        self.draw_header()
-        self.draw_table()
-        self.inv_canvas.showPage()
-        self.inv_canvas.save()
 
 
 class Service_Schedule_PDF_Generator:
@@ -154,6 +67,7 @@ class Service_Schedule_PDF_Generator:
         current_row = 0
         row_height = 15
         section_title_height = 35
+        dot_size = 3.5
         center_content_x = self.text_margins[1]/2
         column_two_comment_x = self.text_margins[1] - self.content_pos[0] - 150
 
@@ -197,7 +111,7 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.drawString(0, current_row, current_hour)
 
             self.inv_canvas.setFillColorRGB(*self.GRAY)
-            self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
+            self.inv_canvas.circle(35, current_row-3, dot_size, stroke=0, fill=1)
 
             self.inv_canvas.setFont("CalibriRegular", 13)
             self.inv_canvas.setFillColorRGB(*self.BLACK)
@@ -242,9 +156,9 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.drawString(0, current_row, current_hour)
 
             self.inv_canvas.setFillColorRGB(*self.GREEN)
-            self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
+            self.inv_canvas.circle(35, current_row-3, dot_size, stroke=0, fill=1)
 
-            available_width = column_two_comment_x - 65
+            available_width = column_two_comment_x - 120
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
@@ -293,9 +207,9 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.drawString(0, current_row, current_hour)
 
             self.inv_canvas.setFillColorRGB(*self.YELLOW)
-            self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
+            self.inv_canvas.circle(35, current_row-3, dot_size, stroke=0, fill=1)
 
-            available_width = column_two_comment_x - 65
+            available_width = column_two_comment_x - 150
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
@@ -338,15 +252,15 @@ class Service_Schedule_PDF_Generator:
         current_row += row_height
 
         section_3_keys = list(section_3_dict.keys())
-        for key in section_3_keys:
+        for key in section_3_keys[:-2]:
             self.inv_canvas.setFont("CalibriBold", 9)
             self.inv_canvas.setFillColorRGB(*self.GRAY)
             self.inv_canvas.drawString(0, current_row, current_hour)
 
             self.inv_canvas.setFillColorRGB(*self.RED)
-            self.inv_canvas.circle(35, current_row-3, 2.5, stroke=0, fill=1)
+            self.inv_canvas.circle(35, current_row-3, dot_size, stroke=0, fill=1)
 
-            available_width = column_two_comment_x - 65
+            available_width = column_two_comment_x - 150
             lines = self.split_text_into_lines(key, available_width)
             name_row = current_row
             for line in lines:
@@ -355,6 +269,33 @@ class Service_Schedule_PDF_Generator:
                 self.inv_canvas.drawString(subtitle_pos_x, current_row, line)
                 current_row += row_height
             current_row -= row_height
+
+            self.inv_canvas.setFont("CalibriBold", 8)
+            x_comment = column_two_comment_x - stringWidth(section_3_dict[key][1], 'CalibriBold', 8)
+            self.inv_canvas.setFillColorRGB(*self.GRAY)
+            self.inv_canvas.drawString(x_comment, current_row, '')
+
+            x_name = column_two_comment_x - 15
+            self.inv_canvas.setFillColorRGB(*self.BLACK)
+            self.inv_canvas.setFont("CalibriBold", 11)
+            self.inv_canvas.drawString(x_name, name_row, section_3_dict[key][1])
+            next_hour = int(section_3_dict[key][0]) if int(section_3_dict[key][0]) != 0 else 5
+            current_hour = self.add_minutes_to_time(current_hour, next_hour)
+            current_row += row_height
+
+        current_row += row_height/2
+        
+        for key in section_3_keys[-2:]:
+            self.inv_canvas.setFont("CalibriBold", 9)
+            self.inv_canvas.setFillColorRGB(*self.GRAY)
+            self.inv_canvas.drawString(0, current_row, current_hour)
+
+            self.inv_canvas.setFillColorRGB(*self.GRAY)
+            self.inv_canvas.circle(35, current_row-3, dot_size, stroke=0, fill=1)
+
+            self.inv_canvas.setFont("CalibriRegular", 13)
+            self.inv_canvas.setFillColorRGB(*self.BLACK)
+            self.inv_canvas.drawString(subtitle_pos_x, current_row, key)
 
             self.inv_canvas.setFont("CalibriBold", 8)
             x_comment = column_two_comment_x - stringWidth(section_3_dict[key][1], 'CalibriBold', 8)
@@ -382,14 +323,14 @@ class Service_Schedule_PDF_Generator:
                 line += words.pop(0)
             lines.append(line)
 
-        if len(lines) > 2:
-            lines = lines[:2]
-            lines[-1] = lines[-1][:-3] + '...'
+        # if len(lines) > 2:
+        #     lines = lines[:2]
+        #     lines[-1] = lines[-1][:-3] + '...'
 
-        if len(lines) > 1:
-            if self.inv_canvas.stringWidth(lines[-1], 'CalibriRegular', 11) < 140:
-                lines.pop(-1)
-                lines[-1] = lines[-1][:-3] + '...'
+        # if len(lines) > 1:
+        #     if self.inv_canvas.stringWidth(lines[-1], 'CalibriRegular', 11) < 140:
+        #         lines.pop(-1)
+        #         lines[-1] = lines[-1][:-3] + '...'
 
         return lines
 

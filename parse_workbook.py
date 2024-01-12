@@ -75,23 +75,39 @@ class Parse_Meeting_WorkBook(QObject):
 
 		return body
 
+	def increment_id(self, id_value):
+		match = re.match(r'\D*(\d+)', id_value)
+
+		if match:
+			numeric_part = int(match.group(1))
+			modified_id = f'p{numeric_part + 1}'
+			return modified_id
+		else:
+			return None
+
 	def get_data_list_section_1(self, soup):
 		dc_music = soup.find("h3", {"class": "dc-icon--music"})
 		dc_music = dc_music.text.split('|')
+		intro_text = dc_music[1].strip()
+		time = self.find_time_from_p_tag(intro_text)
+		pattern = r'\(\d+\xa0min\.\)'
+		format_intro = re.sub(pattern, '', intro_text)
 
-		row_list = [["0", dc_music[0].strip()], ["0", dc_music[1].strip()]]
+		row_list = [["5", dc_music[0].strip()], [str(time), format_intro]]
 
 		return row_list
 
 	def get_data_list_section_2(self, soup):
-
 		section_1_text = soup.find("div", {"class": "dc-icon--gem"})
 		title = section_1_text.text
 		# items
 		s1_items = soup.find_all("h3", {"class": "du-color--teal-700"}, recursive=True)
 		row_list = []
 		for i in s1_items:
-			row_list.append(["0", i.text.strip()])
+			current_id = i.get('id')
+			time = soup.find('p', {'id': self.increment_id(current_id)})
+			time = self.find_time_from_p_tag(time)
+			row_list.append([str(time), i.text.strip()])
 
 		return row_list
 
@@ -102,23 +118,36 @@ class Parse_Meeting_WorkBook(QObject):
 		s2_items = soup.find_all("h3", {"class": "du-color--gold-700"})
 		row_list = []
 		for i in s2_items:
-			row_list.append(["0", i.text.strip()])
+			current_id = i.get('id')
+			time = soup.find('p', {'id': self.increment_id(current_id)})
+			time = self.find_time_from_p_tag(time)
+			row_list.append([str(time), i.text.strip()])
 
 		return row_list
 
 	def get_data_list_section_4(self, soup):
+		dc_music = soup.find_all("h3", {"class": "dc-icon--music"})
+		dc_music.append(soup.find("span", {"class": "dc-icon--music"}))
+
 		section_3_text = soup.find("div", {"class": "dc-icon--sheep"})
 		title = section_3_text.text
 		# items
 		s3_items = soup.find_all("h3", {"class": "du-color--maroon-600"})
 		row_list = []
+		row_list.append(["5", dc_music[1].text])
 		for i in s3_items:
-			row_list.append(["0", i.text.strip()])
+			current_id = i.get('id')
+			time = soup.find('p', {'id': self.increment_id(current_id)})
+			time = self.find_time_from_p_tag(time)
+			row_list.append([str(time), i.text.strip()])
 
+		row_list.append(["5", "Cuvinte de încheiere"])
+		row_list.append(["5", dc_music[2].text])
 		return row_list
 
-	def find_time_from_p_tag(self, p_tag):
-		text = p_tag.get_text()
+	def find_time_from_p_tag(self, text):
+		if type(text) != str:
+			text = text.get_text()
 		match = re.search(r'\((\d+)\s+min\.\)', text)
 		if match:
 			time_str = match.group(1)

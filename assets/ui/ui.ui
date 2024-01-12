@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>802</width>
+    <width>808</width>
     <height>711</height>
    </rect>
   </property>
@@ -1014,13 +1014,22 @@
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
-                <widget class="QWidget" name="tab_3">
+                <property name="tabBarAutoHide">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="link_tab">
                  <attribute name="title">
-                  <string>Page</string>
+                  <string>Link</string>
                  </attribute>
                  <layout class="QVBoxLayout" name="verticalLayout_13">
-                  <item>
+                  <item alignment="Qt::AlignTop">
                    <widget class="QLabel" name="label_6">
+                    <property name="font">
+                     <font>
+                      <family>Open Sans</family>
+                      <pointsize>13</pointsize>
+                     </font>
+                    </property>
                     <property name="text">
                      <string>Enter link to workbook</string>
                     </property>
@@ -1029,14 +1038,14 @@
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item alignment="Qt::AlignTop">
                    <widget class="QLineEdit" name="entry_link_workbook"/>
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="tab">
+                <widget class="QWidget" name="progress_tab">
                  <attribute name="title">
-                  <string>Tab 1</string>
+                  <string>Download</string>
                  </attribute>
                  <layout class="QVBoxLayout" name="verticalLayout_11">
                   <item>
@@ -1053,6 +1062,12 @@
                      </property>
                      <item>
                       <widget class="QLabel" name="label_7">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                        </font>
+                       </property>
                        <property name="text">
                         <string>Descărcați caietul pentru luna aceasta</string>
                        </property>
@@ -1103,6 +1118,12 @@
                      </item>
                      <item>
                       <widget class="QLabel" name="progressbar_status_label">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                        </font>
+                       </property>
                        <property name="text">
                         <string/>
                        </property>
@@ -1116,57 +1137,22 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="tab_2">
+                <widget class="QWidget" name="select_week_tab">
                  <attribute name="title">
-                  <string>Tab 2</string>
+                  <string>Select_week</string>
                  </attribute>
                  <layout class="QVBoxLayout" name="verticalLayout_12">
                   <item alignment="Qt::AlignTop">
                    <widget class="QFrame" name="frame_select_out_week">
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
                     <property name="frameShape">
                      <enum>QFrame::StyledPanel</enum>
                     </property>
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
                     </property>
-                    <layout class="QGridLayout" name="gridLayout_5">
-                     <item row="0" column="1">
-                      <widget class="QCheckBox" name="checkBox_3">
-                       <property name="font">
-                        <font>
-                         <family>Open Sans</family>
-                         <pointsize>11</pointsize>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>23-29 octombrie</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <widget class="QCheckBox" name="checkBox">
-                       <property name="font">
-                        <font>
-                         <family>Open Sans</family>
-                         <pointsize>11</pointsize>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>9-15 octombrie</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
                    </widget>
                   </item>
                  </layout>
