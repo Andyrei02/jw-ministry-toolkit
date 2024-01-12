@@ -48,8 +48,8 @@ Contributions are welcome! If you have suggestions, bug reports, or would like t
 	* [x] sort names 
 	* [ ] optimize preview
 * workbook frame
-	* [ ] function to select output pages (checkbox to select)
-	* [ ] after file creation show success information
+	* [x] function to select output pages (checkbox to select)
+	* [x] after file creation show success information
 
 
 ## Author
