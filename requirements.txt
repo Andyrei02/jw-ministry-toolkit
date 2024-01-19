@@ -4,3 +4,4 @@ requests
 lxml
 beautifulsoup4
 reportlab
+PyPDF2

@@ -303,6 +303,7 @@ class Service_Schedule_PDF_Generator:
             self.inv_canvas.drawString(x_comment, current_row, '')
 
             x_name = column_two_comment_x - 15
+            name_row = current_row
             self.inv_canvas.setFillColorRGB(*self.BLACK)
             self.inv_canvas.setFont("CalibriBold", 11)
             self.inv_canvas.drawString(x_name, name_row, section_3_dict[key][1])
