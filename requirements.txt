@@ -5,3 +5,4 @@ lxml
 beautifulsoup4
 reportlab
 PyPDF2
+python-dotenv
