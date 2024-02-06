@@ -1,88 +1,104 @@
 /*= MainWindow 
 ===========================================*/
 #MainWindow{
-	background-color: #171717;
-	color: #dcd9d2;
-	border-radius: 10px;
-	border: none;
+    background-color: #171717;
+    color: #dcd9d2;
+    border-radius: 10px;
+    border: none;
 }
 
 QTabWidget{
-	background-color: #8a9bb1;
-	border: none;
-	border-radius: 10px;
+    background-color: #333333;
+    border: none;
+    border-radius: 10px;
+}
+
+QTabWidget::pane{
+    background-color: #333333;
+    border: none;
+    border-radius: 10px
+}
+QTabBar::tab{
+    background-color: #25262a; 
+    color: white; 
+    border-radius: 5px;
+    padding: 5px;
+}
+QTabBar::tab:selected{
+    background-color: #333333; 
+    color: white;
 }
 
 QScrollArea{
-	background-color: #171717;
-	border: none;
-	border-radius: 10px;
+    background-color: #171717;
+    border: none;
+    border-radius: 10px;
 }
 
 QWidget{
-	border: none;
+    border: none;
 }
 
 QFrame{
-	border: none;
-	color: #dcd9d2;
+    border: none;
+    color: #dcd9d2;
 }
 
 QLineEdit{
-	border: none;
-	border-radius: 10px;
-	padding: 5px;
-	background-color: #4e4c48;
-	color: #dcd9d2;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #4e4c48;
+    color: #dcd9d2;
 }
 
 QPushButton {
-	color: #dcd9d2;
-	border-radius: 10px;
-	border: none;
-	padding: 5px 10px;
+    color: #dcd9d2;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 10px;
 }
 
 QListWidget{
-	background-color: #4e4c48;
-	border-radius: 10px;
+    background-color: #4e4c48;
+    border-radius: 10px;
 }
 
 QListWidget::item {
-	background-color:  #434c59;
-	padding: 2px;
-	border-radius: 5px
+    background-color:  #434c59;
+    padding: 2px;
+    border-radius: 5px
 }
 
 QListWidget::item:selected {
-	background-color: #39414c;
-	color: #dcd9d2;
-	border-radius: 5px
+    background-color: #39414c;
+    color: #dcd9d2;
+    border-radius: 5px
 }
 
 #frame_version{
-	background-color: #25262a;
-	border-radius: 10px;
+    background-color: #25262a;
+    border-radius: 10px;
 }
 
 
 /*= QMesageBox 
 ===========================================*/
 QMessageBox{
-	background-color: #25262a;
-	color: #fff;
+    background-color: #25262a;
+    color: #fff;
 }
 
 QMessageBox QPushButton {
-	background-color: #f5b303;
+    background-color: #f5b303;
 }
 
 QMessageBox QPushButton:hover {
-	background-color: #d49303;
+    background-color: #d49303;
 }
 
 QMessageBox QPushButton:pressed {
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 
@@ -90,156 +106,156 @@ QMessageBox QPushButton:pressed {
 /*= Menu 
 ===========================================*/
 #full_menu_widget{
-	background-color: #25262a;
-	border-radius: 10px;
+    background-color: #25262a;
+    border-radius: 10px;
 }
 
 #icon_only_widget{
-	background-color: #25262a;
-	border-radius: 10px;
+    background-color: #25262a;
+    border-radius: 10px;
 }
 
 #cart_widget_btn:hover{
-	background-color: #555555;
+    background-color: #555555;
 }
 
 #cart_widget_btn:pressed{
-	background-color: #222222;
+    background-color: #222222;
 }
 #cart_widget_btn:disabled{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #workbook_widget_btn:hover{
-	background-color: #555555;
+    background-color: #555555;
 }
 
 #workbook_widget_btn:pressed{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #workbook_widget_btn:disabled{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #style_btn:hover{
-	background-color: #555555;
+    background-color: #555555;
 }
 
 #style_btn:pressed{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #style_btn:disabled{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #language_btn:hover{
-	background-color: #555555;
+    background-color: #555555;
 }
 
 #language_btn:pressed{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 #language_btn:disabled{
-	background-color: #222222;
+    background-color: #222222;
 }
 
 
 /*= widget cart widget
 ===========================================*/
 #frame_title_image{
-	background-color: #2b2b2e;
-	border-radius: 10px;
+    background-color: #2b2b2e;
+    border-radius: 10px;
 }
 
 #upload_pdf_button{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #upload_pdf_button:hover{
-	background-color: #d49303;
-	color: #171717;
+    background-color: #d49303;
+    color: #171717;
 }
 
 #upload_pdf_button:pressed{
-	background-color: #b27e03;
-	color: #171717;
+    background-color: #b27e03;
+    color: #171717;
 }
 
 #browse_img_button{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #browse_img_button:hover{
-	background-color: #d49303;
+    background-color: #d49303;
 }
 
 #browse_img_button:pressed{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #add_name_button{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #add_name_button:hover{
-	background-color: #d49303;
+    background-color: #d49303;
 }
 
 #add_name_button:pressed{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #remove_name_button{
-	background-color: #AA0000;
+    background-color: #AA0000;
 }
 
 #remove_name_button:hover{
-	background-color: #880000;
+    background-color: #880000;
 }
 
 #remove_name_button:pressed{
-	background-color: #660000;
+    background-color: #660000;
 }
 
 #browse_output_button{
-	background-color: #48578e;
+    background-color: #48578e;
 }
 
 #browse_output_button:hover{
-	background-color: #404e7f;
+    background-color: #404e7f;
 }
 
 #browse_output_button:pressed{
-	background-color: #2f3b64;
+    background-color: #2f3b64;
 }
 
 #generate_cart_button{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #generate_cart_button:hover{
-	background-color: #d49303;
+    background-color: #d49303;
 }
 
 #generate_cart_button:pressed{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #frame_list_preview{
-	background-color: #2b2b2e;
-	border-radius: 10px;
+    background-color: #2b2b2e;
+    border-radius: 10px;
 }
 
 #frame_output{
-	background-color: #2b2b2e;
-	border-radius: 10px;
+    background-color: #2b2b2e;
+    border-radius: 10px;
 }
 
 
@@ -248,58 +264,71 @@ QMessageBox QPushButton:pressed {
 /*= widget workbook widget
 ===========================================*/
 #frame_generate_workbook{
-	background-color: #2b2b2e;
-	border-radius: 10px;
+    background-color: #2b2b2e;
+    border-radius: 10px;
+}
+
+#progress_tab{
+    background-color: #2b2b2e;
+    border-radius: 10px;
+}
+
+#select_week_tab{
+    background-color: #2b2b2e;
+    border-radius: 10px;
 }
 
 #frame_parse_workbook{
-	background-color: #2b2b2e;
-	border-radius: 10px;
+    background-color: #2b2b2e;
+    border-radius: 10px;
 }
 
 #work_book_content_widget{
-	background-color: #333333;
-	border-radius: 10px;
+    background-color: #333333;
+    border-radius: 10px;
 }
 
 #generate_workbook_button{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #generate_workbook_button:hover{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #generate_workbook_button:pressed{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #button_parsing_workbook{
-	background-color: #f5b303;
-	color: #171717;
+    background-color: #f5b303;
+    color: #171717;
 }
 
 #button_parsing_workbook:hover{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #button_parsing_workbook:pressed{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #button_parsing_workbook:disabled{
-	background-color: #b27e03;
+    background-color: #b27e03;
 }
 
 #progressbar_workbook{
-	border: 2px solid grey;
-	border-radius: 5px;
-	text-align: center;
+    border: 2px solid #4e4c48;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    background-color: #4e4c48;
 }
 
 #progressbar_workbook::chunk {
-	background-color: #f5b303;
-	width: 10px;
-	margin: 0.5px;
+    background-color: #f5b303;
+    border-radius: 5px;
+    width: 10px;
+    margin: 0.5px;
 }

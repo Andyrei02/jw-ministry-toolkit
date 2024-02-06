@@ -1010,39 +1010,13 @@
             <widget class="QWidget" name="widget_2" native="true">
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <item alignment="Qt::AlignTop">
-               <widget class="QTabWidget" name="tabWidget">
+               <widget class="QTabWidget" name="workbook_tabWidget">
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
                 <property name="tabBarAutoHide">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="link_tab">
-                 <attribute name="title">
-                  <string>Link</string>
-                 </attribute>
-                 <layout class="QVBoxLayout" name="verticalLayout_13">
-                  <item alignment="Qt::AlignTop">
-                   <widget class="QLabel" name="label_6">
-                    <property name="font">
-                     <font>
-                      <family>Open Sans</family>
-                      <pointsize>13</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Enter link to workbook</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item alignment="Qt::AlignTop">
-                   <widget class="QLineEdit" name="entry_link_workbook"/>
-                  </item>
-                 </layout>
-                </widget>
                 <widget class="QWidget" name="progress_tab">
                  <attribute name="title">
                   <string>Download</string>
@@ -1057,24 +1031,23 @@
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_9">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
                      <property name="leftMargin">
-                      <number>9</number>
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
                      </property>
                      <item>
-                      <widget class="QLabel" name="label_7">
-                       <property name="font">
-                        <font>
-                         <family>Open Sans</family>
-                         <pointsize>12</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Descărcați caietul pentru luna aceasta</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignCenter</set>
-                       </property>
-                      </widget>
+                      <widget class="QLineEdit" name="entry_link_workbook"/>
                      </item>
                      <item>
                       <widget class="QFrame" name="frame_3">
@@ -1114,22 +1087,6 @@
                          </widget>
                         </item>
                        </layout>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="progressbar_status_label">
-                       <property name="font">
-                        <font>
-                         <family>Open Sans</family>
-                         <pointsize>11</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignCenter</set>
-                       </property>
                       </widget>
                      </item>
                     </layout>
