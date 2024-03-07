@@ -29,7 +29,7 @@ class MainApp(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        self.label_version_app.setText(f"v. {self.config.get_item('version')}")
+        self.label_version_app.setText(f"v. {self.config.get_item('version')}") 
         self.full_menu_widget.setHidden(True)
         self.default_title = 'Mărturia cu căruciorul'
 

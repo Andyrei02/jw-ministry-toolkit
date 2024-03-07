@@ -264,13 +264,14 @@ class WorkbookGenerator:
         workbook_url = self.main_app.entry_link_workbook.text()
         self.save_link(workbook_url)
 
-        self.worker_thread = WorkerThread(self, site_domain, workbook_url)
+        self.worker_thread = WorkerThread(self.main_app, site_domain, workbook_url)
         self.worker_thread.download_progress_signal.connect(self.update_download_progress)
         self.worker_thread.finished.connect(self.parsing_finished)
         self.worker_thread.start()
 
     def save_link(self, url):
         pass
+
     def update_download_progress(self, value):
         self.main_app.progressbar_workbook.setValue(value)
         # self.progress_label.setText(f"Downloading: {value}%")
@@ -284,9 +285,9 @@ class WorkbookGenerator:
 class WorkerThread(QThread):
     download_progress_signal = pyqtSignal(int)  # Add this line
 
-    def __init__(self, parent_widget, domain, url):
+    def __init__(self, main_app, domain, url):
         super().__init__()
-        self.parent_widget = parent_widget
+        self.main_app = main_app
         self.domain = domain
         self.url = url
         self.data_dict = {}
@@ -298,7 +299,9 @@ class WorkerThread(QThread):
         try:
             self.data_dict = self.parser.get_dict_data()
         except requests.exceptions.MissingSchema:
-            QMessageBox.information(self.parent_widget, "Info Download", "Error! Please enter correct lik in link tab.")
+            QMessageBox.information(self.main_app, "Info Download", "Error! Please enter correct lik in link tab.")
+        except requests.exceptions.ConnectionError:
+            QMessageBox.information(self.main_app, "Info Download", "Connection Error! Please check your connection")
 
     def emit_download_progress(self, value):
         self.download_progress_signal.emit(value)

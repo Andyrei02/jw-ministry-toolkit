@@ -50,9 +50,21 @@ class Parse_Meeting_WorkBook(QObject):
         body = soup.find("div", {"class": "bodyTxt"})
 
         # Music list:
-        dc_music = body.find_all("h3", {"class": "dc-icon--music"})
-        dc_music.append(body.find("span", {"class": "dc-icon--music"}))
-        dc_music = [i.text for i in dc_music]
+        # dc_music = body.find_all("h3", {"class": "dc-icon--music"})
+        # try:
+        #     dc_music.append(body.find("span", {"class": "dc-icon--music"}))
+        #     dc_music = [i.text for i in dc_music]
+        # except:
+        #     dc_music.append(body.find("a", {"class": "dc-icon--music"}))
+        #     dc_music = [i.text for i in dc_music]
+        # dc_music = body.find_all(class_="dc-icon--music")
+        # music_list = []
+        # for i in dc_music:
+        #     music = i.find("a")
+        #     if music:
+        #         music_list.append(music.text.strip())
+        #     else:
+        #         music_list.append(i.text.strip())
 
         # Section 1
         # section 1 Text
@@ -125,7 +137,7 @@ class Parse_Meeting_WorkBook(QObject):
 
         return row_list
 
-    def get_data_list_section_4(self, soup):
+    def get_data_list_section_4(self, soup, music_list):
         dc_music = soup.find_all("h3", {"class": "dc-icon--music"})
         dc_music.append(soup.find("span", {"class": "dc-icon--music"}))
 
@@ -134,7 +146,7 @@ class Parse_Meeting_WorkBook(QObject):
         # items
         s3_items = soup.find_all("h3", {"class": "du-color--maroon-600"})
         row_list = []
-        row_list.append(["5", dc_music[1].text])
+        row_list.append(["5", music_list[1]])
         for i in s3_items:
             current_id = i.get('id')
             time = soup.find('p', {'id': self.increment_id(current_id)})
@@ -142,7 +154,7 @@ class Parse_Meeting_WorkBook(QObject):
             row_list.append([str(time), i.text.strip()])
 
         row_list.append(["5", "Cuvinte de încheiere"])
-        row_list.append(["5", dc_music[2].text])
+        row_list.append(["5", music_list[2]])
         return row_list
 
     def find_time_from_p_tag(self, text):
@@ -161,6 +173,15 @@ class Parse_Meeting_WorkBook(QObject):
         body = self.get_section_list(soup_article)
         date, header = self.get_article_header(soup_article)
 
+        dc_music = body.find_all(class_="dc-icon--music")
+        music_list = []
+        for i in dc_music:
+            music = i.find("a")
+            if music:
+                music_list.append(music.text.strip())
+            else:
+                music_list.append(i.text.strip())
+        
         intro = {}
         for item in self.get_data_list_section_1(body):
             intro[item[1]] = [item[0], '']
@@ -174,7 +195,7 @@ class Parse_Meeting_WorkBook(QObject):
             section_2[item[1]] = [item[0], '']
 
         section_3 = {}
-        for item in self.get_data_list_section_4(body):
+        for item in self.get_data_list_section_4(body, music_list):
             section_3[item[1]] = [item[0], '']
 
         return date, {"header": {header: [0, '']}, "intro": intro, "section_1": section_1, "section_2": section_2, "section_3": section_3}
@@ -212,6 +233,8 @@ class Parse_Meeting_WorkBook(QObject):
         total_pages = len(page_list)
         downloaded_pages = 0
         data_dict = {}
+
+        # self.download_page(['29 aprilie – 5 mai', '/ro/biblioteca/caiet-pentru-intrunire/martie-aprilie-2024-mwb/Programul-%C3%AEntrunirii-Via%C8%9Ba-cre%C8%99tin%C4%83-%C8%99i-predicarea-29-aprilie-5-mai-2024/'])
 
         # Use ThreadPoolExecutor for concurrent downloads
         with concurrent.futures.ThreadPoolExecutor() as executor:
