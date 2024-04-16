@@ -89,18 +89,23 @@ class ServideScheduleGenerator:
                 current_name += 1
                 self.inv_canvas.setFont("CalibriBold", 20)
                 names = str(names_list[current_name - 1])
-                for name in names.split("/"):
+                names_group = names.split("/")
+                for name in names_group:
                     name = name.strip()
                     name_width = self.inv_canvas.stringWidth(name, "CalibriBold", 20)
+                    name_height = 10
                     if name_width > longest_name_width:
                         longest_name_width = name_width + 10
                     center_x = current_column
-                    center_y = current_row - h_row / 2 + 10  # Adjusted for vertical centering
-                    names = name.split("/")
-                    print(name)
-                    center_y = current_row - h_row / 2 + 10
+                    center_y = current_row - (h_row / 2) + 5
+                    if len(names_group) > 1:
+                        if name != names_group[-1].strip():
+                            print(name)
+                            center_y -= name_height
+                            current_row += 10
+                        else:
+                            current_row -= 10
                     self.inv_canvas.drawString(center_x, center_y, name)
-                    current_row += 20
                 current_row += h_row
 
             self.inv_canvas.line(longest_name_width, h_table, longest_name_width, 0)
@@ -116,6 +121,7 @@ class ServideScheduleGenerator:
 
             # Add word wrap for text
             self.inv_canvas.setFont("CalibriBold", 16)
+            icon_size = min(column_width, h_row)
             current_row = h_row
             current_column = longest_name_width
             for name in names_list:
@@ -134,7 +140,7 @@ class ServideScheduleGenerator:
                         self.inv_canvas.saveState()
                         self.inv_canvas.translate(cell_x + column_width / 2, cell_y + 20 / 2)  # Translate to center of the cell
                         self.inv_canvas.rotate(180)  # Rotate the canvas 180 degrees
-                        self.inv_canvas.drawImage(png_image, -column_width / 2, -20 / 2, 46, height=46, mask="auto")
+                        self.inv_canvas.drawImage(png_image, -column_width / 2, -20 / 2, icon_size, height=icon_size, mask="auto")
                         self.inv_canvas.restoreState()
                     elif cell == "equalizer":
                         text = ""
@@ -142,7 +148,7 @@ class ServideScheduleGenerator:
                         self.inv_canvas.saveState()
                         self.inv_canvas.translate(cell_x + column_width / 2, cell_y + 20 / 2)  # Translate to center of the cell
                         self.inv_canvas.rotate(180)  # Rotate the canvas 180 degrees
-                        self.inv_canvas.drawImage(png_image, -column_width / 2, -20 / 2, 46, height=46, mask="auto")
+                        self.inv_canvas.drawImage(png_image, -column_width / 2, -20 / 2, icon_size, height=icon_size, mask="auto")
                         self.inv_canvas.restoreState()
                     wrapped_text = self.wrap_text(text, column_width)
                     for line in wrapped_text:

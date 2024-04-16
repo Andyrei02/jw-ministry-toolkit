@@ -50,7 +50,7 @@ class DateRangeSelector(QWidget):
 
         while current_date <= end_date:
             if current_date.dayOfWeek() == 2 or current_date.dayOfWeek() == 7:
-                date_list.append(current_date.toString("dd.MM.yy"))
+                date_list.append(current_date.toString("dd.MM"))
             current_date = current_date.addDays(1)
         
         for label_index in range(len(label_date_list)):
@@ -101,8 +101,6 @@ class DateRangeSelector(QWidget):
         output_path = os.path.join(self.current_path, 'test.pdf')
         serv_sched_Gen = ServideScheduleGenerator(output_path, title, subtitle, self.date_list, final_dict)
         serv_sched_Gen.generate_pdf()
-        print(self.date_list)
-        print(final_dict)
 
 
 def main():
