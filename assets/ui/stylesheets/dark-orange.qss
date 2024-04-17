@@ -59,6 +59,59 @@ QPushButton {
     padding: 5px 10px;
 }
 
+QComboBox {
+    background-color: #333;
+    color: #f0f0f0;
+    border: 2px solid #555;
+    border-radius: 5px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #444;
+    color: #f0f0f0;
+    selection-background-color: #555;
+    padding: 5px;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+QComboBox::down-arrow {
+    image: url(assets/image/down_arrow.png); /* Customize with your own arrow image */
+    width: 10px; /* Adjust arrow width */
+    height: 10px; /* Adjust arrow height */
+}
+
+
+QDateEdit {
+    background-color: #333;
+    color: #f0f0f0;
+    font-family: Arial;
+    font-size: 14px;
+    border: 2px solid #666;
+    border-radius: 5px;
+}
+QDateEdit::drop-down {
+    border: none;
+}
+QDateEdit::down-arrow {
+    image: url(assets/image/down_arrow.png);
+    width: 10px;
+    height: 10px;
+}
+QDateEdit QAbstractItemView {
+    background-color: #555; /* Dark gray for dropdown calendar item background */
+    color: #f0f0f0; /* Light gray for dropdown calendar item text */
+    selection-background-color: #666; /* Darker color when item is selected in dropdown calendar */
+    selection-color: #fff; /* Text color of selected item */
+    alternate-background-color: #444; /* Alternate background color for even-numbered items */
+    border: 1px solid #666; /* Border around dropdown calendar */
+    border-radius: 5px; /* Round border for dropdown calendar */
+    padding: 5px; /* Padding inside dropdown calendar */
+    font-family: Arial; /* Font family for dropdown calendar */
+    font-size: 12px; /* Font size for dropdown calendar */
+}
+
 QListWidget{
     background-color: #4e4c48;
     border-radius: 10px;
@@ -135,6 +188,18 @@ QMessageBox QPushButton:pressed {
 }
 
 #workbook_widget_btn:disabled{
+    background-color: #222222;
+}
+
+#service_schedule_widget_btn:hover{
+    background-color: #555555;
+}
+
+#service_schedule_widget_btn:pressed{
+    background-color: #222222;
+}
+
+#service_schedule_widget_btn:disabled{
     background-color: #222222;
 }
 
@@ -331,4 +396,61 @@ QMessageBox QPushButton:pressed {
     border-radius: 5px;
     width: 10px;
     margin: 0.5px;
+}
+
+/*= widget service schedule widget
+===========================================*/
+
+#frame_12{
+    background-color: #333333;
+    border-radius: 10px;
+}
+
+#add_new_row_btn{
+    background-color: #f5b303;
+    color: #171717;
+}
+
+#add_new_row_btn:hover{
+    background-color: #d49303;
+}
+
+#add_new_row_btn:pressed{
+    background-color: #b27e03;
+}
+
+#update_date_btn{
+    background-color: #f5b303;
+    color: #171717;
+}
+
+#update_date_btn:hover{
+    background-color: #d49303;
+}
+
+#update_date_btn:pressed{
+    background-color: #b27e03;
+}
+
+#generate_service_schedule_pdf_btn{
+    background-color: #f5b303;
+    color: #171717;
+}
+
+#generate_service_schedule_pdf_btn:hover{
+    background-color: #d49303;
+}
+
+#generate_service_schedule_pdf_btn:pressed{
+    background-color: #b27e03;
+}
+
+#scrollAreaWidgetContents{
+    background-color: #333333;
+    border-radius: 10px;
+}
+
+#frame_2{
+    background-color: #333333;
+    border-radius: 10px;
 }

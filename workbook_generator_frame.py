@@ -7,7 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QFont
 
 from parse_workbook import Parse_Meeting_WorkBook
-from pdf_generator_module.service_schedule_generator import Service_Schedule_PDF_Generator
+from pdf_generator_module.service_workbook_generator import Service_Workbook_PDF_Generator
 
 
 
