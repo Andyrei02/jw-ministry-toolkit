@@ -9,7 +9,10 @@ class Config:
             self.main_path = os.path.dirname(os.path.dirname(sys.executable))
         else:
             self.main_path = os.path.dirname(os.path.dirname(__file__))
+
         self.temp_path = os.path.join(self.main_path, 'temp_files')
+        if not os.path.exists(self.temp_path):
+            os.makedirs(self.temp_path)
 
         self.ui_path = os.path.join(self.main_path, 'resources', 'ui_design', 'user_interface.ui')
         self.styles_path = os.path.join(self.main_path, 'resources', 'ui_design', 'stylesheets')
