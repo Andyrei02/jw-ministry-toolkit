@@ -77,7 +77,7 @@ QComboBox::drop-down {
     border: none;
 }
 QComboBox::down-arrow {
-    image: url(assets/image/down_arrow.png); /* Customize with your own arrow image */
+    image: url(resouces/images/down_arrow.png); /* Customize with your own arrow image */
     width: 10px; /* Adjust arrow width */
     height: 10px; /* Adjust arrow height */
 }
@@ -95,21 +95,21 @@ QDateEdit::drop-down {
     border: none;
 }
 QDateEdit::down-arrow {
-    image: url(assets/image/down_arrow.png);
+    image: url(resouces/images/down_arrow.png);
     width: 10px;
     height: 10px;
 }
 QDateEdit QAbstractItemView {
-    background-color: #555; /* Dark gray for dropdown calendar item background */
-    color: #f0f0f0; /* Light gray for dropdown calendar item text */
-    selection-background-color: #666; /* Darker color when item is selected in dropdown calendar */
-    selection-color: #fff; /* Text color of selected item */
-    alternate-background-color: #444; /* Alternate background color for even-numbered items */
-    border: 1px solid #666; /* Border around dropdown calendar */
-    border-radius: 5px; /* Round border for dropdown calendar */
-    padding: 5px; /* Padding inside dropdown calendar */
-    font-family: Arial; /* Font family for dropdown calendar */
-    font-size: 12px; /* Font size for dropdown calendar */
+    background-color: #555;
+    color: #f0f0f0;
+    selection-background-color: #666;
+    selection-color: #fff;
+    alternate-background-color: #444;
+    border: 1px solid #666;
+    border-radius: 5px; 
+    padding: 5px;
+    font-family: Arial;
+    font-size: 12px;
 }
 
 QListWidget{

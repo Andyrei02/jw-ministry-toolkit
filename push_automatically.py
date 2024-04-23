@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from config import Config
+from lib import Config
 
 class GitProject:
     def __init__(self, project_directory, name_github, token_github):
@@ -40,10 +40,10 @@ def main():
         return
     
     config = Config()
-    current_path = config.current_path
+    main_path = config.main_path
 
     # Create a GitProject instance
-    my_project = GitProject(current_path, name_github, token_github)
+    my_project = GitProject(main_path, name_github, token_github)
     my_project.add()
     my_project.status()
     commit_description = input("Enter commit description: ")
