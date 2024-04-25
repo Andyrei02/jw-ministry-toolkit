@@ -2,7 +2,7 @@ import os
 import requests
 
 from datetime import datetime
-from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox
+from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QFont
 
@@ -250,12 +250,17 @@ class WorkbookGenerator:
             for section_key in list(section_3_dict.keys()):
                 section_3_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
 
-        output_path = self.config.out_workbook_path
+        output_path = self.browse_output() # self.config.out_workbook_path
         congregation = 'GLODENI-SUD'
 
-        service_schedule = Service_Workbook_PDF_Generator(output_path, congregation, self.modifed_data_dict)
-        service_schedule.generate_pdf()
-        QMessageBox.information(self.main_app, "PDF Generated", "PDF has been generated successfully!")
+        if output_path:
+            service_schedule = Service_Workbook_PDF_Generator(output_path, congregation, self.modifed_data_dict)
+            service_schedule.generate_pdf()
+            QMessageBox.information(self.main_app, "PDF Generated", "PDF has been generated successfully!")
+
+    def browse_output(self):
+        output_path, _ = QFileDialog.getSaveFileName(self.main_app, "Save PDF", "", "PDF Files (*.pdf)")
+        return output_path
 
     def parsing_workbook(self):
         self.main_app.button_parsing_workbook.setEnabled(False)

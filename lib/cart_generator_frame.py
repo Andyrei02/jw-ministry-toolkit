@@ -3,8 +3,7 @@ import os
 import fitz
 import PyPDF2
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QListWidget, QGraphicsScene, QFileDialog
+from PyQt5.QtWidgets import QListWidget, QGraphicsScene, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QImage, QPixmap, QIcon
 

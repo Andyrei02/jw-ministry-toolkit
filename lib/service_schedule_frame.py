@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QDateEdit, QPushButton, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QDateEdit, QPushButton, QLineEdit, QComboBox, QFileDialog
 from PyQt5.QtCore import Qt, QDate, QSize
-from PyQt5 import uic
 from PyQt5.QtGui import QIcon
+from PyQt5 import uic
 
 
 from datetime import datetime, timedelta
@@ -102,6 +102,11 @@ class ServideScheduleGenerator:
 
         title = "Grafic de Serviciu"
         subtitle = "Microfon / Om de ordine / Sistem de sonorizare"
-        output_path = self.config.out_service_chedule_path
+        output_path = self.browse_output()
+
         serv_sched_Gen = Service_Schedule_PDF_Generator(output_path, title, subtitle, self.date_list, final_dict)
         serv_sched_Gen.generate_pdf()
+
+    def browse_output(self):
+        output_path, _ = QFileDialog.getSaveFileName(self.main_app, "Save PDF", "", "PDF Files (*.pdf)")
+        return output_path
