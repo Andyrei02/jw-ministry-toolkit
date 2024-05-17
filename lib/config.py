@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import configparser
 
 
@@ -13,6 +14,13 @@ class Config:
         self.temp_path = os.path.join(self.main_path, 'temp_files')
         if not os.path.exists(self.temp_path):
             os.makedirs(self.temp_path)
+        self.names_path = os.path.join(self.main_path, 'resources', 'names_dict.json')
+
+        try:
+            self.names_dict = self.load_names_from_json(self.names_path)
+        except:
+            self.write_json({"names": []})
+            self.names_dict = self.load_names_from_json(self.names_path)
 
         self.ui_path = os.path.join(self.main_path, 'resources', 'ui_design', 'user_interface.ui')
         self.styles_path = os.path.join(self.main_path, 'resources', 'ui_design', 'stylesheets')
@@ -45,6 +53,18 @@ class Config:
         self.equalizer_ico_path = os.path.join(self.main_path, 'resources', 'images', 'equalizer.png')
 
         self.config_data = self.load_config()
+
+    def load_names_from_json(self, file_path):
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+            if "names" in data:
+                return data["names"]
+            else:
+                return []
+
+    def write_json(self, dict_items):
+        with open(self.names_path, 'w') as file:
+            data = json.dump(dict_items, file, indent=4)
 
     def load_config(self):
         config_parser = configparser.ConfigParser()

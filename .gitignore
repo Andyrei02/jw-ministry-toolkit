@@ -3,9 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# My Files
+file.pdf
+names_dict.json
+
 # PDF files
 *.pdf
-file.pdf
 
 # C extensions
 *.so

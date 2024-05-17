@@ -6,3 +6,5 @@ beautifulsoup4
 reportlab
 PyPDF2
 python-dotenv
+aiohttp
+aiohttp-retry

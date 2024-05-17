@@ -1,9 +1,10 @@
 import os
 import requests
+import asyncio
 
 from datetime import datetime
-from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog, QCompleter
+from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtGui import QFont
 
 from .workbook_parser import Parse_Meeting_WorkBook
@@ -20,6 +21,7 @@ class WorkbookGenerator:
         self.data_dict = {}
         self.modifed_data_dict = {}
         self.init_ui()
+        self.names_list = self.config.names_dict
 
     def init_ui(self):
         self.main_app.generate_workbook_button.clicked.connect(self.generate_workbook_pdf)
@@ -56,7 +58,9 @@ class WorkbookGenerator:
             label.setMaximumWidth(label_width)
 
             grid_layout_1.addWidget(label, row, 0, 1, 1)
-            grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+            line_edit = QLineEdit()
+            grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+            self.add_completion(line_edit)
             row += 1
 
             header_dict = data_dict[list_tabs[tab_index]]['header']
@@ -66,7 +70,9 @@ class WorkbookGenerator:
                 label_item.setMaximumWidth(label_width)
 
                 grid_layout_1.addWidget(label_item, row, 0, 1, 1)
-                grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+                line_edit = QLineEdit()
+                grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+                self.add_completion(line_edit)
                 row += 1
 
             # Section Intro
@@ -78,7 +84,9 @@ class WorkbookGenerator:
                 label_item.setMaximumWidth(label_width)
 
                 grid_layout_1.addWidget(label_item, row, 0, 1, 1)
-                grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+                line_edit = QLineEdit()
+                grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+                self.add_completion(line_edit)
                 row += 1
 
             section_0_label = QLabel('COMORI DIN CUVÂNTUL LUI DUMNEZEU')
@@ -95,7 +103,9 @@ class WorkbookGenerator:
                 label_item.setMaximumWidth(label_width)
 
                 grid_layout_1.addWidget(label_item, row, 0, 1, 1)
-                grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+                line_edit = QLineEdit()
+                grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+                self.add_completion(line_edit)
                 row += 1
 
             section_1_label = QLabel('SĂ FIM MAI EFICIENȚI ÎN PREDICARE')
@@ -112,7 +122,9 @@ class WorkbookGenerator:
                 label_item.setMaximumWidth(label_width)
 
                 grid_layout_1.addWidget(label_item, row, 0, 1, 1)
-                grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+                line_edit = QLineEdit()
+                grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+                self.add_completion(line_edit)
                 row += 1
 
             section_2_label = QLabel('VIAȚA DE CREȘTIN')
@@ -129,7 +141,9 @@ class WorkbookGenerator:
                 label_item.setMaximumWidth(label_width)
 
                 grid_layout_1.addWidget(label_item, row, 0, 1, 1)
-                grid_layout_1.addWidget(QLineEdit(), row, 1, 1, 1)
+                line_edit = QLineEdit()
+                grid_layout_1.addWidget(line_edit, row, 1, 1, 1)
+                self.add_completion(line_edit)
                 row += 1
 
             tab_layout.addWidget(scroll_area)
@@ -141,6 +155,11 @@ class WorkbookGenerator:
             self.main_app.work_book_content_widget.addTab(tab, list_tabs[tab_index])
         if not checked_checkboxes:
             self.add_checkboxes(list_checkboxes)
+
+    def add_completion(self, line_edit):
+        completer = QCompleter(self.names_list, line_edit)
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        line_edit.setCompleter(completer)
 
     def add_checkboxes(self, list_weeks):
         font = QFont()
@@ -213,7 +232,17 @@ class WorkbookGenerator:
         sorted_list = sorted(date_list, key=custom_sort)
         return sorted_list
 
+    def update_names_list(self, line_edit_list):
+        print(list(set(line_edit_list)))
+        print(list(set(self.names_list)))
+        print(list(set(self.names_list + line_edit_list)))
+        updated_list = list(set(self.names_list + line_edit_list))
+        final_dict = {'names': updated_list}
+        self.config.write_json(final_dict)
+
+
     def generate_workbook_pdf(self):
+        names_list = []
         for tab_index in range(self.main_app.work_book_content_widget.count()):
             # list_data = []
             tab_title = self.main_app.work_book_content_widget.tabText(tab_index)
@@ -228,6 +257,7 @@ class WorkbookGenerator:
 
             line_edit_list = tab_widget.findChildren(QLineEdit)
             line_edit_list = [line_edit.text() for line_edit in line_edit_list]
+            names_list += line_edit_list
 
             date_list = list(self.modifed_data_dict.keys())
             # for date_index in range(len(date_list)):
@@ -249,6 +279,8 @@ class WorkbookGenerator:
             
             for section_key in list(section_3_dict.keys()):
                 section_3_dict[section_key][1] = (line_edit_list[label_list.index(section_key)])
+
+        self.update_names_list(names_list)
 
         output_path = self.browse_output() # self.config.out_workbook_path
         congregation = 'GLODENI-SUD'
@@ -302,7 +334,7 @@ class WorkerThread(QThread):
         self.parser.download_progress_signal.connect(self.download_progress_signal.emit)
 
         try:
-            self.data_dict = self.parser.get_dict_data()
+            self.data_dict = asyncio.run(self.parser.get_dict_data())
         except requests.exceptions.MissingSchema:
             QMessageBox.information(self.main_app, "Info Download", "Error! Please enter correct lik in link tab.")
         except requests.exceptions.ConnectionError:
