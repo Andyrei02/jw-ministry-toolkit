@@ -3,12 +3,13 @@ import requests
 import asyncio
 
 from datetime import datetime
-from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QLabel, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog, QCompleter
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog, QCompleter
+from PyQt5.QtCore import QThread, QRunnable, QThreadPool, pyqtSlot, pyqtSignal, QObject, Qt, QSize, QByteArray
+from PyQt5.QtGui import QFont, QPixmap
 
 from .workbook_parser import Parse_Meeting_WorkBook
 from .pdf_generator_module.service_workbook_generator import Service_Workbook_PDF_Generator
+from .list_workbooks_parser import Parse_List_Meeting_WorkBooks
 from .config import Config
 
 
@@ -19,6 +20,7 @@ class WorkbookGenerator:
         self.config = Config()
         self.checked_checkboxes = []
         self.data_dict = {}
+        self.data_dict_workbooks_list = {}
         self.modifed_data_dict = {}
         self.init_ui()
         self.names_list = self.config.names_dict
@@ -26,6 +28,54 @@ class WorkbookGenerator:
     def init_ui(self):
         self.main_app.generate_workbook_button.clicked.connect(self.generate_workbook_pdf)
         self.main_app.button_parsing_workbook.clicked.connect(self.parsing_workbook)
+        self.main_app.update_workbook_list_btn.clicked.connect(self.update_workbook_list)
+
+    def update_workbook_list(self):
+        url = "https://www.jw.org/ro/biblioteca/caiet-pentru-intrunire/?contentLanguageFilter=ro&pubFilter=mwb&yearFilter="
+        self.worker_thread = WorkerThreadList_Meeting_WorkBooks(self.main_app, domain=None, url=url)
+        self.worker_thread.finished.connect(self.on_update_workbook_list_finished)
+        self.worker_thread.start()
+        self. worker_thread.startProgress()
+
+    def on_update_workbook_list_finished(self):
+        self.main_app.progressbar_parse_workbook_list.setRange(0, 1)
+        self.main_app.progressbar_parse_workbook_list.setValue(1)
+        self.data_dict_workbooks_list = self.worker_thread.data_dict
+        for title in list(self.data_dict_workbooks_list.keys()):
+            self.show_workbooks_list(title)
+
+    def show_workbooks_list(self, title):
+        frame = QFrame(self.main_app.workbooks_list_frame)
+        x = 80
+        y = 75
+        frame.setMinimumSize(QSize(x, y))
+        frame.setStyleSheet(u"background-color: rgb(68, 68, 68);")
+        frame.setFrameShape(QFrame.StyledPanel)
+        self.main_app.horizontalLayout_12.addWidget(frame)
+
+        img = QLabel()
+        byte_array = QByteArray(self.data_dict_workbooks_list[title][1])
+        pixmap = QPixmap()
+        pixmap.loadFromData(byte_array)
+        img.setPixmap(pixmap.scaled(x, y, Qt.KeepAspectRatio))
+
+        label = QLabel(title, alignment=Qt.AlignCenter)
+        label.setWordWrap(True)
+        label.setFont(QFont('Arial', 10))
+
+        title_btn = QPushButton("Select")
+        title_btn.setStyleSheet(u"text-align: center; background-color: rgb(42, 42, 42);")
+        title_btn.clicked.connect(lambda: self.select_workbook(title))
+
+        layout = QVBoxLayout(frame)
+        layout.setContentsMargins(5,5,5,0)
+        layout.addWidget(img, 0, Qt.AlignCenter|Qt.AlignTop)
+        layout.addWidget(label, 0, Qt.AlignBottom)
+        layout.addWidget(title_btn, 0, Qt.AlignBottom)
+
+    def select_workbook(self, title):
+        self.main_app.entry_link_workbook.setText(self.data_dict_workbooks_list[title][0])
+        print(title)
 
     def show_workbook(self, checked_checkboxes=None):
         self.main_app.work_book_content_widget.clear()
@@ -240,7 +290,6 @@ class WorkbookGenerator:
         final_dict = {'names': updated_list}
         self.config.write_json(final_dict)
 
-
     def generate_workbook_pdf(self):
         names_list = []
         for tab_index in range(self.main_app.work_book_content_widget.count()):
@@ -301,7 +350,7 @@ class WorkbookGenerator:
         workbook_url = self.main_app.entry_link_workbook.text()
         self.save_link(workbook_url)
 
-        self.worker_thread = WorkerThread(self.main_app, site_domain, workbook_url)
+        self.worker_thread = WorkerThreadMeeting_WorkBook(self.main_app, site_domain, workbook_url)
         self.worker_thread.download_progress_signal.connect(self.update_download_progress)
         self.worker_thread.finished.connect(self.parsing_finished)
         self.worker_thread.start()
@@ -319,8 +368,32 @@ class WorkbookGenerator:
         self.show_workbook()
 
 
-class WorkerThread(QThread):
-    download_progress_signal = pyqtSignal(int)  # Add this line
+class WorkerThreadList_Meeting_WorkBooks(QThread):
+    finished = pyqtSignal()  # Define a custom signal
+
+    def __init__(self, main_app, domain, url):
+        super().__init__()
+        self.main_app = main_app
+        self.domain = domain
+        self.url = url
+        self.data_dict = {}
+
+    def run(self):
+        parser = Parse_List_Meeting_WorkBooks(self.url)
+        try:
+            self.data_dict = asyncio.run(parser.get_dict_data())
+        except requests.exceptions.MissingSchema:
+            print("Error! Please enter correct link in link tab.")
+        except requests.exceptions.ConnectionError:
+            print("Connection Error! Please check your connection")
+        self.finished.emit()  # Emit the finished signal when done
+
+    def startProgress(self):
+        self.main_app.progressbar_parse_workbook_list.setRange(0, 0)  # Indeterminate mode
+
+
+class WorkerThreadMeeting_WorkBook(QThread):
+    download_progress_signal = pyqtSignal(int)
 
     def __init__(self, main_app, domain, url):
         super().__init__()

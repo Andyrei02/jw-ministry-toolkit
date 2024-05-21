@@ -353,6 +353,19 @@ QMessageBox QPushButton:pressed {
     border-radius: 10px;
 }
 
+#update_workbook_list_btn{
+    background-color: #f5b303;
+    color: #171717;
+}
+
+#update_workbook_list_btn:hover{
+    background-color: #b27e03;
+}
+
+#update_workbook_list_btn:pressed{
+    background-color: #b27e03;
+}
+
 #generate_workbook_button{
     background-color: #f5b303;
     color: #171717;
@@ -381,6 +394,15 @@ QMessageBox QPushButton:pressed {
 
 #button_parsing_workbook:disabled{
     background-color: #b27e03;
+}
+
+#progressbar_parse_workbook_list{
+    border: 2px solid grey;
+    border-radius: 5px;
+    text-align: center;
+}
+#progressbar_parse_workbook_list::chunk {
+    background-color: #f5b303;
 }
 
 #progressbar_workbook{

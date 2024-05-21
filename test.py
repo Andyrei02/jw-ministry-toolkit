@@ -1,86 +1,54 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLineEdit
-
-class AutoCompleteLineEdit(QLineEdit):
-    def __init__(self, word_list, parent=None):
-        super().__init__(parent)
-        self.word_list = word_list
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Enter:
-            self.tab_complete()
-            event.accept()
-        else:
-            super().keyPressEvent(event)
-
-    def complete_word(self):
-        current_text = self.text().lower()
-        for word in self.word_list:
-            if word.lower().startswith(current_text):
-                completion = word[len(current_text):]
-                self.setPlaceholderText(completion)
-                break
-        else:
-            self.setPlaceholderText("")
-
-    def tab_complete(self):
-        current_text = self.text().lower()
-        for word in self.word_list:
-            if word.lower().startswith(current_text):
-                self.setText(word)
-                self.setSelection(len(current_text), len(word))
-                break
-
-
 import sys
-import json
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QProgressBar, QPushButton
+from PyQt5.QtCore import Qt, QTimer, QSize
 
-class WordCompletionDemo(QMainWindow):
+class ProgressBarDemo(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Word Completion Demo")
-        self.setGeometry(100, 100, 400, 200)
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        self.initUI()
 
-        self.layout = QVBoxLayout()
-        self.central_widget.setLayout(self.layout)
+    def initUI(self):
+        self.setWindowTitle("Indeterminate ProgressBar Example")
+        self.setGeometry(100, 100, 300, 150)
 
-        self.word_list = self.load_names_from_json("resources/names_dict.json")
+        layout = QVBoxLayout()
 
-        self.input_field = AutoCompleteLineEdit(self.word_list)
-        self.input_field1 = AutoCompleteLineEdit(self.word_list)
-        self.layout.addWidget(self.input_field)
-        self.layout.addWidget(self.input_field1)
+        self.progressBar = QProgressBar(self)
+        self.progressBar.setStyleSheet("""
+    QProgressBar {
+        border: 2px solid grey;
+        border-radius: 5px;
+        text-align: center;
+    }
+    QProgressBar::chunk {
+        background-color: #00FF00;
+    }
+""")
 
-        self.input_field.textChanged.connect(self.input_field.complete_word)
-        self.input_field.returnPressed.connect(self.finish_word)
-        self.input_field1.textChanged.connect(self.input_field1.complete_word)
-        self.input_field1.returnPressed.connect(self.finish_word)
+        self.progressBar.setAlignment(Qt.AlignCenter)
+        self.progressBar.setRange(0, 0)  # Indeterminate mode
+        self.progressBar.setMaximumHeight(10)
+        layout.addWidget(self.progressBar)
 
-    def load_names_from_json(self, file_path):
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-            if "names" in data:
-                return data["names"]
-            else:
-                return []
+        self.button = QPushButton("Start", self)
+        self.button.clicked.connect(self.startProgress)
+        layout.addWidget(self.button)
 
-    def finish_word(self):
-        current_text = self.input_field.text().lower()
-        for word in self.word_list:
-            if word.lower() == current_text:
-                return  # Word is already complete
-        for word in self.word_list:
-            if word.lower().startswith(current_text):
-                self.input_field.setText(word)
-                self.input_field.setSelection(len(current_text), len(word))
-                break
+        self.setLayout(layout)
 
-if __name__ == "__main__":
+    def startProgress(self):
+        self.progressBar.setRange(0, 0)  # Indeterminate mode
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.updateProgress)
+        self.timer.start(100)  # Update every 100 ms
+
+    def updateProgress(self):
+        # No need to update the progress bar value in indeterminate mode
+        pass
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    demo = WordCompletionDemo()
+    demo = ProgressBarDemo()
     demo.show()
     sys.exit(app.exec_())

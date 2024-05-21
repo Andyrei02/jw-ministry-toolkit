@@ -6,6 +6,7 @@ __pycache__/
 # My Files
 file.pdf
 names_dict.json
+temp_files/
 
 # PDF files
 *.pdf

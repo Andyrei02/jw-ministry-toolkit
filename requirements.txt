@@ -7,4 +7,3 @@ reportlab
 PyPDF2
 python-dotenv
 aiohttp
-aiohttp-retry
