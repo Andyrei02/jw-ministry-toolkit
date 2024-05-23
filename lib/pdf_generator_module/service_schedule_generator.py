@@ -103,7 +103,7 @@ class Service_Schedule_PDF_Generator:
                 self.inv_canvas.line(x_start, h_table, x_start, 0)
 
             self.inv_canvas.setFont("CalibriBold", 16)
-            icon_size = min(column_width, h_row)
+            icon_size = min(column_width, h_row) -2
             current_row = h_row
             current_column = longest_name_width
             for name in names_list:
@@ -127,14 +127,14 @@ class Service_Schedule_PDF_Generator:
                         self.inv_canvas.saveState()
                         self.inv_canvas.translate(cell_x, current_row-h_row)  # Translate to center of the cell
                         self.inv_canvas.rotate(180)  # Rotate the canvas 180 degrees
-                        self.inv_canvas.drawImage(png_image, -icon_size, -(h_row/2)-(icon_size/2), icon_size, height=icon_size, mask="auto")
+                        self.inv_canvas.drawImage(png_image, -(column_width/2)-(icon_size/2), -(h_row/2)-(icon_size/2), icon_size, height=icon_size, mask="auto")
                         self.inv_canvas.restoreState()
                     elif cell == "equalizer":
                         png_image = ImageReader(self.config.equalizer_ico_path)
                         self.inv_canvas.saveState()
                         self.inv_canvas.translate(cell_x, current_row-h_row)  # Translate to center of the cell
                         self.inv_canvas.rotate(180)  # Rotate the canvas 180 degrees
-                        self.inv_canvas.drawImage(png_image, -icon_size, -(h_row/2)-(icon_size/2), icon_size, height=icon_size, mask="auto")
+                        self.inv_canvas.drawImage(png_image, -(column_width/2)-(icon_size/2), -(h_row/2)-(icon_size/2), icon_size, height=icon_size, mask="auto")
                         self.inv_canvas.restoreState()
                     current_column += column_width
                 current_column = longest_name_width
