@@ -8,8 +8,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 class Parse_List_Meeting_WorkBooks:
-    def __init__(self, url):
+    def __init__(self, domain, url):
         super().__init__()
+        self.domain = domain
         self.site_url = url
 
     async def fetch(self, session, url):
@@ -57,7 +58,7 @@ class Parse_List_Meeting_WorkBooks:
                     syn_img_link = await self.get_syn_img(publication)
                     syn_img_byte = await self.get_byte_img(session, syn_img_link)
                     title, link = await self.get_syn_body(publication)
-                    data_dict[title] = [link, syn_img_byte]
+                    data_dict[title] = [self.domain+link, syn_img_byte]
                 except:
                     pass
         logging.info(f"Successfully Parsed Workbook list: {self.site_url}\n")

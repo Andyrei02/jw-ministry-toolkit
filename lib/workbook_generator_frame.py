@@ -18,6 +18,7 @@ class WorkbookGenerator:
         super().__init__()
         self.main_app = main_app
         self.config = Config()
+        self.jw_domain = 'https://www.jw.org'
         self.checked_checkboxes = []
         self.data_dict = {}
         self.data_dict_workbooks_list = {}
@@ -32,7 +33,7 @@ class WorkbookGenerator:
 
     def update_workbook_list(self):
         url = "https://www.jw.org/ro/biblioteca/caiet-pentru-intrunire/?contentLanguageFilter=ro&pubFilter=mwb&yearFilter="
-        self.worker_thread = WorkerThreadList_Meeting_WorkBooks(self.main_app, domain=None, url=url)
+        self.worker_thread = WorkerThreadList_Meeting_WorkBooks(self.main_app, domain=self.jw_domain, url=url)
         self.worker_thread.finished.connect(self.on_update_workbook_list_finished)
         self.worker_thread.start()
         self. worker_thread.startProgress()
@@ -350,7 +351,7 @@ class WorkbookGenerator:
         workbook_url = self.main_app.entry_link_workbook.text()
         self.save_link(workbook_url)
 
-        self.worker_thread = WorkerThreadMeeting_WorkBook(self.main_app, site_domain, workbook_url)
+        self.worker_thread = WorkerThreadMeeting_WorkBook(self.main_app, self.jw_domain, workbook_url)
         self.worker_thread.download_progress_signal.connect(self.update_download_progress)
         self.worker_thread.finished.connect(self.parsing_finished)
         self.worker_thread.start()
@@ -379,7 +380,7 @@ class WorkerThreadList_Meeting_WorkBooks(QThread):
         self.data_dict = {}
 
     def run(self):
-        parser = Parse_List_Meeting_WorkBooks(self.url)
+        parser = Parse_List_Meeting_WorkBooks(self.domain, self.url)
         try:
             self.data_dict = asyncio.run(parser.get_dict_data())
         except requests.exceptions.MissingSchema:
