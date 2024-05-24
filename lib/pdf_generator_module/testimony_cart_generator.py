@@ -12,7 +12,6 @@ from . import Config
 class Testimony_Cart_PDF_Generator:
     def __init__(self, output_path, title=None, image=None, name_list=None):
         self.config = Config()
-
         self.title = title
         self.image = image
         self.name_list = sorted(name_list, key=self.custom_sort)

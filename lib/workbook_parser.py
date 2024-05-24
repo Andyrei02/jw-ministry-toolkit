@@ -100,13 +100,21 @@ class Parse_Meeting_WorkBook(QObject):
         return row_list
 
     async def get_data_list_section_1(self, soup):
-        return await self.get_section_data(soup, "dc-icon--gem", "du-color--teal-700")
+        # return await self.get_section_data(soup, "dc-icon--gem", "du-color--teal-700")
+        dc_music = soup.find("h3", {"class": "dc-icon--music"})
+        dc_music = dc_music.text.split('|')
+        intro_text = dc_music[1].strip()
+        time = await self.find_time_from_p_tag(intro_text)
+        pattern = r'\(\d+\xa0min\.\)'
+        format_intro = re.sub(pattern, '', intro_text)
+        row_list = [["5", dc_music[0].strip()], [str(time), format_intro]]
+        return row_list
 
     async def get_data_list_section_2(self, soup):
-        return await self.get_section_data(soup, "dc-icon--wheat", "du-color--gold-700")
+        return await self.get_section_data(soup, "dc-icon--gem", "du-color--teal-700")
 
     async def get_data_list_section_3(self, soup):
-        return await self.get_section_data(soup, "dc-icon--sheep", "du-color--maroon-600")
+        return await self.get_section_data(soup, "dc-icon--wheat", "du-color--gold-700")
 
     async def get_data_list_section_4(self, soup, music_list):
         dc_music = soup.find_all("h3", {"class": "dc-icon--music"})

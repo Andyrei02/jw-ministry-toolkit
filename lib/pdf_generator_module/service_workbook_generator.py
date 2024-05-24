@@ -81,7 +81,7 @@ class Service_Workbook_PDF_Generator:
 
         # Header Row
         # ===============================================
-        self.inv_canvas.setFont("CalibriBold", 11)
+        self.inv_canvas.setFont("CalibriBold", 13)
         header_verse = list(header_dict.keys())[0]
         header_content = f'{header_date} | {header_verse}'
         self.inv_canvas.drawString(0, current_row, header_content)

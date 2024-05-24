@@ -76,7 +76,7 @@ class WorkbookGenerator:
 
     def select_workbook(self, title):
         self.main_app.entry_link_workbook.setText(self.data_dict_workbooks_list[title][0])
-        print(title)
+        self.main_app.workbook_selected_label.setText(title)
 
     def show_workbook(self, checked_checkboxes=None):
         self.main_app.work_book_content_widget.clear()
@@ -284,9 +284,6 @@ class WorkbookGenerator:
         return sorted_list
 
     def update_names_list(self, line_edit_list):
-        print(list(set(line_edit_list)))
-        print(list(set(self.names_list)))
-        print(list(set(self.names_list + line_edit_list)))
         updated_list = list(set(self.names_list + line_edit_list))
         final_dict = {'names': updated_list}
         self.config.write_json(final_dict)
