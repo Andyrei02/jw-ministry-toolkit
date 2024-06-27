@@ -1,0 +1,15 @@
+
+[project]
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 79
+src = ["src"]
+
+# 
+select = [
+    "E",
+    "F",
+    "UP",
+    "D",
+]

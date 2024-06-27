@@ -1,5 +1,6 @@
 import logging
 
+import base64
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
@@ -58,9 +59,11 @@ class Parse_List_Meeting_WorkBooks:
                     syn_img_link = await self.get_syn_img(publication)
                     syn_img_byte = await self.get_byte_img(session, syn_img_link)
                     title, link = await self.get_syn_body(publication)
-                    data_dict[title] = [self.domain+link, syn_img_byte]
+
+                    syn_img_base64 = base64.b64encode(syn_img_byte).decode('utf-8')
+                    data_dict[title] = [self.domain+link, syn_img_base64]
                 except:
                     pass
         logging.info(f"Successfully Parsed Workbook list: {self.site_url}\n")
-
+        
         return data_dict

@@ -1,6 +1,7 @@
 import os
 import requests
 import asyncio
+import base64
 
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QScrollArea, QGridLayout, QVBoxLayout, QCheckBox, QFileDialog, QCompleter
@@ -41,9 +42,14 @@ class WorkbookGenerator:
     def on_update_workbook_list_finished(self):
         self.main_app.progressbar_parse_workbook_list.setRange(0, 1)
         self.main_app.progressbar_parse_workbook_list.setValue(1)
-        self.data_dict_workbooks_list = self.worker_thread.data_dict
+        self.data_dict_workbooks_list = dict(self.worker_thread.data_dict)
+        # self.save_workbooks_dict(self.data_dict_workbooks_list)
+        
         for title in list(self.data_dict_workbooks_list.keys()):
             self.show_workbooks_list(title)
+    
+    def save_workbooks_dict(self, data):
+        self.config.write_json(self.config.workbooks_dict_json_path, data)
 
     def show_workbooks_list(self, title):
         frame = QFrame(self.main_app.workbooks_list_frame)
@@ -55,7 +61,8 @@ class WorkbookGenerator:
         self.main_app.horizontalLayout_12.addWidget(frame)
 
         img = QLabel()
-        byte_array = QByteArray(self.data_dict_workbooks_list[title][1])
+        byte_img = base64.b64decode(self.data_dict_workbooks_list[title][1])
+        byte_array = QByteArray(byte_img)
         pixmap = QPixmap()
         pixmap.loadFromData(byte_array)
         img.setPixmap(pixmap.scaled(x, y, Qt.KeepAspectRatio))
