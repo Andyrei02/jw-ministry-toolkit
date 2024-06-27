@@ -54,10 +54,21 @@ QLineEdit{
 
 QPushButton {
     color: #dcd9d2;
+    background-color: #333333;
     border-radius: 10px;
     border: none;
     padding: 5px 10px;
 }
+QPushButton:hover{
+    background-color: #555555;
+}
+QPushButton:pressed{
+    background-color: #222222;
+}
+QPushButton:disabled{
+    background-color: #222222;
+}
+
 
 QComboBox {
     background-color: #333;

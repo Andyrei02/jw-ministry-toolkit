@@ -24,6 +24,9 @@ class WorkbookGenerator:
         self.data_dict = {}
         self.data_dict_workbooks_list = {}
         self.modifed_data_dict = {}
+        self.Show_tabs_value = True
+
+
         self.init_ui()
         self.names_list = self.config.names_dict
 
@@ -31,6 +34,14 @@ class WorkbookGenerator:
         self.main_app.generate_workbook_button.clicked.connect(self.generate_workbook_pdf)
         self.main_app.button_parsing_workbook.clicked.connect(self.parsing_workbook)
         self.main_app.update_workbook_list_btn.clicked.connect(self.update_workbook_list)
+        self.main_app.hiden_tabs_button.clicked.connect(self.show_hide_tabs)
+
+    def show_hide_tabs(self):
+        self.main_app.frame_tabs_workbook.setHidden(self.Show_tabs_value)
+        if self.Show_tabs_value:
+            self.Show_tabs_value = False 
+        else:
+            self.Show_tabs_value = True
 
     def update_workbook_list(self):
         url = "https://www.jw.org/ro/biblioteca/caiet-pentru-intrunire/?contentLanguageFilter=ro&pubFilter=mwb&yearFilter="
