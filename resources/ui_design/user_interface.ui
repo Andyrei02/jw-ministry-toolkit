@@ -34,7 +34,7 @@
      <number>9</number>
     </property>
     <item>
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="frame_content">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
