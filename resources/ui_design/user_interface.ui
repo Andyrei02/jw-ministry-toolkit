@@ -1437,17 +1437,17 @@
                 <height>476</height>
                </rect>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_13">
-               <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                <widget class="QFrame" name="frame_select_order">
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item alignment="Qt::AlignTop">
+                <widget class="QFrame" name="frame_names_schedule">
                  <property name="frameShape">
                   <enum>QFrame::StyledPanel</enum>
                  </property>
                  <property name="frameShadow">
                   <enum>QFrame::Raised</enum>
                  </property>
-                 <layout class="QGridLayout" name="gridLayout_5">
-                  <item row="0" column="0" alignment="Qt::AlignTop">
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <item alignment="Qt::AlignTop">
                    <widget class="QLabel" name="label_names">
                     <property name="minimumSize">
                      <size>
@@ -1461,6 +1461,55 @@
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
                     </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="names_list">
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_18"/>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QFrame" name="frame">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_6">
+                  <item row="1" column="0">
+                   <widget class="QScrollArea" name="scrollArea_3">
+                    <property name="widgetResizable">
+                     <bool>true</bool>
+                    </property>
+                    <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>419</width>
+                       <height>436</height>
+                      </rect>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_19">
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QLabel" name="label_9">
+                        <property name="text">
+                         <string>29.09</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
                    </widget>
                   </item>
                  </layout>

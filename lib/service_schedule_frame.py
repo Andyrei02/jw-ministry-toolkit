@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QDateEdit, QPushButton, QLineEdit, QComboBox, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QScrollArea, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QDateEdit, QPushButton, QLineEdit, QComboBox, QFileDialog
 from PyQt5.QtCore import Qt, QDate, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
@@ -68,30 +68,43 @@ class ServideScheduleGenerator:
             row = len(self.dict_rows.items())+1
         else:
             row = 1
-
-        new_line = QLineEdit(self.main_app.frame_select_order)
         line_name = f'line_{row}'
-        new_line.setObjectName(line_name)
-        self.main_app.gridLayout_5.addWidget(new_line, row, 0, 1, 1)
+        name = QLineEdit(self.main_app.names_list)
+        name.setObjectName(line_name)
+        self.main_app.verticalLayout_18.addWidget(name)
 
-        list_columns = []
-        for column in range(self.max_column):
-            column += 1
-            combo_item = QComboBox(self.main_app.frame_select_order)
-            combo_item.addItem("")
-            combo_item.addItem("")
-            combo_item.addItem("")
-            combo_item.addItem("")
-            combo_name = f"combo_{row}_{column}"
-            combo_item.setObjectName(combo_name)
-            self.main_app.gridLayout_5.addWidget(combo_item, row, column, 1, 1)
-            combo_item.setItemText(0, "None")
-            combo_item.setItemText(1, "man of order")
-            combo_item.setItemText(2, "microphone")
-            combo_item.setItemText(3, "equalizer")
+        frame_list_comboboxes = QFrame(self.main_app.scrollAreaWidgetContents_4)
+        frame_list_comboboxes.setObjectName(f'frame_{row}')
+        h_layout = QHBoxLayout(frame_list_comboboxes)
 
-            list_columns.append(combo_item)
-        self.dict_rows[new_line] = list_columns
+        combo_box = QComboBox(frame_list_comboboxes)
+        h_layout.addWidget(combo_box)
+
+
+        self.main_app.verticalLayout_19.addWidget(frame_list_comboboxes, 0, Qt.AlignTop)
+        # new_line = QLineEdit(self.main_app.frame_select_order)
+        # 
+        # new_line.setObjectName(line_name)
+        # self.main_app.gridLayout_5.addWidget(new_line, row, 0, 1, 1)
+
+        # list_columns = []
+        # for column in range(self.max_column):
+        #     column += 1
+        #     combo_item = QComboBox(self.main_app.frame_select_order)
+        #     combo_item.addItem("")
+        #     combo_item.addItem("")
+        #     combo_item.addItem(QIcon(self.config.microphone_ico_path), "")
+        #     combo_item.addItem(QIcon(self.config.equalizer_ico_path), "")
+        #     combo_name = f"combo_{row}_{column}"
+        #     combo_item.setObjectName(combo_name)
+        #     self.main_app.gridLayout_5.addWidget(combo_item, row, column, 1, 1)
+        #     combo_item.setItemText(0, "None")
+        #     combo_item.setItemText(1, "man of order")
+        #     combo_item.setItemText(2, "microphone")
+        #     combo_item.setItemText(3, "equalizer")
+
+        #     list_columns.append(combo_item)
+        # self.dict_rows[new_line] = list_columns
 
     def generate_service_schedule_pdf(self):
         final_dict = {}

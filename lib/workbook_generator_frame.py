@@ -1,5 +1,6 @@
 import os
 import requests
+import aiohttp
 import asyncio
 import base64
 
@@ -22,10 +23,13 @@ class WorkbookGenerator:
         self.jw_domain = 'https://www.jw.org'
         self.checked_checkboxes = []
         self.data_dict = {}
-        self.data_dict_workbooks_list = {}
+        self.data_dict_workbooks_list = self.config.load_json(self.config.workbooks_dict_json_path)
         self.modifed_data_dict = {}
         self.Show_tabs_value = True
 
+
+        for title in list(self.data_dict_workbooks_list.keys()):
+            self.show_workbooks_list(title, self.data_dict_workbooks_list)
 
         self.init_ui()
         self.names_list = self.config.names_dict
@@ -54,15 +58,15 @@ class WorkbookGenerator:
         self.main_app.progressbar_parse_workbook_list.setRange(0, 1)
         self.main_app.progressbar_parse_workbook_list.setValue(1)
         self.data_dict_workbooks_list = dict(self.worker_thread.data_dict)
-        # self.save_workbooks_dict(self.data_dict_workbooks_list)
+        self.save_workbooks_dict(self.data_dict_workbooks_list)
         
         for title in list(self.data_dict_workbooks_list.keys()):
-            self.show_workbooks_list(title)
-    
+            self.show_workbooks_list(title, self.data_dict_workbooks_list)
+
     def save_workbooks_dict(self, data):
         self.config.write_json(self.config.workbooks_dict_json_path, data)
 
-    def show_workbooks_list(self, title):
+    def show_workbooks_list(self, title, data_dict_workbooks_list):
         frame = QFrame(self.main_app.workbooks_list_frame)
         x = 80
         y = 75
@@ -72,7 +76,7 @@ class WorkbookGenerator:
         self.main_app.horizontalLayout_12.addWidget(frame)
 
         img = QLabel()
-        byte_img = base64.b64decode(self.data_dict_workbooks_list[title][1])
+        byte_img = base64.b64decode(data_dict_workbooks_list[title][1])
         byte_array = QByteArray(byte_img)
         pixmap = QPixmap()
         pixmap.loadFromData(byte_array)
@@ -304,7 +308,7 @@ class WorkbookGenerator:
     def update_names_list(self, line_edit_list):
         updated_list = list(set(self.names_list + line_edit_list))
         final_dict = {'names': updated_list}
-        self.config.write_json(final_dict)
+        self.config.write_json(self.config.names_path, final_dict)
 
     def generate_workbook_pdf(self):
         names_list = []
@@ -398,10 +402,12 @@ class WorkerThreadList_Meeting_WorkBooks(QThread):
         parser = Parse_List_Meeting_WorkBooks(self.domain, self.url)
         try:
             self.data_dict = asyncio.run(parser.get_dict_data())
-        except requests.exceptions.MissingSchema:
+        except aiohttp.client_exceptions.InvalidURL:
             print("Error! Please enter correct link in link tab.")
-        except requests.exceptions.ConnectionError:
+            QMessageBox.information(self.main_app, "Info Download", "Error! Please enter correct lik in link tab.")
+        except aiohttp.client_exceptions.ClientConnectorError:
             print("Connection Error! Please check your connection")
+            QMessageBox.information(self.main_app, "Info Download", "Connection Error! Please check your connection")
         self.finished.emit()  # Emit the finished signal when done
 
     def startProgress(self):
@@ -424,9 +430,9 @@ class WorkerThreadMeeting_WorkBook(QThread):
 
         try:
             self.data_dict = asyncio.run(self.parser.get_dict_data())
-        except requests.exceptions.MissingSchema:
+        except aiohttp.client_exceptions.InvalidURL:
             QMessageBox.information(self.main_app, "Info Download", "Error! Please enter correct lik in link tab.")
-        except requests.exceptions.ConnectionError:
+        except aiohttp.client_exceptions.ClientConnectorError:
             QMessageBox.information(self.main_app, "Info Download", "Connection Error! Please check your connection")
 
     def emit_download_progress(self, value):

@@ -7,7 +7,7 @@ import sys
 class Config:
     def __init__(self):
         if getattr(sys, "frozen", False):
-            self.main_path = os.path.dirname(os.path.dirname(sys.executable))
+            self.main_path = os.path.dirname(sys.executable)
         else:
             self.main_path = os.path.dirname(os.path.dirname(__file__))
 
@@ -18,22 +18,22 @@ class Config:
             self.main_path, "resources", "names_dict.json"
         )
 
-        try:
-            self.names_dict = self.load_names_from_json(self.names_path)
-        except  FileNotFoundError:
+        if not os.path.isfile(self.names_path):
             self.write_json(self.names_path, {"names": []})
+            self.names_dict = self.load_names_from_json(self.names_path)
+        else:
             self.names_dict = self.load_names_from_json(self.names_path)
 
         self.workbooks_dict_json_path = os.path.join(
             self.main_path, "resources", "workbooks_dict.json"
         )
-        try:
-            self.workbooks_dict_json = self.load_workbook_from_json(
+        if not os.path.isfile(self.workbooks_dict_json_path):
+            self.write_json(self.workbooks_dict_json_path, {})
+        else:
+            self.workbooks_dict_json = self.load_json(
                 self.workbooks_dict_json_path
             )
-        except FileNotFoundError:
-            self.write_json(self.workbooks_dict_json_path, {})
-
+            
         self.ui_path = os.path.join(
             self.main_path, "resources", "ui_design", "user_interface.ui"
         )
@@ -112,7 +112,7 @@ class Config:
 
         self.config_data = self.load_config()
 
-    def load_workbook_from_json(self, file_path):
+    def load_json(self, file_path):
         with open(file_path, "r") as file:
             data = json.load(file)
             return data
@@ -127,7 +127,7 @@ class Config:
 
     def write_json(self, path, dict_items):
         with open(path, "w") as file:
-            json.dump(dict_items, file)
+            json.dump(dict_items, file, indent=6)
 
     def load_config(self):
         config_parser = configparser.ConfigParser()
