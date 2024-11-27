@@ -8,7 +8,7 @@ To use **JW Ministry Toolkit**, follow these steps:
 
 1. Clone this repository to your local machine:
 ```bash
-git clone https://github.com/yourusername/jw-ministry-toolkit.git
+git clone https://github.com/Andyrei02/jw-ministry-toolkit.git
 cd jw-ministry-toolkit
 
 ```
