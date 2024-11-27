@@ -9,13 +9,18 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 class Parse_List_Meeting_WorkBooks:
-    def __init__(self, domain, url):
+    def __init__(self, domain, url, headers=None):
         super().__init__()
         self.domain = domain
         self.site_url = url
+        self.headers = headers or {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
 
     async def fetch(self, session, url):
-        async with session.get(url) as response:
+        async with session.get(url, headers=self.headers) as response:
             return await response.text()
 
     async def get_site_page(self, session, url):
@@ -33,11 +38,12 @@ class Parse_List_Meeting_WorkBooks:
 
     async def get_syn_img(self, div):
         syn_img = div.find("div", {"class": "syn-img"})
-        img = syn_img.find("img")['src']
+        img = syn_img.find("span")['data-img-size-md']
+        print(f"{syn_img}:\n{img}\n")
         return img
 
     async def get_byte_img(self, session, url):
-        async with session.get(url) as response:
+        async with session.get(url, headers=self.headers) as response:
             return await response.read()
 
     async def get_syn_body(self, div):

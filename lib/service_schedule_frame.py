@@ -44,7 +44,9 @@ class ServideScheduleGenerator:
             label_date_name = f"label_date_{column_date}"
             label_date.setObjectName(label_date_name)
             label_date.setAlignment(Qt.AlignCenter)
-            self.main_app.gridLayout_5.addWidget(label_date, 0, column_date, 1, 1, Qt.AlignTop)
+            # label_date.setMinimumSize(QSize(50, 0))
+            label_date.setAlignment(Qt.AlignCenter)
+            self.main_app.horizontalLayout_15.addWidget(label_date)
             label_date_list.append(label_date_name)
 
         start_date = self.main_app.start_date_edit.date()
@@ -71,17 +73,35 @@ class ServideScheduleGenerator:
         line_name = f'line_{row}'
         name = QLineEdit(self.main_app.names_list)
         name.setObjectName(line_name)
+        name.setMinimumSize(QSize(0, 40))
         self.main_app.verticalLayout_18.addWidget(name)
 
-        frame_list_comboboxes = QFrame(self.main_app.scrollAreaWidgetContents_4)
+
+        frame_list_comboboxes = QFrame(self.main_app.frame)
         frame_list_comboboxes.setObjectName(f'frame_{row}')
         h_layout = QHBoxLayout(frame_list_comboboxes)
+        h_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_app.verticalLayout_20.addWidget(frame_list_comboboxes, 0, Qt.AlignTop)
 
-        combo_box = QComboBox(frame_list_comboboxes)
-        h_layout.addWidget(combo_box)
+        list_columns = []
+        for column in range(self.max_column):
+            column += 1
+            combo_box = QComboBox(frame_list_comboboxes)
+            combo_box.addItem("")
+            combo_box.addItem("")
+            combo_box.addItem(QIcon(self.config.microphone_ico_path), "")
+            combo_box.addItem(QIcon(self.config.equalizer_ico_path), "")
+            combo_name = f"combo_{row}"
+            combo_box.setObjectName(combo_name)
+            combo_box.setMinimumSize(QSize(0, 30))
+            h_layout.addWidget(combo_box)
+            combo_box.setItemText(0, "None")
+            combo_box.setItemText(1, "man of order")
+            combo_box.setItemText(2, "microphone")
+            combo_box.setItemText(3, "equalizer")
+            list_columns.append(combo_box)
+        self.dict_rows[name] = list_columns
 
-
-        self.main_app.verticalLayout_19.addWidget(frame_list_comboboxes, 0, Qt.AlignTop)
         # new_line = QLineEdit(self.main_app.frame_select_order)
         # 
         # new_line.setObjectName(line_name)

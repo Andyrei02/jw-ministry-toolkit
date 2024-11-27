@@ -4,12 +4,13 @@ __pycache__/
 *$py.class
 
 # My Files
-file.pdf
-names_dict.json
 temp_files/
 
 # PDF files
 *.pdf
+
+# JSON files
+*.json
 
 # C extensions
 *.so
