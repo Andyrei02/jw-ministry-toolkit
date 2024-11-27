@@ -130,7 +130,9 @@ class Parse_Meeting_WorkBook(QObject):
             current_id = i.get('id')
             hour = soup.find('p', {'id': await self.increment_id(current_id)})
             hour = await self.find_time_from_p_tag(hour)
-            row_list.append([str(hour), i.text.strip()])
+            text = re.match(r'^\d+\.\s.*$', i.text.strip())
+            if text:
+                row_list.append([str(hour), text.group()])
 
         row_list.append(["5", "Cuvinte de încheiere"])
         row_list.append(["5", music_list[2]])
