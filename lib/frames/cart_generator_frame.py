@@ -7,8 +7,8 @@ from PyQt5.QtWidgets import QListWidget, QGraphicsScene, QFileDialog, QMessageBo
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QImage, QPixmap, QIcon
 
-from .pdf_generator_module.testimony_cart_generator import Testimony_Cart_PDF_Generator
-from .config import Config
+from . import Testimony_Cart_PDF_Generator
+from . import Config
 
 class CartGenerator:
     def __init__(self, main_app):

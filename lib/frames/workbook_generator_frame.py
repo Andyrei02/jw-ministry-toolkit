@@ -9,10 +9,10 @@ from PyQt5.QtWidgets import QMessageBox, QVBoxLayout, QWidget, QFrame, QLabel, Q
 from PyQt5.QtCore import QThread, QRunnable, QThreadPool, pyqtSlot, pyqtSignal, QObject, Qt, QSize, QByteArray
 from PyQt5.QtGui import QFont, QPixmap
 
-from .workbook_parser import Parse_Meeting_WorkBook
-from .pdf_generator_module.service_workbook_generator import Service_Workbook_PDF_Generator
-from .list_workbooks_parser import Parse_List_Meeting_WorkBooks
-from .config import Config
+from . import Parse_Meeting_WorkBook
+from . import Service_Workbook_PDF_Generator
+from . import Parse_List_Meeting_WorkBooks
+from . import Config
 
 
 class WorkbookGenerator:

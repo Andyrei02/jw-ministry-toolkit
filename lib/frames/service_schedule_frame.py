@@ -9,8 +9,8 @@ import time
 import os
 import re
 
-from .pdf_generator_module.service_schedule_generator import Service_Schedule_PDF_Generator
-from .config import Config
+from . import Service_Schedule_PDF_Generator
+from . import Config
 
 
 
