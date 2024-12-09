@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congregation Service Workbook</title>
+    <link rel="stylesheet" href="{{ css_path }}">
+</head>
+<body>
+
+    {% macro render_section(title, color_class, section_data) %}
+        <span class="section-title {{ color_class }}">{{ title }}</span>
+        <div class="section">
+            <span class="left-border {{ color_class }}"></span>
+            <div class="activity">
+                {% for item_title, item_details in section_data.items() %}
+                    <div class="row">
+                        <p class="row-item">
+                            <span class="time">{{ item_details[0] }}</span>
+                            <span class="activity-title">{{ item_title }}</span>
+                        </p>
+                        <p class="row-name">
+                            <span class="name">{{ item_details[1] }}</span>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endmacro %}
+
+    {% macro render_last_section(title, color_class, section_data) %}
+        <span class="section-title {{ color_class }}">{{ title }}</span>
+        <div class="section">
+            <span class="left-border {{ color_class }}"></span>
+            <div class="activity">
+                {% for item_title, item_details in section_data.items() %}
+                    {% if loop.index <= (section_data | length) - 2 %}
+                        <div class="row">
+                            <p class="row-item">
+                                <span class="time">{{ item_details[0] }}</span>
+                                <span class="activity-title">{{ item_title }}</span>
+                            </p>
+                            <p class="row-name">
+                                <span class="name">{{ item_details[1] }}</span>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section last-section">
+            <span class="left-border du-color--textSubdued"></span>
+            <div class="activity">
+                {% for item_title, item_details in section_data.items() %}
+                    {% if loop.index > (section_data | length) - 2 %}
+                        <div class="row">
+                            <p class="row-item">
+                                <span class="time">{{ item_details[0] }}</span>
+                                <span class="activity-title">{{ item_title }}</span>
+                            </p>
+                            <p class="row-name">
+                                <span class="name">{{ item_details[1] }}</span>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endmacro %}
+
+    {% set week_list = schedule.items() | list %}
+    {% for i in range(0, week_list | length, 2) %}
+    <div class="page">
+        <div class="page-header">
+            <span>GLODENI-SUD</span>
+            <span>Planificarea întrunirilor din timpul săptămânii</span>
+        </div>
+
+        {% set week1 = week_list[i] %}
+        <div class="week-container">
+            <div class="week-header">
+                {% for header, details in week1[1]['header'].items() %}
+                    <span>{{ week1[0] }} | {{ header }}</span>
+                    <p class="row-name">
+                        <span class="name">{{ details[1] }}</span>
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div class="section">
+                <span class="left-border du-color--textSubdued"></span>
+                <div class="activity">
+                    {% for intro_title, intro_details in week1[1]['intro'].items() %}
+                        <div class="row">
+                            <p class="row-item">
+                                <span class="time">{{ intro_details[0] }}</span>
+                                <span class="activity-title">{{ intro_title }}</span>
+                            </p>
+                            <p class="row-name">
+                                <span class="name">{{ intro_details[1] }}</span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {{ render_section("COMORI DIN CUVÂNTUL LUI DUMNEZEU", "du-color--teal-700", week1[1]['section_1']) }}
+            {{ render_section("SĂ FIM MAI EFICIENȚI ÎN PREDICARE", "du-color--gold-700", week1[1]['section_2']) }}
+            {{ render_last_section("VIAȚA DE CREȘTIN", "du-color--maroon-600", week1[1]['section_3']) }}
+        </div>
+
+        {% if i + 1 < week_list | length %}
+        {% set week2 = week_list[i + 1] %}
+        <div class="week-container">
+            <div class="week-header">
+                {% for header, details in week2[1]['header'].items() %}
+                    <span>{{ week2[0] }} | {{ header }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="section">
+                <span class="left-border du-color--textSubdued"></span>
+                <div class="activity">
+                    {% for intro_title, intro_details in week2[1]['intro'].items() %}
+                        <div class="row">
+                            <p class="row-item">
+                                <span class="time">{{ intro_details[0] }}</span>
+                                <span class="activity-title">{{ intro_title }}</span>
+                            </p>
+                            <p class="row-name">
+                                <span class="name">{{ intro_details[1] }}</span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {{ render_section("COMORI DIN CUVÂNTUL LUI DUMNEZEU", "du-color--teal-700", week2[1]['section_1']) }}
+            {{ render_section("SĂ FIM MAI EFICIENȚI ÎN PREDICARE", "du-color--gold-700", week2[1]['section_2']) }}
+            {{ render_last_section("VIAȚA DE CREȘTIN", "du-color--maroon-600", week2[1]['section_3']) }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</body>
+</html>

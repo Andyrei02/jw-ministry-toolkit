@@ -33,6 +33,10 @@ class Config:
             self.workbooks_dict_json = self.load_json(
                 self.workbooks_dict_json_path
             )
+        
+        self.templates_path = os.path.join(
+            self.main_path, "resources", "templates"
+        )
             
         self.ui_path = os.path.join(
             self.main_path, "resources", "ui_design", "user_interface.ui"

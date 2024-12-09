@@ -352,11 +352,12 @@ class WorkbookGenerator:
         self.update_names_list(names_list)
 
         output_path = self.browse_output() # self.config.out_workbook_path
-        congregation = 'GLODENI-SUD'
 
         if output_path:
-            service_schedule = Service_Workbook_PDF_Generator(output_path, congregation, self.modifed_data_dict)
-            service_schedule.generate_pdf()
+            service_schedule = Service_Workbook_PDF_Generator(template_dir=self.config.templates_path)
+            data = self.modifed_data_dict.copy()
+            service_schedule.generate_pdf(data, output_pdf=output_path)
+            print(self.modifed_data_dict)
             QMessageBox.information(self.main_app, "PDF Generated", "PDF has been generated successfully!")
 
     def browse_output(self):

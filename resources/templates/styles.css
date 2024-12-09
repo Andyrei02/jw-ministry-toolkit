@@ -1,0 +1,186 @@
+@page {
+    size: A4;
+    margin: 5mm; /* Increased margin for better spacing */
+}
+
+body {
+    font-family: NotoSans, Arial, "Arial Unicode MS", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.du-color--teal-700 {
+    color: #2a6b77;
+
+}
+
+.section-title.du-color--teal-700::before {
+    background-color: #2a6b77;
+    content: "";
+    display: inline-block; /* Allow size customization */
+    width: 16px; /* Set desired width */
+    height: 16px; /* Set desired height */
+    border-radius: 5px;
+    background-image: url("../../resources/images/section_1_icon.png");
+    background-size: 20px; /* Resize the image */
+    background-repeat: no-repeat; /* Prevent repeating */
+    background-position: center; /* Center the image */
+    padding: 5px;
+    margin-right: 8px;
+
+}
+
+.du-color--gold-700 {
+    color: #9b6d17;
+}
+
+.section-title.du-color--gold-700::before {
+    background-color: #9b6d17;
+    content: "";
+    display: inline-block; /* Allow size customization */
+    width: 16px; /* Set desired width */
+    height: 16px; /* Set desired height */
+    border-radius: 5px;
+    background-image: url("../../resources/images/section_2_icon.png");
+    background-size: 20px; /* Resize the image */
+    background-repeat: no-repeat; /* Prevent repeating */
+    background-position: center; /* Center the image */
+    padding: 5px;
+    margin-right: 8px;
+
+}
+
+
+.du-color--maroon-600 {
+    color: #942926;
+}
+
+.section-title.du-color--maroon-600::before {
+    background-color: #942926;
+    content: "";
+    display: inline-block; /* Allow size customization */
+    width: 16px; /* Set desired width */
+    height: 16px; /* Set desired height */
+    border-radius: 5px;
+    background-image: url("../../resources/images/section_3_icon.png");
+    background-size: 20px; /* Resize the image */
+    background-repeat: no-repeat; /* Prevent repeating */
+    background-position: center; /* Center the image */
+    padding: 5px;
+    margin-right: 8px;
+
+}
+
+
+.page {
+    display: flex;
+    flex-direction: column;
+    page-break-before: always; /* Force new page for each week */
+}
+
+.page-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+.week-container {
+    flex-grow: 1;
+    padding: 5mm;
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.week-header {
+    text-align: left;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    margin-top: 0;
+}
+
+.section-title {
+    font-weight: bold;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.last-section {
+    display: flex;
+    margin-top: 10px;
+}
+
+.activity {
+    flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
+    
+    padding-left: 5px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.row-item {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.row-name {
+    text-align: right;
+    margin-left: auto;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.left-border {
+    display: inline-block;
+    width: 5px;
+    min-height: 100%;
+    flex-shrink: 0;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.left-border.du-color--textSubdued {
+    background-color: #626262;
+}
+
+.left-border.du-color--teal-700 {
+    background-color: #2a6b77;
+}
+
+.left-border.du-color--gold-700 {
+    background-color: #9b6d17;
+}
+
+.left-border.du-color--maroon-600 {
+    background-color: #942926;
+}
+
+.activity-title {
+    font-weight: bold;
+}
+
+.time {
+    color: #555;
+    font-size: 11px;
+}
