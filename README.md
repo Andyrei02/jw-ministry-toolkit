@@ -46,8 +46,7 @@ Contributions are welcome! If you have suggestions, bug reports, or would like t
 (2023) Andrei Cenusa
 
 ## To DO
-[ ] modiju curent library for generate pdf to "Jinja2"
-
+?
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
